@@ -90,6 +90,20 @@ const resources = {
       certificateComingSoon: 'Certificate download will be available soon!',
       portfolioView: 'Portfolio View',
       portfolioComingSoon: 'Portfolio viewing will be available soon!',
+      
+      // Admin
+      admin: {
+        open: "Admin",
+        title: "Enter admin passcode",
+        unlock: "Unlock",
+        cancel: "Cancel",
+        error: "Incorrect passcode",
+        enabled: "Admin mode enabled",
+        disabled: "Admin mode disabled",
+        on: "Admin ON",
+        stage: "Stage",
+        unit: "Unit"
+      },
     },
     copy: {
       // Stage Content & Descriptions
@@ -271,6 +285,20 @@ const resources = {
       certificateComingSoon: 'הורדת התעודה תהיה זמינה בקרוב!',
       portfolioView: 'צפייה בתיק עבודות',
       portfolioComingSoon: 'צפייה בתיק העבודות תהיה זמינה בקרוב!',
+      
+      // Admin
+      admin: {
+        open: "אדמין",
+        title: "הכנס סיסמת אדמין",
+        unlock: "פתח",
+        cancel: "בטל",
+        error: "סיסמה שגויה",
+        enabled: "מצב אדמין הופעל",
+        disabled: "מצב אדמין בוטל",
+        on: "אדמין פעיל",
+        stage: "שלב",
+        unit: "יחידה"
+      },
     },
     copy: {
       // Stage Content & Descriptions

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { LearnerProgress, Level, StageId, XPThresholds } from '@/types/journey';
+import { isAdmin } from '@/lib/admin';
 
 export interface Trophy {
   id: string;

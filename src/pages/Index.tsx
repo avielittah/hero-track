@@ -5,6 +5,7 @@ import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LevelBar } from '@/components/LevelBar';
 import { StageContainer } from '@/features/journey/StageContainer';
+import { AdminBar } from '@/features/admin/AdminBar';
 
 const Index = () => {
   const { i18n } = useTranslation();
@@ -59,6 +60,9 @@ const Index = () => {
         showNudge={showBuddyNudge}
         onNudgeClose={() => setShowBuddyNudge(false)}
       />
+      
+      {/* Admin Bar */}
+      <AdminBar />
     </div>
   );
 };

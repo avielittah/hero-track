@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { StageId } from '@/types/journey';
+import { isAdmin } from '@/lib/admin';
 
 export type ViewMode = 'current' | 'preview-back' | 'peek-forward';
 
@@ -58,8 +59,12 @@ export const useJourneyMachine = create<JourneyMachine>()(
       goToStage: (stageId: StageId) => {
         const state = get();
         
-        // Can only go to current stage or completed stages
-        if (stageId === state.currentStage || state.completedStages.has(stageId)) {
+        // Admin can go to any stage, learners follow normal rules
+        const canNavigate = isAdmin() || 
+          stageId === state.currentStage || 
+          state.completedStages.has(stageId);
+          
+        if (canNavigate) {
           set({
             viewingStage: stageId,
             viewMode: stageId === state.currentStage ? 'current' : 'preview-back',
@@ -123,6 +128,9 @@ export const useJourneyMachine = create<JourneyMachine>()(
       // Guards
       canAdvance: () => {
         const state = get();
+        // Admin can always advance
+        if (isAdmin()) return true;
+        
         return (
           state.viewMode === 'current' &&
           state.stageData[state.currentStage]?.canEdit &&
@@ -132,11 +140,17 @@ export const useJourneyMachine = create<JourneyMachine>()(
 
       canPreviewBack: (stageId: StageId) => {
         const state = get();
+        // Admin can preview any stage
+        if (isAdmin()) return true;
+        
         return state.completedStages.has(stageId) && stageId < state.currentStage;
       },
 
       canPeekNext: () => {
         const state = get();
+        // Admin can always peek next
+        if (isAdmin()) return true;
+        
         const nextStage = (state.currentStage + 1) as StageId;
         return (
           nextStage <= 8 &&
@@ -157,6 +171,9 @@ export const useJourneyMachine = create<JourneyMachine>()(
 
       isStageEditable: (stageId: StageId) => {
         const state = get();
+        // Admin can edit any stage
+        if (isAdmin()) return true;
+        
         return (
           state.viewMode === 'current' &&
           state.viewingStage === stageId &&
