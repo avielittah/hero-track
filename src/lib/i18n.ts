@@ -92,13 +92,15 @@ const resources = {
       portfolioComingSoon: 'Portfolio viewing will be available soon!',
       
       footer: {
-        brand: 'TaleAI',
-        rights: '© {{year}} TaleAI. All rights reserved.',
+        brand: 'Journey Learning',
+        rights: '© {{year}} Journey Learning Platform. All rights reserved.',
         terms: 'Terms of Service',
-        privacy: 'Privacy Policy',
+        privacy: 'Privacy Policy', 
         cookies: 'Cookies',
-        cookieNotice: 'We use cookies to improve your experience.',
+        cookieNotice: 'We use cookies to enhance your learning experience and track progress.',
         gotIt: 'Got it',
+        help: 'Help & Support',
+        about: 'About'
       },
       // Admin
       admin: {
@@ -296,13 +298,15 @@ const resources = {
       portfolioComingSoon: 'צפייה בתיק העבודות תהיה זמינה בקרוב!',
       
       footer: {
-        brand: 'TaleAI',
-        rights: '© {{year}} TaleAI. כל הזכויות שמורות.',
+        brand: 'מסע למידה',
+        rights: '© {{year}} פלטפורמת מסע למידה. כל הזכויות שמורות.',
         terms: 'תנאי שימוש',
         privacy: 'מדיניות פרטיות',
         cookies: 'עוגיות',
-        cookieNotice: 'אנחנו משתמשים בעוגיות לשיפור החוויה.',
+        cookieNotice: 'אנחנו משתמשים בעוגיות לשיפור חווית הלמידה ולמעקב אחר התקדמות.',
         gotIt: 'הבנתי',
+        help: 'עזרה ותמיכה',
+        about: 'אודות'
       },
       // Admin
       admin: {

@@ -38,7 +38,7 @@ export const FooterBar: React.FC = () => {
             {/* Brand - Left side (Right in RTL) */}
             <div className={`flex items-center gap-2 text-sm text-muted-foreground ${isRTL ? 'order-3' : 'order-1'}`}>
               <div className="w-6 h-6 bg-primary/10 rounded flex items-center justify-center">
-                <span className="text-xs font-bold text-primary">T</span>
+                <span className="text-xs font-bold text-primary">JL</span>
               </div>
               <span className="hidden sm:inline font-medium">{t('ui.footer.brand')}</span>
             </div>
