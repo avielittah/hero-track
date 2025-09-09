@@ -2,9 +2,17 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ProfileSheet } from './ProfileSheet';
+import { ReportIssueModal } from './ReportIssueModal';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Globe, LogIn, LogOut, User } from 'lucide-react';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Globe, LogIn, LogOut, User, MoreVertical, HelpCircle, Bug } from 'lucide-react';
 import { useLearningStore } from '@/lib/store';
 import { Trophy } from 'lucide-react';
 
@@ -16,6 +24,7 @@ interface TopBarProps {
 export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
   const { t } = useTranslation();
   const [showProfileSheet, setShowProfileSheet] = useState(false);
+  const [showReportIssueModal, setShowReportIssueModal] = useState(false);
   const { 
     isLoggedIn, 
     username, 
@@ -116,7 +125,7 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
           </motion.div>
         )}
 
-        {/* Right side - Language Toggle and Auth */}
+        {/* Right side - Language Toggle, Support Menu, and Auth */}
         <div className="flex items-center space-x-3">
           <Button
             variant="outline"
@@ -127,6 +136,34 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
             <Globe className="h-4 w-4" />
             <span className="font-medium">{currentLanguage.toUpperCase()}</span>
           </Button>
+
+          {/* Support Overflow Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center space-x-2"
+              >
+                <MoreVertical className="h-4 w-4" />
+                <span className="hidden sm:inline">Support</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-background border shadow-lg">
+              <DropdownMenuItem
+                onClick={() => setShowReportIssueModal(true)}
+                className="flex items-center space-x-2 cursor-pointer"
+              >
+                <Bug className="h-4 w-4" />
+                <span>Report Issue</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="flex items-center space-x-2 cursor-pointer">
+                <HelpCircle className="h-4 w-4" />
+                <span>Help Center</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Button
             variant={isLoggedIn ? "outline" : "default"}
@@ -148,6 +185,12 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
           </Button>
         </div>
       </div>
+
+      {/* Report Issue Modal */}
+      <ReportIssueModal
+        isOpen={showReportIssueModal}
+        onClose={() => setShowReportIssueModal(false)}
+      />
     </motion.div>
   );
 };
