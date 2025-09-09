@@ -8,6 +8,7 @@ import { StageBanner } from './StageBanner';
 import { StageHeader } from './StageHeader';
 import { UnitsList } from '../units/UnitsList';
 import { StageCompleteModal } from '@/components/StageCompleteModal';
+import { FinalWrapUpScreen } from '@/components/FinalWrapUpScreen';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +29,7 @@ export const StageContainer = () => {
   } = useJourneyMachine();
 
   const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [showFinalWrapUp, setShowFinalWrapUp] = useState(false);
   const [stageCompleteData, setStageCompleteData] = useState<{
     totalXP: number;
     completedUnits: string[];
@@ -255,11 +257,21 @@ export const StageContainer = () => {
     // Auto-advance to next stage if not the last one
     if (!isLastStage) {
       handleNext();
+    } else {
+      // Show final wrap-up screen for stage 8
+      setShowFinalWrapUp(true);
     }
   };
 
   const progress = getStageProgress();
   const units = getStageUnits();
+
+  // Show final wrap-up screen if triggered
+  if (showFinalWrapUp) {
+    return (
+      <FinalWrapUpScreen onClose={() => setShowFinalWrapUp(false)} />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pb-24">

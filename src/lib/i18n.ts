@@ -74,6 +74,22 @@ const resources = {
       // Progress indicators
       toNextLevel: 'to next level',
       preview: 'Preview',
+      
+      // Final Wrap-Up Screen
+      downloadCertificate: 'Download Certificate',
+      viewPortfolio: 'View Portfolio',
+      backToJourney: 'Back to Journey',
+      complete: 'Complete',
+      stagesCompleted: 'Stages Completed',
+      totalXPEarned: 'Total XP Earned',
+      earned: 'Earned',
+      trophiesCollected: 'Trophies Collected',
+      reflection: 'Reflection',
+      yourTrophies: 'Your Trophies',
+      certificateDownload: 'Certificate Download',
+      certificateComingSoon: 'Certificate download will be available soon!',
+      portfolioView: 'Portfolio View',
+      portfolioComingSoon: 'Portfolio viewing will be available soon!',
     },
     copy: {
       // Stage Content & Descriptions
@@ -137,6 +153,12 @@ const resources = {
       
       stageAchievement8Title: 'Journey Master! 🎉',
       stageAchievement8Description: 'Congratulations! You\'ve completed the entire learning adventure!',
+      
+      // Final Wrap-Up Screen
+      onboardingComplete: 'Onboarding Complete!',
+      congratulationsTitle: 'Congratulations! 🎉',
+      congratulationsMessage: 'You have successfully completed your entire learning journey and earned your place as a skilled team member.',
+      journeyCompleteDescription: 'Your dedication and hard work have paid off. Welcome to the team!',
       
       // Toast Messages
       toastAmazingWork: '🎉 Amazing work!',
@@ -233,6 +255,22 @@ const resources = {
       // Progress indicators
       toNextLevel: 'לרמה הבאה',
       preview: 'תצוגה מקדימה',
+      
+      // Final Wrap-Up Screen
+      downloadCertificate: 'הורד תעודה',
+      viewPortfolio: 'צפה בתיק עבודות',
+      backToJourney: 'חזור למסע',
+      complete: 'הושלם',
+      stagesCompleted: 'שלבים שהושלמו',
+      totalXPEarned: 'סה"כ נקודות ניסיון',
+      earned: 'נצבר',
+      trophiesCollected: 'גביעים שנאספו',
+      reflection: 'השתקפות',
+      yourTrophies: 'הגביעים שלך',
+      certificateDownload: 'הורדת תעודה',
+      certificateComingSoon: 'הורדת התעודה תהיה זמינה בקרוב!',
+      portfolioView: 'צפייה בתיק עבודות',
+      portfolioComingSoon: 'צפייה בתיק העבודות תהיה זמינה בקרוב!',
     },
     copy: {
       // Stage Content & Descriptions
@@ -296,6 +334,12 @@ const resources = {
       
       stageAchievement8Title: 'מאסטר המסע! 🎉',
       stageAchievement8Description: 'מזל טוב! השלמתם את כל הרפתקת הלמידה!',
+      
+      // Final Wrap-Up Screen
+      onboardingComplete: 'החניכה הושלמה!',
+      congratulationsTitle: 'ברכות! 🎉',
+      congratulationsMessage: 'השלמתם בהצלחה את כל מסע הלמידה שלכם וזכיתם במקומכם כחברי צוות מיומנים.',
+      journeyCompleteDescription: 'המסירות והעבודה הקשה שלכם השתלמו. ברוכים הבאים לצוות!',
       
       // Toast Messages
       toastAmazingWork: '🎉 עבודה מדהימה!',
