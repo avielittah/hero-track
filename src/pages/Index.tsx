@@ -13,9 +13,9 @@ const Index = () => {
 
   useEffect(() => {
     // Set document direction based on language
-    document.documentElement.dir = currentLanguage === 'he' ? 'rtl' : 'ltr';
-    document.documentElement.lang = currentLanguage;
-  }, [currentLanguage]);
+    document.documentElement.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
 
   const handleLanguageToggle = () => {
     const newLanguage = currentLanguage === 'en' ? 'he' : 'en';

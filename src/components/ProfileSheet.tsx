@@ -208,7 +208,7 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
         className="w-full sm:w-[400px] overflow-y-auto bg-background/95 backdrop-blur-sm"
       >
         <SheetHeader className="space-y-4">
-          <SheetTitle className="text-left">{t('Profile')}</SheetTitle>
+          <SheetTitle className="text-left">{t('ui:profile')}</SheetTitle>
           
           {/* Profile Header */}
           <motion.div
@@ -228,7 +228,7 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
               <h3 className="text-lg font-semibold text-foreground">{profile.name}</h3>
               <p className="text-sm text-muted-foreground">{profile.role}</p>
               <Badge className="mt-1 bg-primary/20 text-primary border-primary/30">
-                {t(level)}
+                {t(`ui:${level}`)}
               </Badge>
             </div>
           </motion.div>
@@ -245,7 +245,7 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center space-x-2">
                   <User className="h-4 w-4" />
-                  <span>Contact Information</span>
+                  <span>{t('ui:contactInformation')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -281,7 +281,7 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center space-x-2">
                   <Target className="h-4 w-4" />
-                  <span>Learning Progress</span>
+                  <span>{t('ui:learningProgress')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -359,7 +359,7 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center space-x-2">
                     <Award className="h-4 w-4" />
-                    <span>Unlocked Skills ({unlockedSkills.length})</span>
+                    <span>{t('ui:unlockedSkills')} ({unlockedSkills.length})</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -389,11 +389,11 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
                                   <p className="text-xs opacity-80 line-clamp-2">
                                     {skill.description}
                                   </p>
-                                  <Badge 
+                                   <Badge 
                                     variant="outline" 
                                     className="mt-1 text-xs bg-white/50"
                                   >
-                                    {t(skill.unlockedAt)}
+                                    {t(`ui:${skill.unlockedAt}`)}
                                   </Badge>
                                 </div>
                               </div>

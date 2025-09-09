@@ -66,42 +66,10 @@ export const StageCompleteModal = ({
   const [showConfetti, setShowConfetti] = useState(false);
 
   const getStageAchievement = (stage: StageId): { title: string; description: string } => {
-    const achievements = {
-      1: { 
-        title: "Team Foundation Built! 🎯", 
-        description: "You've mastered the basics of collaboration and communication!" 
-      },
-      2: { 
-        title: "Planning Pro! 📋", 
-        description: "Project planning and task management are now in your toolkit!" 
-      },
-      3: { 
-        title: "Communication Champion! 💬", 
-        description: "You're ready to lead discussions and facilitate great teamwork!" 
-      },
-      4: { 
-        title: "Portfolio Powerhouse! 📁", 
-        description: "Your project showcase skills are looking absolutely stellar!" 
-      },
-      5: { 
-        title: "Advanced Achiever! 🚀", 
-        description: "You're tackling complex challenges like a true professional!" 
-      },
-      6: { 
-        title: "Leadership Legend! 👑", 
-        description: "Your mentoring and guidance skills are inspiring others!" 
-      },
-      7: { 
-        title: "Innovation Expert! 💡", 
-        description: "You're creating solutions that make a real difference!" 
-      },
-      8: { 
-        title: "Journey Master! 🎉", 
-        description: "Congratulations! You've completed the entire learning adventure!" 
-      },
+    return {
+      title: t(`copy:stageAchievement${stage}Title`),
+      description: t(`copy:stageAchievement${stage}Description`)
     };
-    
-    return achievements[stage] || { title: "Stage Complete!", description: "Great progress!" };
   };
 
   useEffect(() => {
@@ -112,8 +80,8 @@ export const StageCompleteModal = ({
       // Show buddy nudge toast after stage completion
       setTimeout(() => {
         toast({
-          title: "🎉 Amazing work!",
-          description: "Questions? Tap Ask Buddy anytime for help on your journey!",
+          title: t('copy:toastAmazingWork'),
+          description: t('copy:toastStageCompleteDescription'),
           duration: 6000,
         });
         
@@ -181,7 +149,7 @@ export const StageCompleteModal = ({
           <Card className="p-4 bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20">
             <h3 className="font-semibold text-foreground mb-3 flex items-center space-x-2">
               <Star className="h-4 w-4 text-primary" />
-              <span>What You Accomplished</span>
+              <span>{t('ui:whatYouAccomplished')}</span>
             </h3>
             
             <div className="space-y-2">
@@ -212,7 +180,7 @@ export const StageCompleteModal = ({
                 <Sparkles className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">XP Earned</p>
+                <p className="text-sm font-medium text-foreground">{t('ui:xpEarned')}</p>
                 <p className="text-lg font-bold text-primary">+{totalXP}</p>
               </div>
             </motion.div>
@@ -228,7 +196,7 @@ export const StageCompleteModal = ({
                   <Trophy className="h-5 w-5 text-yellow-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">New Trophy!</p>
+                  <p className="text-sm font-medium text-foreground">{t('ui:newTrophy')}</p>
                   <p className="text-sm text-yellow-600 font-semibold">{newTrophies[0]}</p>
                 </div>
               </motion.div>
@@ -248,7 +216,7 @@ export const StageCompleteModal = ({
             className="bg-primary hover:bg-primary-700 text-primary-foreground group"
           >
             <span className="flex items-center space-x-2">
-              <span>Continue Your Journey</span>
+              <span>{t('ui:continueYourJourney')}</span>
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </span>
           </Button>

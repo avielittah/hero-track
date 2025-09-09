@@ -8,50 +8,11 @@ export const StageHeader = () => {
   const { currentStage, viewingStage, viewMode } = useJourneyMachine();
 
   const getStageContent = (stage: number) => {
-    const stages = {
-      1: {
-        title: "Welcome to Team Collaboration! 👋",
-        subtitle: "Let's start building your teamwork superpowers",
-        description: "Ready to dive in? We'll explore how great teams communicate, share ideas, and work together like pros!"
-      },
-      2: {
-        title: "Project Planning Mastery 📋",
-        subtitle: "Time to become a planning wizard",
-        description: "You'll learn how to break down big projects into bite-sized pieces and keep everything on track!"
-      },
-      3: {
-        title: "Communication Tools Workshop 💬",
-        subtitle: "Master the art of digital teamwork",
-        description: "Get hands-on with the tools that make remote collaboration feel like you're all in the same room!"
-      },
-      4: {
-        title: "Portfolio Showcase Time 📁",
-        subtitle: "Show off your amazing work",
-        description: "Put together a portfolio that tells your story and highlights all the awesome skills you've developed!"
-      },
-      5: {
-        title: "Advanced Problem Solving 🧩",
-        subtitle: "Level up your thinking skills",
-        description: "Tackle complex challenges with confidence and creativity – you've got this!"
-      },
-      6: {
-        title: "Leadership & Mentoring 👑",
-        subtitle: "Guide others on their journey",
-        description: "Share your knowledge and help others grow – that's what true leaders do!"
-      },
-      7: {
-        title: "Innovation Workshop 💡",
-        subtitle: "Create solutions that matter",
-        description: "Think outside the box and develop ideas that could change the world (seriously!)."
-      },
-      8: {
-        title: "Journey Completion Celebration! 🎉",
-        subtitle: "You've made it to the finish line",
-        description: "Time to celebrate everything you've accomplished and plan your next adventure!"
-      }
+    return {
+      title: t(`copy:stageHeader${stage}Title`),
+      subtitle: t(`copy:stageHeader${stage}Subtitle`),
+      description: t(`copy:stageHeader${stage}Description`)
     };
-    
-    return stages[stage as keyof typeof stages] || stages[1];
   };
 
   const stageContent = getStageContent(viewingStage);
@@ -74,16 +35,16 @@ export const StageHeader = () => {
       >
         <BookOpen className="h-5 w-5 text-primary" />
         <span className="text-primary font-semibold">
-          Stage {viewingStage} of 8
+          {t('ui:stage', { number: viewingStage })} {t('ui:of')} 8
         </span>
         {isPreviewMode && (
           <span className="text-xs bg-muted px-2 py-1 rounded text-muted-foreground">
-            Completed ✓
+            {t('ui:completed')} ✓
           </span>
         )}
         {isPeekMode && (
           <span className="text-xs bg-secondary/20 px-2 py-1 rounded text-secondary">
-            Preview
+            {t('ui:preview')}
           </span>
         )}
       </motion.div>

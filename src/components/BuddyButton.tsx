@@ -74,14 +74,14 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                 <div className="flex items-start space-x-2">
                   <Sparkles className="h-4 w-4 text-yellow-300 mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Questions? Tap Ask Buddy anytime!</p>
-                    <p className="text-xs opacity-90 mt-1">I'm here to help with your learning journey 😊</p>
+                    <p className="text-sm font-medium">{t('ui:questionsAskBuddy')}</p>
+                    <p className="text-xs opacity-90 mt-1">{t('ui:buddyDescription')}</p>
                   </div>
                   {onNudgeClose && (
                     <button 
                       onClick={onNudgeClose}
                       className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                      aria-label="Close nudge"
+                      aria-label={t('ui:closeNudge')}
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -115,7 +115,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                   max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto
                 `}
               >
-                Need help? Just ask!
+                {t('ui:needHelp')}
                 <div 
                   className={`
                     absolute top-full w-0 h-0 border-l-4 border-r-4 border-t-4 
@@ -140,7 +140,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
               rounded-full transition-all duration-300
               group focus:ring-4 focus:ring-blue-300
             "
-            aria-label="Ask Buddy for help"
+            aria-label={t('ui:askBuddy')}
           >
             <div className="flex items-center space-x-2">
               <motion.div
@@ -151,12 +151,12 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
               </motion.div>
               
               <span className="font-medium hidden sm:inline">
-                Ask Buddy
+                {t('ui:askBuddy')}
               </span>
               
               {/* Mobile label */}
               <span className="font-medium sm:hidden text-xs">
-                Help
+                {t('ui:help')}
               </span>
             </div>
           </Button>

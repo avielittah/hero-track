@@ -82,8 +82,8 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
             <div className="flex flex-col">
               <span className="font-medium text-foreground">{username}</span>
               <div className="flex items-center space-x-2 text-sm">
-                <span className="text-muted-foreground">{t('level')}: </span>
-                <span className="font-semibold text-primary">{t(level)}</span>
+                <span className="text-muted-foreground">{t('ui:level')}: </span>
+                <span className="font-semibold text-primary">{t(`ui:${level}`)}</span>
                 {trophies.length > 0 && (
                   <div className="flex items-center space-x-1">
                     <Trophy className="h-3 w-3 text-yellow-500" />
@@ -105,7 +105,7 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
           >
             <div className="text-center mb-2">
               <span className="text-sm font-medium text-muted-foreground">
-                {progressInLevel} / {levelRange} {t('xp')} to next level
+                {progressInLevel} / {levelRange} {t('ui:xp')} {t('ui:toNextLevel')}
               </span>
             </div>
             <div className="relative h-3 bg-xp-bg rounded-full overflow-hidden">
@@ -146,7 +146,7 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
                 className="flex items-center space-x-2"
               >
                 <MoreVertical className="h-4 w-4" />
-                <span className="hidden sm:inline">Support</span>
+                <span className="hidden sm:inline">{t('ui:support')}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-background border shadow-lg">
@@ -155,12 +155,12 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
                 className="flex items-center space-x-2 cursor-pointer"
               >
                 <Bug className="h-4 w-4" />
-                <span>Report Issue</span>
+                <span>{t('ui:reportIssue')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex items-center space-x-2 cursor-pointer">
                 <HelpCircle className="h-4 w-4" />
-                <span>Help Center</span>
+                <span>{t('ui:helpCenter')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -174,12 +174,12 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
             {isLoggedIn ? (
               <>
                 <LogOut className="h-4 w-4" />
-                <span>{t('logout')}</span>
+                <span>{t('ui:logout')}</span>
               </>
             ) : (
               <>
                 <LogIn className="h-4 w-4" />
-                <span>{t('login')}</span>
+                <span>{t('ui:login')}</span>
               </>
             )}
           </Button>

@@ -68,19 +68,19 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
         const processedImage = await supportAdapter.processImage(file);
         setImages(prev => [...prev, { ...processedImage, file }]);
       } catch (error) {
-        toast({
-          variant: "destructive",
-          title: "Image upload failed",
-          description: error instanceof Error ? error.message : "Failed to process image",
-        });
+      toast({
+        variant: "destructive",
+        title: t('copy:errorImageUploadFailed'),
+        description: error instanceof Error ? error.message : t('copy:errorImageProcessFailed'),
+      });
       }
     }
 
     if (fileArray.length > remainingSlots) {
       toast({
         variant: "destructive",
-        title: "Too many images",
-        description: `Only ${remainingSlots} more images can be added (max ${MAX_IMAGES})`,
+        title: t('copy:validationTooManyImages'),
+        description: t('copy:validationMaxImagesMessage', { remaining: remainingSlots, max: MAX_IMAGES }),
       });
     }
   };
@@ -119,15 +119,15 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
     const errors: string[] = [];
 
     if (!description.trim()) {
-      errors.push('Description is required');
+      errors.push(t('copy:validationDescriptionRequired'));
     }
 
     if (description.trim().length < 10) {
-      errors.push('Description must be at least 10 characters long');
+      errors.push(t('copy:validationMinimumLength'));
     }
 
     if (description.trim().length > 500) {
-      errors.push('Description must be less than 500 characters');
+      errors.push(t('copy:validationMaximumLength'));
     }
 
     return {
@@ -142,7 +142,7 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
     if (!validation.isValid) {
       toast({
         variant: "destructive",
-        title: "Validation failed",
+        title: t('copy:validationFailed'),
         description: validation.errors.join(', '),
       });
       return;
@@ -167,8 +167,8 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
       });
 
       toast({
-        title: "Issue reported successfully! 🎯",
-        description: `Your report has been submitted. Reference ID: ${issue.id.slice(0, 8)}`,
+        title: t('copy:toastIssueReported'),
+        description: t('copy:toastIssueReportedDescription', { id: issue.id.slice(0, 8) }),
         duration: 6000,
       });
 
@@ -180,8 +180,8 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Failed to submit report",
-        description: "Please try again or contact support directly.",
+        title: t('copy:errorSubmitReportFailed'),
+        description: t('copy:errorTryAgainMessage'),
       });
     } finally {
       setIsSubmitting(false);
@@ -202,7 +202,7 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <AlertCircle className="h-5 w-5 text-primary" />
-            <span>Report an Issue</span>
+            <span>{t('ui:reportAnIssue')}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -210,19 +210,19 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
           {/* Description Field */}
           <div className="space-y-2">
             <Label htmlFor="description" className="text-sm font-medium">
-              Describe the issue <span className="text-destructive">*</span>
+              {t('ui:describeIssue')} <span className="text-destructive">{t('ui:required')}</span>
             </Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Please describe what went wrong, what you expected to happen, and any steps to reproduce the issue..."
+              placeholder={t('copy:supportDescriptionPlaceholder')}
               className="min-h-[120px] resize-none"
               maxLength={500}
               disabled={isSubmitting}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Minimum 10 characters</span>
+              <span>{t('ui:minimumCharacters')}</span>
               <span className={description.length >= 450 ? 'text-yellow-600' : ''}>
                 {description.length}/500
               </span>
@@ -232,7 +232,7 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
           {/* Image Upload Section */}
           <div className="space-y-3">
             <Label className="text-sm font-medium">
-              Screenshots (optional, max {MAX_IMAGES})
+              {t('ui:screenshots')} ({t('ui:optional')}, {t('ui:max')} {MAX_IMAGES})
             </Label>
             
             {/* Upload Area */}
@@ -253,10 +253,10 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
                 <Upload className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
                 <div className="space-y-2">
                   <p className="text-sm font-medium">
-                    Drop images here or click to browse
+                    {t('ui:dropImages')}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    JPEG, PNG, GIF, WebP • Max 10MB each • {MAX_IMAGES - images.length} slots remaining
+                    {t('ui:imageFormats')} • {MAX_IMAGES - images.length} {t('ui:slotsRemaining')}
                   </p>
                 </div>
               </motion.div>
@@ -329,7 +329,7 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
           <div className="flex items-center justify-between pt-4 border-t">
             <div className="text-xs text-muted-foreground">
               {images.length > 0 && (
-                <span>📎 {images.length} image{images.length > 1 ? 's' : ''} attached</span>
+                <span>📎 {images.length} {t('ui:attached')}</span>
               )}
             </div>
             
@@ -339,7 +339,7 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
                 onClick={handleClose}
                 disabled={isSubmitting}
               >
-                Cancel
+                {t('ui:cancel')}
               </Button>
               <Button
                 onClick={handleSubmit}
@@ -350,12 +350,12 @@ export const ReportIssueModal = ({ isOpen, onClose }: ReportIssueModalProps) => 
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span>Submitting...</span>
+                      <span>{t('ui:submitting')}</span>
                     </>
                   ) : (
                     <>
                       <CheckCircle className="h-4 w-4" />
-                      <span>Submit Report</span>
+                      <span>{t('ui:submitReport')}</span>
                     </>
                   )}
                 </span>
