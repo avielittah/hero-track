@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -22,10 +25,23 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          700: "hsl(var(--primary-700))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        // Gaming UI Colors
+        xp: {
+          bg: "hsl(var(--xp-bg))",
+          fill: "hsl(var(--xp-fill))",
+          glow: "hsl(var(--xp-glow))",
+        },
+        journey: {
+          bg: "hsl(var(--journey-bg))",
+          complete: "hsl(var(--journey-complete))",
+          current: "hsl(var(--journey-current))",
+          upcoming: "hsl(var(--journey-upcoming))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
