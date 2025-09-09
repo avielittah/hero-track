@@ -1,15 +1,9 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { MessageCircle, ExternalLink, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { WelcomeContent } from './content.welcome.schema';
+import { welcomeContent } from './welcome.content';
 
-interface BuddyHighlightProps {
-  content: WelcomeContent;
-}
-
-export const BuddyHighlight = ({ content }: BuddyHighlightProps) => {
-  const { t } = useTranslation();
+export const BuddyHighlight = () => {
 
   const handleMeetBuddy = () => {
     // Open external Buddy Agent URL - this would come from env or config
@@ -57,7 +51,7 @@ export const BuddyHighlight = ({ content }: BuddyHighlightProps) => {
             {/* Content */}
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-3 flex items-center">
-                {t('stage1:buddy.title')}
+                {welcomeContent.buddy.title}
                 <motion.div
                   className="ml-2 text-secondary"
                   animate={{ rotate: [0, 10, -10, 0] }}
@@ -72,7 +66,7 @@ export const BuddyHighlight = ({ content }: BuddyHighlightProps) => {
               </h3>
 
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                {content.buddyNote}
+                {welcomeContent.buddy.note}
               </p>
 
               {/* Action Button */}
@@ -86,12 +80,12 @@ export const BuddyHighlight = ({ content }: BuddyHighlightProps) => {
                   "
                 >
                   <MessageCircle className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
-                  {t('stage1:buddy.cta')}
+                  {welcomeContent.buddy.cta}
                   <ExternalLink className="h-3 w-3 ml-2 opacity-60" />
                 </Button>
 
                 <p className="text-sm text-muted-foreground italic">
-                  {t('stage1:buddy.nudge')}
+                  You can ask Buddy anytime during your journey.
                 </p>
               </div>
             </div>

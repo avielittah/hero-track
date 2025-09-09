@@ -1,19 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { ChevronRight, Sparkles, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useLearningStore } from '@/lib/store';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
-import { WelcomeContent } from './content.welcome.schema';
+import { welcomeContent } from './welcome.content';
 
-interface StartCTAProps {
-  content: WelcomeContent;
-}
-
-export const StartCTA = ({ content }: StartCTAProps) => {
-  const { t } = useTranslation();
+export const StartCTA = () => {
   const { toast } = useToast();
   const { addXP, awardTrophy } = useLearningStore();
   const { completeCurrentStage } = useJourneyMachine();
@@ -26,16 +20,16 @@ export const StartCTA = ({ content }: StartCTAProps) => {
     
     try {
       // Award XP for starting the journey
-      const xpResult = await addXP(content.xpAwardOnContinue);
+      const xpResult = await addXP(welcomeContent.xpOnStart);
       
       // Award badge if configured
-      if (content.badgeOnContinue) {
+      if (welcomeContent.badgeOnStart) {
         awardTrophy(1); // Stage 1 trophy
       }
       
       // Show success toast
       toast({
-        title: t('stage1:cta.toast', { xp: content.xpAwardOnContinue }),
+        title: welcomeContent.cta.xpToast,
         description: xpResult.leveledUp ? 
           `🎉 Level up! You're now a ${xpResult.newLevel}!` : 
           "Your learning journey has begun!",
@@ -104,7 +98,7 @@ export const StartCTA = ({ content }: StartCTAProps) => {
               ) : (
                 <>
                   <Trophy className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                  <span>{content.ctaLabel}</span>
+                  <span>{welcomeContent.cta.label}</span>
                   <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
@@ -132,12 +126,12 @@ export const StartCTA = ({ content }: StartCTAProps) => {
           transition={{ delay: 1.6 }}
         >
           <Sparkles className="h-4 w-4 text-secondary" />
-          <span>+{content.xpAwardOnContinue} XP for getting started</span>
-          {content.badgeOnContinue && (
+          <span>+{welcomeContent.xpOnStart} XP for getting started</span>
+          {welcomeContent.badgeOnStart && (
             <>
               <span>•</span>
               <Trophy className="h-4 w-4 text-primary" />
-              <span>"{content.badgeOnContinue}" badge</span>
+              <span>"{welcomeContent.badgeOnStart}" badge</span>
             </>
           )}
         </motion.div>

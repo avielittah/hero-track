@@ -1,45 +1,38 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { HelpCircle, Cog, Clock, Target } from 'lucide-react';
-import { WelcomeContent } from './content.welcome.schema';
+import { welcomeContent } from './welcome.content';
 
-interface WelcomeInfoCardsProps {
-  content: WelcomeContent;
-}
-
-export const WelcomeInfoCards = ({ content }: WelcomeInfoCardsProps) => {
-  const { t } = useTranslation();
-
+export const WelcomeInfoCards = () => {
   const cards = [
     {
       key: 'what',
       icon: HelpCircle,
-      title: t('stage1:cards.what.title'),
-      content: content.whatIsThis,
+      title: welcomeContent.cards.whatTitle,
+      content: welcomeContent.cards.whatBody,
       gradient: 'from-primary/10 to-primary/5',
       iconColor: 'text-primary',
     },
     {
       key: 'how',
       icon: Cog,
-      title: t('stage1:cards.how.title'),
-      content: content.howItWorks,
+      title: welcomeContent.cards.howTitle,
+      content: welcomeContent.cards.howBody,
       gradient: 'from-secondary/10 to-secondary/5',
       iconColor: 'text-secondary',
     },
     {
       key: 'time',
       icon: Clock,
-      title: t('stage1:cards.time.title'),
-      content: content.howLong,
+      title: welcomeContent.cards.timeTitle,
+      content: welcomeContent.cards.timeBody,
       gradient: 'from-journey-current/10 to-journey-current/5',
       iconColor: 'text-journey-current',
     },
     {
       key: 'why',
       icon: Target,
-      title: t('stage1:cards.why.title'),
-      content: content.whyWeDo,
+      title: welcomeContent.cards.whyTitle,
+      content: welcomeContent.cards.whyBody,
       gradient: 'from-journey-complete/10 to-journey-complete/5',
       iconColor: 'text-journey-complete',
     },

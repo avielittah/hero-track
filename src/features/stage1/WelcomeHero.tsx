@@ -1,13 +1,7 @@
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { WelcomeContent } from './content.welcome.schema';
+import { welcomeContent } from './welcome.content';
 
-interface WelcomeHeroProps {
-  content: WelcomeContent;
-}
-
-export const WelcomeHero = ({ content }: WelcomeHeroProps) => {
-  const { t } = useTranslation();
+export const WelcomeHero = () => {
 
   return (
     <motion.div
@@ -19,7 +13,7 @@ export const WelcomeHero = ({ content }: WelcomeHeroProps) => {
       {/* Main Title */}
       <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
         <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          {t('stage1:hero.title', { role: content.roleTitle })}
+          {welcomeContent.hero.title}
         </span>
       </h1>
 
@@ -30,31 +24,31 @@ export const WelcomeHero = ({ content }: WelcomeHeroProps) => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        {t('stage1:hero.subtitle')}
+        {welcomeContent.hero.subtitle}
       </motion.p>
 
       {/* Hero Media */}
-      {content.heroMedia && (
+      {welcomeContent.heroMedia && (
         <motion.div
           className="max-w-2xl mx-auto mb-8"
           initial={{ y: 30, opacity: 0, scale: 0.95 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.4 }}
         >
-          {content.heroMedia.type === 'image' ? (
+          {welcomeContent.heroMedia.type === 'image' ? (
             <img
-              src={content.heroMedia.src}
-              alt={content.heroMedia.alt || t('stage1:hero.title', { role: content.roleTitle })}
+              src={welcomeContent.heroMedia.src}
+              alt={welcomeContent.heroMedia.alt}
               className="w-full h-64 md:h-80 object-cover rounded-2xl shadow-lg"
             />
           ) : (
             <div className="aspect-video rounded-2xl overflow-hidden shadow-lg">
               <iframe
-                src={content.heroMedia.src}
+                src={welcomeContent.heroMedia.src}
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                title={content.heroMedia.alt || "Welcome Video"}
+                title={welcomeContent.heroMedia.alt || "Welcome Video"}
               />
             </div>
           )}

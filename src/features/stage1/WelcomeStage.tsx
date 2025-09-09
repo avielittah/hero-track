@@ -6,40 +6,12 @@ import { WelcomeHero } from './WelcomeHero';
 import { WelcomeInfoCards } from './WelcomeInfoCards';
 import { BuddyHighlight } from './BuddyHighlight';
 import { StartCTA } from './StartCTA';
-import { WelcomeContentSchema } from './content.welcome.schema';
-import { getWelcomeContentByRole, DEFAULT_ROLE_KEY } from '@/config/journey/roles.config';
+import { welcomeContent } from './welcome.content';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 
-interface WelcomeStageProps {
-  roleKey?: string;
-}
-
-export const WelcomeStage = ({ roleKey = DEFAULT_ROLE_KEY }: WelcomeStageProps) => {
+export const WelcomeStage = () => {
   const { i18n } = useTranslation();
   const { currentStage, viewingStage, viewMode } = useJourneyMachine();
-  
-  // Get content for the specified role
-  const rawContent = getWelcomeContentByRole(roleKey);
-  
-  // Validate content with Zod schema
-  let content;
-  try {
-    content = WelcomeContentSchema.parse(rawContent);
-  } catch (error) {
-    console.error('Invalid welcome content:', error);
-    // Fallback to safe default content without heroMedia
-    content = {
-      roleTitle: "Communication Systems Engineer",
-      whatIsThis: "This onboarding will introduce you to our culture, tools, and hands-on practices so you can contribute with confidence.",
-      howItWorks: "The journey has 8 stages with short micro-units, friendly tasks, and quick feedback. You'll see one screen at a time.",
-      howLong: "About ~3 weeks overall, 1–2 hours per day at your own pace. You can pause and resume anytime.",
-      whyWeDo: "We want to reduce stress, cut shadowing time, and help you reach productivity faster in a supportive way.",
-      buddyNote: "You're not alone—Buddy, our smart mentor, will guide you step by step. Ask questions anytime, Buddy will help.",
-      ctaLabel: "Let's Start Orientation →",
-      xpAwardOnContinue: 20,
-      badgeOnContinue: "First Steps"
-    };
-  }
 
   // Set page direction for RTL support
   useEffect(() => {
@@ -73,16 +45,16 @@ export const WelcomeStage = ({ roleKey = DEFAULT_ROLE_KEY }: WelcomeStageProps) 
           className="space-y-12"
         >
           {/* Hero Section */}
-          <WelcomeHero content={content} />
+          <WelcomeHero />
 
           {/* Info Cards */}
-          <WelcomeInfoCards content={content} />
+          <WelcomeInfoCards />
 
           {/* Buddy Highlight */}
-          <BuddyHighlight content={content} />
+          <BuddyHighlight />
 
           {/* Start CTA */}
-          <StartCTA content={content} />
+          <StartCTA />
         </motion.div>
 
         {/* Bottom Spacing for Mobile */}
