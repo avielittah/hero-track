@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { ChevronRight, Eye, Sparkles, AlertCircle, Lock } from 'lucide-react';
+import { ChevronRight, Eye, AlertCircle, Lock } from 'lucide-react';
 import { useJourneyMachine } from './journeyMachine';
 import { StageBanner } from './StageBanner';
 import { StageHeader } from './StageHeader';
@@ -40,18 +39,6 @@ export const StageContainer = () => {
     if (canPeekNext()) {
       previewStage((currentStage + 1) as any);
     }
-  };
-
-  const getStageTitle = () => {
-    if (isPreviewMode) return `${t('stage', { number: viewingStage })} - ${t('completed')} ✓`;
-    if (isPeekMode) return `${t('stage', { number: viewingStage })} - Preview`;
-    return t('stageTitle');
-  };
-
-  const getStageDescription = () => {
-    if (isPreviewMode) return `You've already completed this stage. This is a read-only view of your previous work.`;
-    if (isPeekMode) return `Here's a preview of what's coming next. Complete your current stage to unlock this content.`;
-    return t('stageDescription');
   };
 
   // Sample unit data for different stages
@@ -126,7 +113,7 @@ export const StageContainer = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24"> {/* Add padding bottom for banner */}
+    <div className="min-h-screen bg-background pb-24">
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-8">
         <StageHeader />
