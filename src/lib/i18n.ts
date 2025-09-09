@@ -93,12 +93,25 @@ const resources = {
       
       footer: {
         brand: 'TaleAI',
-        rights: '© {{year}} TaleAI. All rights reserved.',
+        legalLine: '© {{year}} TaleAI. All rights reserved. TaleAI is a trademark of TALEAI LTD (Reg. No: {{reg}}), {{address}}.',
         terms: 'Terms of Service',
-        privacy: 'Privacy Policy', 
-        cookies: 'Cookies',
-        cookieNotice: 'We use cookies to improve your experience.',
-        gotIt: 'Got it'
+        privacy: 'Privacy Policy',
+        dpa: 'Data Processing Addendum (DPA)',
+        cookies: 'Cookie Settings',
+        cookieNote: 'We use cookies to improve your experience. Manage preferences in "Cookie Settings".',
+        a11y: 'Accessibility',
+        contact: 'Contact: {{email}}',
+        version: 'App v{{v}} · Last updated {{date}}',
+        cookieModal: {
+          title: 'Cookie Settings',
+          description: 'Manage your cookie preferences. Essential cookies are required for the site to function.',
+          essential: 'Essential',
+          analytics: 'Analytics',
+          functional: 'Functional',
+          save: 'Save Preferences',
+          cancel: 'Cancel',
+          saved: 'Cookie preferences saved'
+        }
       },
       // Admin
       admin: {
@@ -297,12 +310,25 @@ const resources = {
       
       footer: {
         brand: 'TaleAI',
-        rights: '© {{year}} TaleAI. כל הזכויות שמורות.',
+        legalLine: '© {{year}} TaleAI. כל הזכויות שמורות. TaleAI היא סימן מסחר של TALEAI LTD (ח"פ: {{reg}}), {{address}}.',
         terms: 'תנאי שימוש',
         privacy: 'מדיניות פרטיות',
-        cookies: 'עוגיות',
-        cookieNotice: 'אנחנו משתמשים בעוגיות לשיפור החוויה.',
-        gotIt: 'הבנתי'
+        dpa: 'נספח עיבוד נתונים (DPA)',
+        cookies: 'הגדרות עוגיות',
+        cookieNote: 'אנחנו משתמשים בעוגיות לשיפור החוויה. ניתן לנהל העדפות ב"הגדרות עוגיות".',
+        a11y: 'נגישות',
+        contact: 'צור קשר: {{email}}',
+        version: 'גרסה v{{v}} · עודכן ב־{{date}}',
+        cookieModal: {
+          title: 'הגדרות עוגיות',
+          description: 'נהל את העדפות העוגיות שלך. עוגיות חיוניות נדרשות לתפקוד האתר.',
+          essential: 'חיוניות',
+          analytics: 'אנליטיקה',
+          functional: 'פונקציונליות',
+          save: 'שמור העדפות',
+          cancel: 'ביטול',
+          saved: 'העדפות עוגיות נשמרו'
+        }
       },
       // Admin
       admin: {
