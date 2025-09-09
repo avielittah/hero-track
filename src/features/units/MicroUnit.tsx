@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { LevelUpModal } from '@/components/LevelUpModal';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useJourneyMachine } from '../journey/journeyMachine';
+import { useLearningStore } from '@/lib/store';
 
 import { MultipleChoice } from './Inputs/MultipleChoice';
 import { OpenQuestion } from './Inputs/OpenQuestion';
@@ -36,7 +38,8 @@ interface MicroUnitProps {
 export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { isStageEditable, viewingStage } = useJourneyMachine();
+  const { isStageEditable, viewingStage, currentStage } = useJourneyMachine();
+  const { addXP, awardTrophy, level: currentLevel, currentXP } = useLearningStore();
   
   const [unitData, setUnitData] = useState<UnitData>(() => {
     const stored = persistAdapter.getUnit(unitId);
@@ -53,12 +56,18 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
         options: ['Key concept 1', 'Key concept 2', 'Key concept 3'],
         allowMultiple: false,
       },
+      xpReward: initialData.xpReward || 10, // Default 10 XP
       status: 'draft',
     };
   });
 
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [showMissingItems, setShowMissingItems] = useState(false);
+  const [showLevelUpModal, setShowLevelUpModal] = useState(false);
+  const [levelUpData, setLevelUpData] = useState<{
+    newLevel: string;
+    previousLevel: string;
+  } | null>(null);
   
   const isSubmitted = unitData.status === 'submitted';
   const isEditable = isStageEditable(viewingStage) && !isSubmitted;
@@ -138,7 +147,7 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
     return missing;
   };
 
-  const handleSubmitUnit = () => {
+  const handleSubmitUnit = async () => {
     const missingItems = getMissingRequirements();
     
     if (missingItems.length > 0) {
@@ -152,13 +161,33 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
     }
 
     try {
+      // Submit the unit first
       persistAdapter.submitUnit(unitData);
       setUnitData(prev => ({ ...prev, status: 'submitted', submittedAt: new Date().toISOString() }));
       setShowMissingItems(false);
       
+      // Award XP and check for level up
+      const xpToAward = unitData.xpReward || 10;
+      const result = await addXP(xpToAward);
+      
+      // Award trophy if completing a major stage
+      const majorStages = [1, 3, 4, 6, 8];
+      if (majorStages.includes(currentStage)) {
+        awardTrophy(currentStage);
+      }
+      
+      // Show level up modal if leveled up
+      if (result.leveledUp && result.newLevel && result.previousLevel) {
+        setLevelUpData({
+          newLevel: result.newLevel,
+          previousLevel: result.previousLevel,
+        });
+        setShowLevelUpModal(true);
+      }
+      
       toast({
         title: "Unit submitted!",
-        description: "Your responses have been saved and locked",
+        description: `Earned ${xpToAward} XP! ${result.leveledUp ? '🎉 Level up!' : ''}`,
       });
     } catch (error) {
       toast({
@@ -298,22 +327,22 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
                 )}
               </div>
               
-              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                <div className="flex items-center space-x-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{unitData.estimatedTime} min</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Target className="h-4 w-4" />
-                  <span>Learning Unit</span>
-                </div>
-                {unitData.content.type === 'video' && (
+                <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
-                    <Play className="h-4 w-4" />
-                    <span>Video Content</span>
+                    <Clock className="h-4 w-4" />
+                    <span>{unitData.estimatedTime} min</span>
                   </div>
-                )}
-              </div>
+                  <div className="flex items-center space-x-1">
+                    <Target className="h-4 w-4" />
+                    <span>+{unitData.xpReward || 10} XP</span>
+                  </div>
+                  {unitData.content.type === 'video' && (
+                    <div className="flex items-center space-x-1">
+                      <Play className="h-4 w-4" />
+                      <span>Video Content</span>
+                    </div>
+                  )}
+                </div>
             </div>
           </div>
 
@@ -439,6 +468,17 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Level Up Modal */}
+      {showLevelUpModal && levelUpData && (
+        <LevelUpModal
+          isOpen={showLevelUpModal}
+          onClose={() => setShowLevelUpModal(false)}
+          newLevel={levelUpData.newLevel as any}
+          previousLevel={levelUpData.previousLevel as any}
+          currentXP={currentXP}
+        />
       )}
     </motion.div>
   );

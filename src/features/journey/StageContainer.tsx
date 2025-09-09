@@ -63,7 +63,8 @@ export const StageContainer = () => {
             "Regular check-ins and updates"
           ],
           allowMultiple: true,
-        }
+        },
+        xpReward: 15, // Higher reward for multiple choice
       },
       {
         title: "Project Planning Fundamentals", 
@@ -76,7 +77,8 @@ export const StageContainer = () => {
         task: {
           type: 'open-question' as const,
           question: "Describe your approach to breaking down a large project into manageable tasks.",
-        }
+        },
+        xpReward: 12, // Moderate reward for open questions
       },
       {
         title: "Communication Tools Workshop",
@@ -90,7 +92,8 @@ export const StageContainer = () => {
           type: 'checkbox' as const,
           question: "I understand how to use the communication tools demonstrated",
           required: true,
-        }
+        },
+        xpReward: 8, // Lower reward for simple checkboxes
       },
       {
         title: "Portfolio Submission",
@@ -103,7 +106,8 @@ export const StageContainer = () => {
         task: {
           type: 'file-upload' as const,
           question: "Upload your complete project portfolio (PDF, ZIP, or individual files)",
-        }
+        },
+        xpReward: 20, // Highest reward for file uploads
       }
     ];
 

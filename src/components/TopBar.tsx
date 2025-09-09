@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Globe, LogIn, LogOut, User } from 'lucide-react';
 import { useLearningStore } from '@/lib/store';
-import { XPThresholds } from '@/types/journey';
+import { Trophy } from 'lucide-react';
 
 interface TopBarProps {
   currentLanguage: string;
@@ -13,7 +13,16 @@ interface TopBarProps {
 
 export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
   const { t } = useTranslation();
-  const { isLoggedIn, username, level, currentXP, login, logout } = useLearningStore();
+  const { 
+    isLoggedIn, 
+    username, 
+    level, 
+    currentXP, 
+    login, 
+    logout, 
+    getXPProgressInCurrentLevel,
+    trophies 
+  } = useLearningStore();
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -23,13 +32,9 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
     }
   };
 
-  // Calculate XP progress for current level
-  const currentLevelIndex = ['New Explorer', 'Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'].indexOf(level);
-  const currentThreshold = XPThresholds[currentLevelIndex] || 0;
-  const nextThreshold = XPThresholds[currentLevelIndex + 1] || XPThresholds[XPThresholds.length - 1];
-  const progressInLevel = currentXP - currentThreshold;
-  const levelRange = nextThreshold - currentThreshold;
-  const progressPercentage = Math.min((progressInLevel / levelRange) * 100, 100);
+  // Calculate XP progress for current level using the store method
+  const xpProgress = getXPProgressInCurrentLevel();
+  const { current: progressInLevel, max: levelRange, percentage: progressPercentage } = xpProgress;
 
   return (
     <motion.div 
@@ -59,6 +64,12 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
               <div className="flex items-center space-x-2 text-sm">
                 <span className="text-muted-foreground">{t('level')}: </span>
                 <span className="font-semibold text-primary">{t(level)}</span>
+                {trophies.length > 0 && (
+                  <div className="flex items-center space-x-1">
+                    <Trophy className="h-3 w-3 text-yellow-500" />
+                    <span className="text-xs text-yellow-600 font-medium">{trophies.length}</span>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -74,7 +85,7 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
           >
             <div className="text-center mb-2">
               <span className="text-sm font-medium text-muted-foreground">
-                {currentXP} / {nextThreshold} {t('xp')}
+                {progressInLevel} / {levelRange} {t('xp')} to next level
               </span>
             </div>
             <div className="relative h-3 bg-xp-bg rounded-full overflow-hidden">
@@ -85,7 +96,11 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
                 animate={{ width: `${progressPercentage}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" 
+                animate={{ x: [-100, 300] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              />
             </div>
           </motion.div>
         )}

@@ -15,6 +15,7 @@ export interface UnitData {
     allowMultiple?: boolean; // for multiple choice
     required?: boolean;
   };
+  xpReward?: number; // XP reward for completing this unit (5-20)
   response?: {
     answer: any;
     feedback: {
