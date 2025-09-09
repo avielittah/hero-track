@@ -1,6 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import enStage1 from '../i18n/resources/en/stage1.json';
+import heStage1 from '../i18n/resources/he/stage1.json';
 
 const resources = {
   en: {
@@ -218,7 +220,8 @@ const resources = {
       errorImageProcessFailed: 'Failed to process image',
       errorSubmitReportFailed: 'Failed to submit report',
       errorTryAgainMessage: 'Please try again or contact support directly.',
-    }
+    },
+    stage1: enStage1,
   },
   he: {
     ui: {
@@ -435,7 +438,8 @@ const resources = {
       errorImageProcessFailed: 'עיבוד תמונה נכשל',
       errorSubmitReportFailed: 'שליחת דוח נכשלה',
       errorTryAgainMessage: 'אנא נסו שוב או צרו קשר עם התמיכה ישירות.',
-    }
+    },
+    stage1: heStage1,
   }
 };
 

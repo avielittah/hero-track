@@ -1,0 +1,34 @@
+{
+  "hero": {
+    "title": "Welcome to TaleAI — Your onboarding as {{role}}",
+    "subtitle": "We'll guide you step by step so you feel confident, connected, and ready."
+  },
+  "cards": {
+    "what": { 
+      "title": "What is this program?", 
+      "body": "{{text}}" 
+    },
+    "how": { 
+      "title": "How does it work?", 
+      "body": "{{text}}" 
+    },
+    "time": { 
+      "title": "How long will it take?", 
+      "body": "{{text}}" 
+    },
+    "why": { 
+      "title": "Why do we do it?", 
+      "body": "{{text}}" 
+    }
+  },
+  "buddy": {
+    "title": "Meet Buddy",
+    "note": "{{text}}",
+    "cta": "Meet Buddy",
+    "nudge": "You can ask Buddy anytime during your journey."
+  },
+  "cta": {
+    "start": "Let's Start Orientation →",
+    "toast": "Great start! +{{xp}} XP"
+  }
+}

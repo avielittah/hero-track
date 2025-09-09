@@ -9,6 +9,7 @@ import { StageHeader } from './StageHeader';
 import { UnitsList } from '../units/UnitsList';
 import { StageCompleteModal } from '@/components/StageCompleteModal';
 import { FinalWrapUpScreen } from '@/components/FinalWrapUpScreen';
+import { WelcomeStage } from '@/features/stage1/WelcomeStage';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -271,6 +272,11 @@ export const StageContainer = () => {
     return (
       <FinalWrapUpScreen onClose={() => setShowFinalWrapUp(false)} />
     );
+  }
+
+  // Show welcome stage for stage 1 current view
+  if (viewingStage === 1 && viewMode === 'current') {
+    return <WelcomeStage />;
   }
 
   return (
