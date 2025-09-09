@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import {
   Dialog,
@@ -61,6 +62,7 @@ export const StageCompleteModal = ({
   newTrophies = [],
 }: StageCompleteModalProps) => {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
 
   const getStageAchievement = (stage: StageId): { title: string; description: string } => {
@@ -106,9 +108,22 @@ export const StageCompleteModal = ({
     if (isOpen) {
       setShowConfetti(true);
       const timer = setTimeout(() => setShowConfetti(false), 3000);
+      
+      // Show buddy nudge toast after stage completion
+      setTimeout(() => {
+        toast({
+          title: "🎉 Amazing work!",
+          description: "Questions? Tap Ask Buddy anytime for help on your journey!",
+          duration: 6000,
+        });
+        
+        // Trigger custom event for buddy nudge
+        window.dispatchEvent(new CustomEvent('stageCompleted'));
+      }, 2000);
+      
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, toast]);
 
   const achievement = getStageAchievement(stageNumber);
 
