@@ -9,7 +9,7 @@ export const WelcomeContentSchema = z.object({
   buddyNote: z.string().min(1, 'Buddy note is required'),
   heroMedia: z.object({
     type: z.enum(['image', 'video']),
-    src: z.string().url('Media source must be a valid URL'),
+    src: z.string().min(1, 'Media source is required'),
     alt: z.string().optional(),
   }).optional(),
   ctaLabel: z.string().min(1, 'CTA label is required'),

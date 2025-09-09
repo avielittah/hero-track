@@ -14,7 +14,7 @@ export const defaultWelcomeContent: WelcomeContent = {
     "You're not alone—Buddy, our smart mentor, will guide you step by step. Ask questions anytime, Buddy will help.",
   heroMedia: { 
     type: "image", 
-    src: "/placeholder.svg", 
+    src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&h=400", 
     alt: "Welcome to TaleAI Communication Systems Engineer Journey" 
   },
   ctaLabel: "Let's Start Orientation →",

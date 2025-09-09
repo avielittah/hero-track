@@ -27,8 +27,18 @@ export const WelcomeStage = ({ roleKey = DEFAULT_ROLE_KEY }: WelcomeStageProps) 
     content = WelcomeContentSchema.parse(rawContent);
   } catch (error) {
     console.error('Invalid welcome content:', error);
-    // Fallback to default content if validation fails
-    content = WelcomeContentSchema.parse(getWelcomeContentByRole(DEFAULT_ROLE_KEY));
+    // Fallback to safe default content without heroMedia
+    content = {
+      roleTitle: "Communication Systems Engineer",
+      whatIsThis: "This onboarding will introduce you to our culture, tools, and hands-on practices so you can contribute with confidence.",
+      howItWorks: "The journey has 8 stages with short micro-units, friendly tasks, and quick feedback. You'll see one screen at a time.",
+      howLong: "About ~3 weeks overall, 1–2 hours per day at your own pace. You can pause and resume anytime.",
+      whyWeDo: "We want to reduce stress, cut shadowing time, and help you reach productivity faster in a supportive way.",
+      buddyNote: "You're not alone—Buddy, our smart mentor, will guide you step by step. Ask questions anytime, Buddy will help.",
+      ctaLabel: "Let's Start Orientation →",
+      xpAwardOnContinue: 20,
+      badgeOnContinue: "First Steps"
+    };
   }
 
   // Set page direction for RTL support
