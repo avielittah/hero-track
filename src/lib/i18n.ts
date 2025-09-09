@@ -91,6 +91,15 @@ const resources = {
       portfolioView: 'Portfolio View',
       portfolioComingSoon: 'Portfolio viewing will be available soon!',
       
+      footer: {
+        brand: 'TaleAI',
+        rights: '© {{year}} TaleAI. All rights reserved.',
+        terms: 'Terms of Service',
+        privacy: 'Privacy Policy',
+        cookies: 'Cookies',
+        cookieNotice: 'We use cookies to improve your experience.',
+        gotIt: 'Got it',
+      },
       // Admin
       admin: {
         open: "Admin",
@@ -286,6 +295,15 @@ const resources = {
       portfolioView: 'צפייה בתיק עבודות',
       portfolioComingSoon: 'צפייה בתיק העבודות תהיה זמינה בקרוב!',
       
+      footer: {
+        brand: 'TaleAI',
+        rights: '© {{year}} TaleAI. כל הזכויות שמורות.',
+        terms: 'תנאי שימוש',
+        privacy: 'מדיניות פרטיות',
+        cookies: 'עוגיות',
+        cookieNotice: 'אנחנו משתמשים בעוגיות לשיפור החוויה.',
+        gotIt: 'הבנתי',
+      },
       // Admin
       admin: {
         open: "אדמין",

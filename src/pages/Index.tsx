@@ -5,7 +5,7 @@ import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LevelBar } from '@/components/LevelBar';
 import { StageContainer } from '@/features/journey/StageContainer';
-import { AdminBar } from '@/features/admin/AdminBar';
+import { FooterBar } from '@/components/layout/FooterBar';
 
 const Index = () => {
   const { i18n } = useTranslation();
@@ -46,7 +46,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background font-sans relative">
+    <div className="min-h-screen bg-background font-sans relative pb-16">
       <TopBar 
         currentLanguage={currentLanguage}
         onLanguageToggle={handleLanguageToggle}
@@ -61,8 +61,8 @@ const Index = () => {
         onNudgeClose={() => setShowBuddyNudge(false)}
       />
       
-      {/* Admin Bar */}
-      <AdminBar />
+      {/* Footer Bar with Admin */}
+      <FooterBar />
     </div>
   );
 };
