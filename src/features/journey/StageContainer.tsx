@@ -2,31 +2,59 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronRight, Eye, Sparkles } from 'lucide-react';
-import { useLearningStore } from '@/lib/store';
+import { ChevronRight, Eye, Sparkles, AlertCircle, Lock } from 'lucide-react';
+import { useJourneyMachine } from './journeyMachine';
+import { StageBanner } from './StageBanner';
 import { StageHeader } from './StageHeader';
+import { useLearningStore } from '@/lib/store';
 
 export const StageContainer = () => {
   const { t } = useTranslation();
-  const { currentStage, setCurrentStage, addXP } = useLearningStore();
+  const { addXP } = useLearningStore();
+  const { 
+    currentStage, 
+    viewingStage, 
+    viewMode, 
+    canAdvance, 
+    canPeekNext, 
+    completeCurrentStage, 
+    previewStage,
+    isStageEditable 
+  } = useJourneyMachine();
 
   const isLastStage = currentStage === 8;
-  const isFirstStage = currentStage === 1;
+  const isCurrentStageView = viewMode === 'current';
+  const isPreviewMode = viewMode === 'preview-back';
+  const isPeekMode = viewMode === 'peek-forward';
+  const canEdit = isStageEditable(viewingStage);
 
   const handleNext = () => {
-    if (!isLastStage) {
-      setCurrentStage((currentStage + 1) as any);
+    if (canAdvance() && !isLastStage) {
+      completeCurrentStage();
       addXP(25); // Reward for progression
     }
   };
 
   const handlePreview = () => {
-    // Preview logic would go here
-    console.log('Preview clicked for stage', currentStage);
+    if (canPeekNext()) {
+      previewStage((currentStage + 1) as any);
+    }
+  };
+
+  const getStageTitle = () => {
+    if (isPreviewMode) return `${t('stage', { number: viewingStage })} - ${t('completed')} ✓`;
+    if (isPeekMode) return `${t('stage', { number: viewingStage })} - Preview`;
+    return t('stageTitle');
+  };
+
+  const getStageDescription = () => {
+    if (isPreviewMode) return `You've already completed this stage. This is a read-only view of your previous work.`;
+    if (isPeekMode) return `Here's a preview of what's coming next. Complete your current stage to unlock this content.`;
+    return t('stageDescription');
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24"> {/* Add padding bottom for banner */}
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-8">
         <StageHeader />
@@ -37,7 +65,35 @@ export const StageContainer = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          <Card className="relative overflow-hidden bg-gradient-to-br from-card via-card to-primary/5 border-2 border-primary/10">
+          {/* Mode Indicator */}
+          {!isCurrentStageView && (
+            <motion.div
+              className="mb-6"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className={`
+                inline-flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium
+                ${isPreviewMode ? 'bg-muted text-muted-foreground' : ''}
+                ${isPeekMode ? 'bg-secondary/10 text-secondary' : ''}
+              `}>
+                {isPreviewMode && <AlertCircle className="h-4 w-4" />}
+                {isPeekMode && <Lock className="h-4 w-4" />}
+                <span>
+                  {isPreviewMode && 'Read-Only: Completed Stage'}
+                  {isPeekMode && 'Preview: Next Stage'}
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          <Card className={`
+            relative overflow-hidden border-2 
+            ${isPreviewMode ? 'bg-muted/20 border-muted' : ''}
+            ${isPeekMode ? 'bg-secondary/5 border-secondary/20' : ''}
+            ${isCurrentStageView ? 'bg-gradient-to-br from-card via-card to-primary/5 border-primary/10' : ''}
+          `}>
             {/* Decorative background pattern */}
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-secondary/5" />
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl transform translate-x-16 -translate-y-16" />
@@ -63,7 +119,7 @@ export const StageContainer = () => {
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.7 }}
                   >
-                    Ready to Begin?
+                    {getStageTitle()}
                   </motion.h2>
 
                   <motion.p
@@ -72,8 +128,7 @@ export const StageContainer = () => {
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.8 }}
                   >
-                    This stage will introduce you to the fundamental concepts you'll need for your journey. 
-                    Complete the activities, engage with the content, and watch your skills grow!
+                    {getStageDescription()}
                   </motion.p>
 
                   {/* Progress Stats */}
@@ -84,12 +139,12 @@ export const StageContainer = () => {
                     transition={{ delay: 0.9 }}
                   >
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">{currentStage}</div>
-                      <div className="text-sm text-muted-foreground">Current Stage</div>
+                      <div className="text-2xl font-bold text-primary">{viewingStage}</div>
+                      <div className="text-sm text-muted-foreground">{isCurrentStageView ? 'Current' : 'Viewing'} Stage</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-secondary">25</div>
-                      <div className="text-sm text-muted-foreground">XP to Earn</div>
+                      <div className="text-2xl font-bold text-secondary">{isCurrentStageView ? '25' : '—'}</div>
+                      <div className="text-sm text-muted-foreground">{isCurrentStageView ? 'XP to Earn' : 'XP Earned'}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-journey-complete">~15</div>
@@ -107,13 +162,21 @@ export const StageContainer = () => {
                 >
                   <Button
                     onClick={handleNext}
-                    disabled={isLastStage}
+                    disabled={!canAdvance() || isLastStage || !isCurrentStageView}
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary-700 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    className={`
+                      w-full shadow-lg hover:shadow-xl transition-all duration-300 group
+                      ${!isCurrentStageView ? 'opacity-50 cursor-not-allowed' : ''}
+                      ${canEdit ? 'bg-primary hover:bg-primary-700 text-primary-foreground' : 'bg-muted text-muted-foreground'}
+                    `}
                   >
                     <span className="flex items-center space-x-2">
-                      <span>{isLastStage ? 'Journey Complete!' : t('nextButton')}</span>
-                      {!isLastStage && (
+                      <span>
+                        {isLastStage ? 'Journey Complete!' : 
+                         !isCurrentStageView ? 'Return to Current Stage' :
+                         t('nextButton')}
+                      </span>
+                      {!isLastStage && isCurrentStageView && (
                         <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                       )}
                     </span>
@@ -121,13 +184,14 @@ export const StageContainer = () => {
 
                   <Button
                     onClick={handlePreview}
+                    disabled={!canPeekNext() || !isCurrentStageView}
                     variant="outline"
                     size="lg"
                     className="w-full group"
                   >
                     <span className="flex items-center space-x-2">
                       <Eye className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                      <span>{t('previewButton')}</span>
+                      <span>{isPeekMode ? 'Previewing Next' : t('previewButton')}</span>
                     </span>
                   </Button>
                 </motion.div>
@@ -149,7 +213,11 @@ export const StageContainer = () => {
               whileHover={{ y: -4, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Card className="text-center p-6 bg-card/50 backdrop-blur-sm border-primary/10 hover:border-primary/20 transition-colors">
+              <Card className={`
+                text-center p-6 border-primary/10 hover:border-primary/20 transition-colors
+                ${isCurrentStageView ? 'bg-card/50 backdrop-blur-sm' : 'bg-muted/30'}
+                ${!canEdit ? 'opacity-60' : ''}
+              `}>
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="h-6 w-6 text-primary" />
                 </div>
@@ -162,6 +230,9 @@ export const StageContainer = () => {
           ))}
         </motion.div>
       </div>
+      
+      {/* Stage Banner */}
+      <StageBanner />
     </div>
   );
 };
