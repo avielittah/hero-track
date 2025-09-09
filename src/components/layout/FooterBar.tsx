@@ -32,40 +32,40 @@ export const FooterBar: React.FC = () => {
 
   return (
     <>
-      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-t border-border">
+      <footer className="bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
         <div className="safe-area-bottom">
-          <div className="px-4 py-3 flex items-center justify-between gap-4 min-h-[56px]">
+          <div className="px-4 py-3 flex items-center justify-between gap-4 min-h-[40px]">
             {/* Brand - Left side (Right in RTL) */}
-            <div className={`flex items-center gap-2 text-sm text-muted-foreground ${isRTL ? 'order-3' : 'order-1'}`}>
-              <div className="w-6 h-6 bg-primary/10 rounded flex items-center justify-center">
-                <span className="text-xs font-bold text-primary">JL</span>
+            <div className={`flex items-center gap-2 text-xs text-slate-400 ${isRTL ? 'order-3' : 'order-1'}`}>
+              <div className="w-5 h-5 bg-primary/10 rounded flex items-center justify-center">
+                <span className="text-xs font-bold text-primary">T</span>
               </div>
               <span className="hidden sm:inline font-medium">{t('ui.footer.brand')}</span>
             </div>
 
             {/* Legal Content - Center */}
-            <div className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3 text-xs text-muted-foreground ${isRTL ? 'order-2' : 'order-2'}`}>
+            <div className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs text-slate-400 ${isRTL ? 'order-2' : 'order-2'}`}>
               <span className="text-center">
                 {t('ui.footer.rights', { year: getCurrentYear() })}
               </span>
               <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => handleLinkClick('#')}
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors text-xs"
                 >
                   {t('ui.footer.terms')}
                 </button>
-                <span className="text-muted-foreground/50">•</span>
+                <span className="text-slate-300 dark:text-slate-600">•</span>
                 <button
                   onClick={() => handleLinkClick('#')}
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors text-xs"
                 >
                   {t('ui.footer.privacy')}
                 </button>
-                <span className="text-muted-foreground/50">•</span>
+                <span className="text-slate-300 dark:text-slate-600">•</span>
                 <button
                   onClick={() => setShowCookieNotice(true)}
-                  className="hover:text-foreground transition-colors flex items-center gap-1"
+                  className="hover:text-slate-600 dark:hover:text-slate-300 transition-colors flex items-center gap-1 text-xs"
                 >
                   <Cookie className="h-3 w-3" />
                   <span className="hidden sm:inline">{t('ui.footer.cookies')}</span>
