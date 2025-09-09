@@ -33,6 +33,12 @@ const resources = {
       current: 'Current',
       completed: 'Completed',
       locked: 'Locked',
+      
+      // Profile
+      'Profile': 'Profile',
+      'Contact Information': 'Contact Information',
+      'Learning Progress': 'Learning Progress',
+      'Unlocked Skills': 'Unlocked Skills',
     }
   },
   he: {
@@ -65,6 +71,12 @@ const resources = {
       current: 'נוכחי',
       completed: 'הושלם',
       locked: 'נעול',
+      
+      // Profile
+      'Profile': 'פרופיל',
+      'Contact Information': 'פרטי קשר',
+      'Learning Progress': 'התקדמות בלמידה',
+      'Unlocked Skills': 'כישורים שנפתחו',
     }
   }
 };

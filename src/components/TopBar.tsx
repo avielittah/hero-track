@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { ProfileSheet } from './ProfileSheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Globe, LogIn, LogOut, User } from 'lucide-react';
@@ -13,6 +15,7 @@ interface TopBarProps {
 
 export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
   const { t } = useTranslation();
+  const [showProfileSheet, setShowProfileSheet] = useState(false);
   const { 
     isLoggedIn, 
     username, 
@@ -46,17 +49,25 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Left side - Avatar and User Info */}
         <div className="flex items-center space-x-4">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Avatar className="h-12 w-12 ring-2 ring-primary/20">
-              <AvatarImage src="" alt={username || 'Learner'} />
-              <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-                <User className="h-6 w-6" />
-              </AvatarFallback>
-            </Avatar>
-          </motion.div>
+          <ProfileSheet 
+            isOpen={showProfileSheet}
+            onOpenChange={setShowProfileSheet}
+            trigger={
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowProfileSheet(true)}
+                className="focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-full"
+              >
+                <Avatar className="h-12 w-12 ring-2 ring-primary/20 hover:ring-primary/40 transition-all cursor-pointer">
+                  <AvatarImage src="" alt={username || 'Learner'} />
+                  <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                    <User className="h-6 w-6" />
+                  </AvatarFallback>
+                </Avatar>
+              </motion.button>
+            }
+          />
           
           {isLoggedIn && (
             <div className="flex flex-col">
