@@ -26,6 +26,26 @@ export const welcomeContent = {
       "You are not alone — Buddy, your smart AI mentor, will guide you step by step. Whenever you have a question, click \"Ask Buddy\" and get instant guidance.",
     cta: "Ask Buddy"
   },
+  values: {
+    title: "Core Values of Our Team",
+    items: [
+      "Energy",
+      "Initiative", 
+      "Integrity",
+      "Collaboration",
+      "Big-picture thinking",
+      "Communication"
+    ]
+  },
+  success: {
+    title: "What Does Success Look Like?",
+    items: [
+      "Clear system thinking and accurate technical execution",
+      "High-quality documentation and attention to detail", 
+      "Confident communication of designs and choices"
+    ],
+    emphasis: "Above all: consistent effort, learning, and teamwork"
+  },
   cta: {
     label: "Let's Start Orientation →",
     xpToast: "Great start! +20 XP"

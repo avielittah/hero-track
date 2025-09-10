@@ -4,6 +4,8 @@ export { WelcomeStage } from './WelcomeStage';
 // Individual component exports
 export { WelcomeHero } from './WelcomeHero';
 export { WelcomeInfoCards } from './WelcomeInfoCards';
+export { CoreValues } from './CoreValues';
+export { SuccessCriteria } from './SuccessCriteria';
 export { BuddyHighlight } from './BuddyHighlight';
 export { StartCTA } from './StartCTA';
 

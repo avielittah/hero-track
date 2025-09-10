@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
 import { WelcomeHero } from './WelcomeHero';
 import { WelcomeInfoCards } from './WelcomeInfoCards';
+import { CoreValues } from './CoreValues';
+import { SuccessCriteria } from './SuccessCriteria';
 import { BuddyHighlight } from './BuddyHighlight';
 import { StartCTA } from './StartCTA';
 import { welcomeContent } from './welcome.content';
@@ -36,6 +38,12 @@ export const WelcomeStage = () => {
 
           {/* Info Cards */}
           <WelcomeInfoCards />
+
+          {/* Core Values */}
+          <CoreValues />
+
+          {/* Success Criteria */}
+          <SuccessCriteria />
 
           {/* Buddy Highlight */}
           <BuddyHighlight />
