@@ -93,12 +93,12 @@ export const LevelBar = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="text-xs font-medium text-muted-foreground">השלב הבא</div>
+              <div className="text-xs font-medium text-muted-foreground">Next Level</div>
               <div className="text-xs font-semibold text-primary truncate max-w-24">
                 {t(['Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex])}
               </div>
               <div className="text-[10px] text-muted-foreground mt-0.5">
-                {nextThreshold - currentXP} XP נותרים
+                {nextThreshold - currentXP} XP left
               </div>
             </motion.div>
           )}
@@ -111,7 +111,7 @@ export const LevelBar = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="text-[10px] font-medium text-muted-foreground">הבא</div>
+              <div className="text-[10px] font-medium text-muted-foreground">Next</div>
               <div className="text-xs font-semibold text-primary">
                 {t(['Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex])?.split(' ')[0]}
               </div>
