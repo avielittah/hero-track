@@ -18,11 +18,7 @@ const Index = () => {
   const { 
     showLevelUpModal, 
     levelUpData, 
-    setLevelUpModal,
-    awardTaskXP,
-    awardStageXP,
-    currentXP,
-    level 
+    setLevelUpModal
   } = useLearningStore();
 
   useEffect(() => {
@@ -58,17 +54,6 @@ const Index = () => {
     };
   }, []);
 
-  // Test XP system - temporary function for testing
-  const testXPSystem = async () => {
-    // Award task XP to test the system
-    await awardTaskXP('task');
-  };
-
-  // Test Stage XP - temporary function for testing
-  const testStageXP = async () => {
-    await awardStageXP(2);
-  };
-
   return (
     <div className="min-h-screen bg-background font-sans relative pb-20">
       <TopBar 
@@ -91,25 +76,6 @@ const Index = () => {
           currentXP={levelUpData.currentXP}
         />
       )}
-      
-      {/* Temporary XP Testing Buttons - Remove in production */}
-      <div className="fixed top-20 left-4 z-50 space-y-2 bg-background/80 backdrop-blur-sm p-2 rounded-lg border">
-        <button
-          onClick={testXPSystem}
-          className="block w-full text-xs px-2 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90"
-        >
-          +15 XP (Task)
-        </button>
-        <button
-          onClick={testStageXP}
-          className="block w-full text-xs px-2 py-1 bg-secondary text-secondary-foreground rounded hover:bg-secondary/90"
-        >
-          +75 XP (Stage)
-        </button>
-        <div className="text-xs text-muted-foreground">
-          {currentXP} XP | {level}
-        </div>
-      </div>
       
       {/* Buddy Button */}
       <BuddyButton 
