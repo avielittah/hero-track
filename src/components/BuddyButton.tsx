@@ -36,14 +36,14 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
     return () => clearTimeout(timer);
   }, []);
 
-  // Game-style tooltip that appears every minute
+  // Game-style tooltip that appears every 3 minutes
   useEffect(() => {
     const gameTooltipMessages = [
-      "היי! יש לך שאלה? אני כאן בשבילך! 🤖",
-      "צריך עזרה? רק תלחץ עלי ואני אסביר הכל! ✨",
-      "מוכן להמשיך? אני המדריך החכם שלך! 🚀",
-      "תקוע? אל תדאג, אני אעזור לך להבין! 💡",
-      "רוצה טיפים מקצועיים? בוא נדבר! 🎯"
+      "Hello! I'm Buddy, your smart learning companion. Need guidance?",
+      "Stuck on something? I'm here to help you navigate through any challenge.",
+      "Ready to continue your journey? Let me assist you with expert insights.",
+      "Questions? I provide personalized support tailored to your learning path.",
+      "Need professional guidance? Click here for instant mentoring support."
     ];
 
     const showGameTooltip = () => {
@@ -55,9 +55,9 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
       setShowGameTooltip(false);
     };
 
-    // מופיע אחרי 10 שניות ואז כל דקה
-    const initialTimer = setTimeout(showGameTooltip, 10000);
-    const intervalTimer = setInterval(showGameTooltip, 60000); // כל דקה
+    // מופיע אחרי 30 שניות ואז כל 3 דקות
+    const initialTimer = setTimeout(showGameTooltip, 30000);
+    const intervalTimer = setInterval(showGameTooltip, 180000); // כל 3 דקות
 
     return () => {
       clearTimeout(initialTimer);
@@ -179,7 +179,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
                         >
-                          היי! יש לך שאלה? אני כאן בשבילך! 🤖
+                          Hello! I'm here to guide you through your learning journey. Need assistance?
                         </motion.p>
                       </div>
                       
@@ -189,7 +189,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
                       >
-                        - Buddy, המדריך החכם שלך
+                        — Buddy, your smart learning mentor
                       </motion.div>
                     </div>
                   </div>
