@@ -79,8 +79,8 @@ const getTrophyForStage = (stage: StageId): Trophy | null => {
 
 const initialState: LearnerProgress = {
   currentStage: 1,
-  currentXP: 75,
-  level: 'Team Rookie',
+  currentXP: 0,
+  level: 'New Explorer',
   completedStages: [],
   isLoggedIn: false,
   username: undefined,
@@ -217,12 +217,13 @@ export const useLearningStore = create<LearningStore>()(
       },
 
       resetXP: () => {
-        // Admin only function to reset XP and level
+        // Admin only function to reset entire journey and XP
         if (!isAdmin()) return;
         
+        // Reset all learning progress to initial state
         set({
-          currentXP: 0,
-          level: 'New Explorer',
+          ...initialState,
+          trophies: [],
           showLevelUpModal: false,
           levelUpData: null,
         });
