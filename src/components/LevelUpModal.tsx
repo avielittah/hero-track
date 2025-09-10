@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Star, Sparkles, Crown, Users, Target, Zap, Briefcase } from 'lucide-react';
+import { Trophy, Star, Sparkles, Crown, Users, Target, User, Folder } from 'lucide-react';
 import { Level } from '@/types/journey';
 
 interface LevelUpModalProps {
@@ -100,8 +100,8 @@ export const LevelUpModal = ({
       case 0: return <Star className="h-5 w-5 text-yellow-500" />; // New Explorer
       case 1: return <Users className="h-5 w-5 text-blue-500" />; // Team Rookie
       case 2: return <Target className="h-5 w-5 text-green-500" />; // Skilled Learner
-      case 3: return <Zap className="h-5 w-5 text-purple-500" />; // Problem Solver
-      case 4: return <Briefcase className="h-5 w-5 text-orange-500" />; // Project Builder
+      case 3: return <User className="h-5 w-5 text-purple-500" />; // Problem Solver
+      case 4: return <Folder className="h-5 w-5 text-orange-500" />; // Project Builder
       case 5: return <Crown className="h-5 w-5 text-red-500" />; // Pro Team Member
       default: return <Star className="h-5 w-5" />;
     }
