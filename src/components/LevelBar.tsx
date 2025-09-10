@@ -40,12 +40,64 @@ export const LevelBar = () => {
                 <span className="text-sm font-medium text-muted-foreground">{t('level')}:</span>
                 <span className="text-lg font-bold text-foreground">{t(level)}</span>
               </div>
-              <div className="text-sm text-muted-foreground">
-                {isMaxLevel ? (
-                  `${currentXP} ${t('xp')} - ${t('Pro Team Member')}`
-                ) : (
-                  `${currentXP - currentThreshold} / ${nextThreshold - currentThreshold} ${t('xp')} to next level`
-                )}
+              {/* Gaming-style XP Progress Bar */}
+              <div className="w-64 space-y-1">
+                <div className="flex justify-between items-center text-xs font-medium">
+                  <span className="text-muted-foreground">
+                    {isMaxLevel ? (
+                      `${currentXP} ${t('xp')} - MAX LEVEL`
+                    ) : (
+                      `${currentXP - currentThreshold} / ${nextThreshold - currentThreshold} ${t('xp')}`
+                    )}
+                  </span>
+                  {!isMaxLevel && (
+                    <span className="text-primary font-bold">
+                      {nextThreshold - currentXP} ${t('xp')} left
+                    </span>
+                  )}
+                </div>
+                
+                {/* XP Progress Bar */}
+                <div className="relative h-3 bg-muted rounded-full overflow-hidden shadow-inner">
+                  {/* Background glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full" />
+                  
+                  {/* Progress fill with gradient */}
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-primary via-primary to-secondary rounded-full relative overflow-hidden"
+                    initial={{ width: 0 }}
+                    animate={{ 
+                      width: isMaxLevel 
+                        ? '100%' 
+                        : `${((currentXP - currentThreshold) / (nextThreshold - currentThreshold)) * 100}%` 
+                    }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
+                  >
+                    {/* Animated shine effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+                      animate={{ x: ['-100%', '300%'] }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 3,
+                        ease: "easeInOut"
+                      }}
+                    />
+                    
+                    {/* Inner glow */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/20" />
+                  </motion.div>
+                  
+                  {/* Progress percentage text overlay */}
+                  {!isMaxLevel && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-xs font-bold text-white drop-shadow-sm">
+                        {Math.round(((currentXP - currentThreshold) / (nextThreshold - currentThreshold)) * 100)}%
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
