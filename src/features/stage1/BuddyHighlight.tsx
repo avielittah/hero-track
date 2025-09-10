@@ -100,28 +100,27 @@ export const BuddyHighlight = () => {
                     <ExternalLink className="h-3 w-3 ml-2 opacity-60" />
                   </Button>
 
-                  {/* Periodic Nudge Tooltip */}
+                  {/* Buddy Usage Tooltip */}
                   <AnimatePresence>
                     {showNudge && (
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                        initial={{ opacity: 0, scale: 0.8, y: -5 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                        transition={{ duration: 0.3 }}
+                        exit={{ opacity: 0, scale: 0.8, y: -5 }}
+                        transition={{ duration: 0.2 }}
                         className="
-                          absolute -top-16 left-1/2 -translate-x-1/2 z-50
-                          bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium
-                          shadow-lg border border-primary/20
-                          before:content-[''] before:absolute before:top-full before:left-1/2 
-                          before:-translate-x-1/2 before:border-4 before:border-transparent 
-                          before:border-t-primary
+                          absolute -top-12 left-0 z-50
+                          bg-secondary text-white px-3 py-1.5 rounded-md text-xs font-medium
+                          shadow-md border border-secondary/20
+                          after:content-[''] after:absolute after:top-full after:left-4 
+                          after:border-4 after:border-transparent after:border-t-secondary
                           whitespace-nowrap
                         "
                       >
-                        💡 צריך עזרה? באדי כאן בשבילך!
+                        💡 זקוק לעזרה? נסה את Buddy!
                         <button
                           onClick={() => setShowNudge(false)}
-                          className="ml-2 text-white/70 hover:text-white text-xs"
+                          className="ml-2 text-white/80 hover:text-white text-xs"
                         >
                           ✕
                         </button>
