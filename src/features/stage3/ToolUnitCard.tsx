@@ -28,7 +28,8 @@ export function ToolUnitCard({
   isDisabled = false,
   children
 }: ToolUnitCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Auto-expand first unit (drawio) to make it more accessible
+  const [isExpanded, setIsExpanded] = useState(id === 'drawio');
 
   const handleToggle = () => {
     if (!isDisabled) {
@@ -96,7 +97,8 @@ export function ToolUnitCard({
           disabled={isDisabled}
         >
           <PlayCircle className="h-4 w-4 mr-2" />
-          {isExpanded ? "Close Unit" : isSubmitted ? "View Unit" : "Start Unit"}
+          {isExpanded ? "Close Unit" : isSubmitted ? "View Unit" : "Start Learning"}
+          {isDisabled && <span className="ml-2 text-xs">(Complete stage 2 first)</span>}
         </Button>
       </CardHeader>
 

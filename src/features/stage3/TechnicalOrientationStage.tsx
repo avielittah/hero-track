@@ -16,7 +16,8 @@ import { useState, useEffect } from 'react';
 
 export function TechnicalOrientationStage() {
   const { addXP, awardTrophy } = useLearningStore();
-  const { completeCurrentStage, goToStage, viewMode } = useJourneyMachine();
+  const journeyState = useJourneyMachine();
+  const { completeCurrentStage, goToStage, viewMode } = journeyState;
   const { toast } = useToast();
 
   // Unit completion state
@@ -103,6 +104,19 @@ export function TechnicalOrientationStage() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="space-y-6 mb-8"
         >
+          {/* Instructions */}
+          <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              How to complete this stage:
+            </h3>
+            <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+              <li>1. Click "Start Learning" on each unit below</li>
+              <li>2. Watch tutorials and complete the activities</li>
+              <li>3. Submit your work to earn XP</li>
+              <li>4. Complete both units to advance</li>
+            </ol>
+          </div>
+
           {/* Draw.io Unit */}
           <ToolUnitCard
             id="drawio"
