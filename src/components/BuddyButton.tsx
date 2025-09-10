@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Sparkles, X } from 'lucide-react';
+import { MessageCircle, Sparkles, X, Bot } from 'lucide-react';
 
 interface BuddyButtonProps {
   showNudge?: boolean;
@@ -14,6 +14,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
   const { t, i18n } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showGameTooltip, setShowGameTooltip] = useState(false);
   const isRTL = i18n.language === 'he';
 
   // Placeholder Agent URL - replace with actual URL when available
@@ -33,6 +34,31 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
     }, 2000);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Game-style tooltip that appears every minute
+  useEffect(() => {
+    const gameTooltipMessages = [
+      "היי! יש לך שאלה? אני כאן בשבילך! 🤖",
+      "צריך עזרה? רק תלחץ עלי ואני אסביר הכל! ✨",
+      "מוכן להמשיך? אני המדריך החכם שלך! 🚀",
+      "תקוע? אל תדאג, אני אעזור לך להבין! 💡",
+      "רוצה טיפים מקצועיים? בוא נדבר! 🎯"
+    ];
+
+    const showGameTooltip = () => {
+      setShowGameTooltip(true);
+      setTimeout(() => setShowGameTooltip(false), 4000); // נסגר אחרי 4 שניות
+    };
+
+    // מופיע אחרי 10 שניות ואז כל דקה
+    const initialTimer = setTimeout(showGameTooltip, 10000);
+    const intervalTimer = setInterval(showGameTooltip, 60000); // כל דקה
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(intervalTimer);
+    };
   }, []);
 
   return (
@@ -101,9 +127,92 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
             )}
           </AnimatePresence>
 
-          {/* Tooltip */}
+          {/* Game-style Buddy Tooltip */}
           <AnimatePresence>
-            {showTooltip && !showNudge && (
+            {showGameTooltip && !showNudge && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.3, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.3, y: 20 }}
+                className={`
+                  absolute bottom-full mb-4 w-72 
+                  ${isRTL ? 'right-0' : 'left-0'}
+                  max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto max-md:w-64
+                `}
+              >
+                <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 text-white p-4 rounded-2xl shadow-2xl border border-white/20">
+                  {/* Avatar */}
+                  <div className="flex items-start gap-3">
+                    <motion.div 
+                      className="flex-shrink-0 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30"
+                      animate={{ 
+                        rotate: [0, -5, 5, 0],
+                        scale: [1, 1.05, 1]
+                      }}
+                      transition={{ 
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Bot className="w-6 h-6 text-white" />
+                    </motion.div>
+                    
+                    <div className="flex-1">
+                      <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/20">
+                        <motion.p 
+                          className="text-sm font-medium leading-relaxed"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3 }}
+                        >
+                          היי! יש לך שאלה? אני כאן בשבילך! 🤖
+                        </motion.p>
+                      </div>
+                      
+                      <motion.div 
+                        className="text-xs text-white/80 mt-2 font-medium"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        - Buddy, המדריך החכם שלך
+                      </motion.div>
+                    </div>
+                  </div>
+                  
+                  {/* Sparkle effects */}
+                  <motion.div 
+                    className="absolute -top-1 -right-1 text-yellow-300"
+                    animate={{ 
+                      rotate: [0, 360],
+                      scale: [1, 1.2, 1]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity
+                    }}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                  </motion.div>
+                  
+                  {/* Speech bubble tail */}
+                  <div 
+                    className={`
+                      absolute top-full w-0 h-0 border-l-8 border-r-8 border-t-8 
+                      border-transparent border-t-indigo-600
+                      ${isRTL ? 'right-6' : 'left-6'}
+                      max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto
+                    `}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Simple Tooltip */}
+          <AnimatePresence>
+            {showTooltip && !showNudge && !showGameTooltip && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
