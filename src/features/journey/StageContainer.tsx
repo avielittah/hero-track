@@ -11,6 +11,7 @@ import { StageCompleteModal } from '@/components/StageCompleteModal';
 import { FinalWrapUpScreen } from '@/components/FinalWrapUpScreen';
 import { WelcomeStage } from '@/features/stage1/WelcomeStage';
 import { OrientationChecklistStage } from '@/features/stage2/OrientationChecklistStage';
+import { TechnicalOrientationStage } from '@/features/stage3';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -283,6 +284,11 @@ export const StageContainer = () => {
   // Show orientation checklist for stage 2
   if (viewingStage === 2) {
     return <OrientationChecklistStage />;
+  }
+
+  // Show technical orientation for stage 3
+  if (viewingStage === 3) {
+    return <TechnicalOrientationStage />;
   }
 
   return (
