@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BuddyButton } from '@/components/BuddyButton';
-import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
-import { LevelBar } from '@/components/LevelBar';
 import { StageContainer } from '@/features/journey/StageContainer';
 import { FooterBar } from '@/components/layout/FooterBar';
 
@@ -47,12 +45,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background font-sans relative pb-16">
-      <TopBar 
+      <ProgressBar 
         currentLanguage={currentLanguage}
         onLanguageToggle={handleLanguageToggle}
       />
-      <LevelBar />
-      <ProgressBar />
       <StageContainer />
       
       {/* Buddy Button */}
