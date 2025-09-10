@@ -48,7 +48,11 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
 
     const showGameTooltip = () => {
       setShowGameTooltip(true);
-      setTimeout(() => setShowGameTooltip(false), 4000); // נסגר אחרי 4 שניות
+      setTimeout(() => setShowGameTooltip(false), 8000); // נסגר אחרי 8 שניות
+    };
+
+    const closeGameTooltip = () => {
+      setShowGameTooltip(false);
     };
 
     // מופיע אחרי 10 שניות ואז כל דקה
@@ -136,11 +140,20 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                 exit={{ opacity: 0, scale: 0.3, y: 20 }}
                 className={`
                   absolute bottom-full mb-4 w-72 
-                  ${isRTL ? 'right-0' : 'left-0'}
-                  max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto max-md:w-64
+                  ${isRTL ? 'left-0' : 'right-0'}
+                  max-md:right-1/2 max-md:translate-x-1/2 max-md:left-auto max-md:w-64
                 `}
               >
                 <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 text-white p-4 rounded-2xl shadow-2xl border border-white/20">
+                  {/* Close button */}
+                  <button 
+                    onClick={() => setShowGameTooltip(false)}
+                    className="absolute top-2 right-2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors backdrop-blur-sm border border-white/30"
+                    aria-label="סגור הודעה"
+                  >
+                    <X className="w-3 h-3 text-white" />
+                  </button>
+
                   {/* Avatar */}
                   <div className="flex items-start gap-3">
                     <motion.div 
@@ -158,7 +171,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                       <Bot className="w-6 h-6 text-white" />
                     </motion.div>
                     
-                    <div className="flex-1">
+                    <div className="flex-1 pr-6">
                       <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/20">
                         <motion.p 
                           className="text-sm font-medium leading-relaxed"
@@ -201,8 +214,8 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                     className={`
                       absolute top-full w-0 h-0 border-l-8 border-r-8 border-t-8 
                       border-transparent border-t-indigo-600
-                      ${isRTL ? 'right-6' : 'left-6'}
-                      max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto
+                      ${isRTL ? 'left-6' : 'right-6'}
+                      max-md:right-1/2 max-md:translate-x-1/2 max-md:left-auto
                     `}
                   />
                 </div>
