@@ -275,8 +275,8 @@ export const StageContainer = () => {
     );
   }
 
-  // Show welcome stage for stage 1 current view
-  if (viewingStage === 1 && viewMode === 'current') {
+  // Always show welcome stage for stage 1 (regardless of viewMode)
+  if (viewingStage === 1) {
     return <WelcomeStage />;
   }
 

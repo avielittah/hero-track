@@ -18,21 +18,8 @@ export const WelcomeStage = () => {
     document.documentElement.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
   }, [i18n.language]);
 
-  // Check if we should show this welcome screen
-  const shouldShowWelcome = currentStage === 1 && viewingStage === 1 && viewMode === 'current';
-
-  if (!shouldShowWelcome) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4">
-          <AlertTriangle className="h-12 w-12 text-muted-foreground mx-auto" />
-          <p className="text-muted-foreground">
-            Welcome stage is only available at the beginning of your journey.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // Welcome stage is always available and shows the same content
+  // regardless of current progress - it's the permanent introduction to the journey
 
   return (
     <div className="min-h-screen bg-background">
