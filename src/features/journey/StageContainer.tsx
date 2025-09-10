@@ -10,6 +10,7 @@ import { UnitsList } from '../units/UnitsList';
 import { StageCompleteModal } from '@/components/StageCompleteModal';
 import { FinalWrapUpScreen } from '@/components/FinalWrapUpScreen';
 import { WelcomeStage } from '@/features/stage1/WelcomeStage';
+import { OrientationChecklistStage } from '@/features/stage2/OrientationChecklistStage';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -277,6 +278,11 @@ export const StageContainer = () => {
   // Show welcome stage for stage 1 current view
   if (viewingStage === 1 && viewMode === 'current') {
     return <WelcomeStage />;
+  }
+
+  // Show orientation checklist for stage 2
+  if (viewingStage === 2) {
+    return <OrientationChecklistStage />;
   }
 
   return (

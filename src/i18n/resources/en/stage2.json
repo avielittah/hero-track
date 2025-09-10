@@ -1,0 +1,42 @@
+{
+  "title": "Your First Steps — Orientation Checklist",
+  "intro": "Before we dive into the technical learning, let's make sure you're set up and ready. Complete these quick steps to start strong.",
+  "estTime": "Estimated time: ~1 day (within your first working day).",
+  "tasks": {
+    "verifyDevice": {
+      "label": "Verify your computer access (OS login, VPN, company Wi-Fi).",
+      "help": "If something doesn't work, open a support ticket from the footer."
+    },
+    "emailCalendar": {
+      "label": "Access your company email and calendar.",
+      "help": "Sign in, set your signature, and check the onboarding events already scheduled."
+    },
+    "taskTool": {
+      "label": "Join the team's task management tool (e.g., Jira / Monday) and view your onboarding board.",
+      "help": "You'll receive read access; tasks for Week 1 are already prepared."
+    },
+    "hrSession": {
+      "label": "Attend the HR orientation session.",
+      "help": "Review benefits, policies, and security guidelines."
+    },
+    "campusTour": {
+      "label": "Take an office/campus tour (if applicable) and locate your team's area.",
+      "help": "Say hi to your team members and meet your manager."
+    },
+    "meetBuddy": {
+      "label": "Meet your TL and say hello to Buddy (our AI mentor).",
+      "help": "You can ask Buddy anything during the journey."
+    }
+  },
+  "buddyNudge": "Need help? Tap "Ask Buddy" — your smart mentor is here for you anytime.",
+  "ctaComplete": "All set — Move to Technical Orientation →",
+  "toastDone": "Nice! Orientation checklist completed. +{{xp}} XP",
+  "summary": {
+    "progress": "Progress Summary",
+    "required": "Required:",
+    "optional": "Optional:",
+    "xpEarned": "XP Earned:",
+    "readyToContinue": "✅ Ready to Continue",
+    "remaining": "{{count}} required remaining"
+  }
+}
