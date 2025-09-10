@@ -114,6 +114,17 @@ export const useLearningStore = create<LearningStore>()(
           level: newLevel,
         });
 
+        // Trigger level up event if leveled up
+        if (leveledUp) {
+          window.dispatchEvent(new CustomEvent('levelUp', {
+            detail: {
+              newLevel,
+              previousLevel,
+              currentXP: newXP
+            }
+          }));
+        }
+
         return {
           leveledUp,
           newLevel: leveledUp ? newLevel : undefined,
