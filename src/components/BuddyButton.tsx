@@ -71,7 +71,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
       <motion.div
         className={`
           fixed z-50 
-          ${isRTL ? 'bottom-6 left-6' : 'bottom-6 right-6'}
+          ${isRTL ? 'bottom-20 left-6' : 'bottom-20 right-6'}
           md:${isRTL ? 'left-6' : 'right-6'}
           max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto
         `}

@@ -15,56 +15,40 @@ export const LevelBar = () => {
 
   return (
     <motion.div 
-      className="bg-gradient-to-r from-primary/10 to-secondary/10 px-6 py-3 border-b"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
+      className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-background/95 via-primary/5 to-secondary/5 backdrop-blur-md border-t border-primary/20 shadow-lg z-40 px-4 py-2"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100 }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between max-w-full">
+          <div className="flex items-center space-x-2 min-w-0 flex-1">
             <motion.div
-              className="p-2 bg-primary rounded-lg"
+              className="p-1.5 bg-primary rounded-md shadow-sm"
               whileHover={{ rotate: 12, scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
               {isMaxLevel ? (
-                <Crown className="h-5 w-5 text-primary-foreground" />
+                <Crown className="h-4 w-4 text-primary-foreground" />
               ) : (
-                <Star className="h-5 w-5 text-primary-foreground" />
+                <Star className="h-4 w-4 text-primary-foreground" />
               )}
             </motion.div>
             
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm font-medium text-muted-foreground">{t('level')}:</span>
-                <span className="text-lg font-bold text-foreground">{t(level)}</span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center space-x-1">
+                <span className="text-xs font-medium text-muted-foreground truncate">{t(level)}</span>
               </div>
-              {/* Gaming-style XP Progress Bar */}
-              <div className="w-64 space-y-1">
-                <div className="flex justify-between items-center text-xs font-medium">
-                  <span className="text-muted-foreground">
-                    {isMaxLevel ? (
-                      `${currentXP} ${t('xp')} - MAX LEVEL`
-                    ) : (
-                      `${currentXP - currentThreshold} / ${nextThreshold - currentThreshold} ${t('xp')}`
-                    )}
-                  </span>
-                  {!isMaxLevel && (
-                    <span className="text-primary font-bold">
-                      {nextThreshold - currentXP} ${t('xp')} left
-                    </span>
-                  )}
-                </div>
-                
-                {/* XP Progress Bar */}
-                <div className="relative h-3 bg-muted rounded-full overflow-hidden shadow-inner">
-                  {/* Background glow effect */}
+              
+              {/* Compact Gaming XP Bar */}
+              <div className="flex items-center space-x-2 mt-0.5">
+                <div className="relative h-2 bg-muted rounded-full overflow-hidden shadow-inner flex-1 max-w-48">
+                  {/* Background glow */}
                   <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full" />
                   
-                  {/* Progress fill with gradient */}
+                  {/* Progress fill */}
                   <motion.div
-                    className="h-full bg-gradient-to-r from-primary via-primary to-secondary rounded-full relative overflow-hidden"
+                    className="h-full bg-gradient-to-r from-primary to-secondary rounded-full relative"
                     initial={{ width: 0 }}
                     animate={{ 
                       width: isMaxLevel 
@@ -73,29 +57,25 @@ export const LevelBar = () => {
                     }}
                     transition={{ duration: 1.2, ease: "easeOut" }}
                   >
-                    {/* Animated shine effect */}
+                    {/* Shine effect */}
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
-                      animate={{ x: ['-100%', '300%'] }}
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
+                      animate={{ x: ['-100%', '200%'] }}
                       transition={{ 
                         duration: 2,
                         repeat: Infinity,
-                        repeatDelay: 3,
+                        repeatDelay: 4,
                         ease: "easeInOut"
                       }}
                     />
-                    
-                    {/* Inner glow */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/20" />
                   </motion.div>
-                  
-                  {/* Progress percentage text overlay */}
-                  {!isMaxLevel && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-xs font-bold text-white drop-shadow-sm">
-                        {Math.round(((currentXP - currentThreshold) / (nextThreshold - currentThreshold)) * 100)}%
-                      </span>
-                    </div>
+                </div>
+                
+                <div className="text-xs font-bold text-primary min-w-max">
+                  {isMaxLevel ? (
+                    `${currentXP} XP`
+                  ) : (
+                    `${currentXP - currentThreshold}/${nextThreshold - currentThreshold}`
                   )}
                 </div>
               </div>
@@ -104,14 +84,14 @@ export const LevelBar = () => {
 
           {!isMaxLevel && (
             <motion.div 
-              className="text-right"
+              className="text-right ml-2 hidden sm:block"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="text-sm font-medium text-muted-foreground">Next Level</div>
-              <div className="text-sm font-semibold text-primary">
-                {t(['New Explorer', 'Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex + 1])}
+              <div className="text-xs font-medium text-muted-foreground">Next</div>
+              <div className="text-xs font-semibold text-primary truncate max-w-20">
+                {t(['New Explorer', 'Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex + 1])?.split(' ')[0]}
               </div>
             </motion.div>
           )}

@@ -46,14 +46,16 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background font-sans relative pb-16">
+    <div className="min-h-screen bg-background font-sans relative pb-20">
       <TopBar 
         currentLanguage={currentLanguage}
         onLanguageToggle={handleLanguageToggle}
       />
-      <LevelBar />
       <ProgressBar />
       <StageContainer />
+      
+      {/* Fixed Gaming XP Bar */}
+      <LevelBar />
       
       {/* Buddy Button */}
       <BuddyButton 
