@@ -40,15 +40,15 @@ export const AdminXPReset = () => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="destructive"
+          variant="outline"
           size="sm"
           disabled={isResetting}
-          className="text-xs"
+          className="text-xs border-red-200 hover:border-red-300 hover:bg-red-50 dark:border-red-800 dark:hover:border-red-700 dark:hover:bg-red-950/50 transition-all duration-200 shadow-sm hover:shadow-md"
         >
           {isResetting ? (
-            <RotateCcw className="h-3 w-3 animate-spin" />
+            <RotateCcw className="h-3 w-3 animate-spin text-red-600" />
           ) : (
-            <Trash2 className="h-3 w-3" />
+            <Trash2 className="h-3 w-3 text-red-600 hover:text-red-700" />
           )}
         </Button>
       </AlertDialogTrigger>
