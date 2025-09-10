@@ -15,6 +15,7 @@ import {
 import { Globe, LogIn, LogOut, User, MoreVertical, HelpCircle, Bug } from 'lucide-react';
 import { useLearningStore } from '@/lib/store';
 import { Trophy } from 'lucide-react';
+import { AdminXPReset } from './AdminXPReset';
 
 interface TopBarProps {
   currentLanguage: string;
@@ -125,8 +126,10 @@ export const TopBar = ({ currentLanguage, onLanguageToggle }: TopBarProps) => {
           </motion.div>
         )}
 
-        {/* Right side - Language Toggle, Support Menu, and Auth */}
+        {/* Right side - Language Toggle, Support Menu, Admin, and Auth */}
         <div className="flex items-center space-x-3">
+          {/* Admin XP Reset Button */}
+          <AdminXPReset />
           <Button
             variant="outline"
             size="sm"
