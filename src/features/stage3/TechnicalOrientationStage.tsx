@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { CompletionBanner } from '@/components/CompletionBanner';
 import { ToolUnitCard } from './ToolUnitCard';
 import { DrawIOUnit } from './units/DrawIOUnit';
 import { VLCUnit } from './units/VLCUnit';
@@ -62,18 +63,7 @@ export function TechnicalOrientationStage() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Preview Banner */}
         {isPreviewMode && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-muted rounded-lg border-l-4 border-primary"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">
-                📚 Submitted • Preview Mode
-              </span>
-              <Badge variant="secondary">Stage 3 Complete</Badge>
-            </div>
-          </motion.div>
+          <CompletionBanner stageName="Technical Orientation" className="mb-6" />
         )}
 
         {/* Header */}

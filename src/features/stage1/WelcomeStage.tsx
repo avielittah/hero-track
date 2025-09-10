@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { AlertTriangle } from 'lucide-react';
+import { CompletionBanner } from '@/components/CompletionBanner';
 import { WelcomeHero } from './WelcomeHero';
 import { WelcomeInfoCards } from './WelcomeInfoCards';
 import { CoreValues } from './CoreValues';
@@ -22,9 +23,15 @@ export const WelcomeStage = () => {
 
   // Welcome stage is always available and shows the same content
   // regardless of current progress - it's the permanent introduction to the journey
+  const isPreviewMode = viewMode === 'preview-back' || currentStage > 1;
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Preview Banner */}
+      {isPreviewMode && (
+        <CompletionBanner stageName="Welcome" />
+      )}
+      
       {/* Main Container */}
       <div className="max-w-4xl mx-auto px-6 py-12">
         <motion.div

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { ChecklistHero } from './ChecklistHero';
 import { TaskItem } from './TaskItem';
 import { CompletionSummary } from './CompletionSummary';
+import { CompletionBanner } from '@/components/CompletionBanner';
 import { orientation1Content } from './orientation1.content';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { useLearningStore } from '@/lib/store';
@@ -120,18 +121,7 @@ export const OrientationChecklistStage = () => {
     <div className="min-h-screen bg-background">
       {/* Preview Banner */}
       {isPreviewMode && (
-        <motion.div
-          className="bg-muted border-b border-border py-3"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="max-w-6xl mx-auto px-6">
-            <Badge variant="secondary" className="font-medium">
-              Submitted • Preview Mode
-            </Badge>
-          </div>
-        </motion.div>
+        <CompletionBanner stageName="Orientation Checklist" />
       )}
 
       {/* Main Container */}
