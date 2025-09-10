@@ -174,7 +174,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                     <div className="flex-1 pr-6">
                       <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/20">
                         <motion.p 
-                          className="text-xs font-medium leading-relaxed"
+                          className="text-sm font-medium leading-relaxed"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
@@ -184,7 +184,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                       </div>
                       
                       <motion.div 
-                        className="text-[10px] text-white/80 mt-2 font-medium"
+                        className="text-xs text-white/80 mt-2 font-medium"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
