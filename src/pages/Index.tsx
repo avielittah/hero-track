@@ -5,6 +5,7 @@ import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LevelBar } from '@/components/LevelBar';
 import { LevelUpModal } from '@/components/LevelUpModal';
+import { AdminXPReset } from '@/components/AdminXPReset';
 import { StageContainer } from '@/features/journey/StageContainer';
 import { FooterBar } from '@/components/layout/FooterBar';
 import { useLearningStore } from '@/lib/store';
@@ -76,6 +77,9 @@ const Index = () => {
           currentXP={levelUpData.currentXP}
         />
       )}
+      
+      {/* Admin XP Reset Controls */}
+      <AdminXPReset />
       
       {/* Buddy Button */}
       <BuddyButton 

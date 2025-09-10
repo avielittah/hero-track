@@ -30,6 +30,7 @@ interface LearningStore extends LearnerProgress {
   
   // Utilities
   resetProgress: () => void;
+  resetXP: () => void; // Admin only - reset XP to 0
   getCurrentLevelIndex: () => number;
   getXPProgressInCurrentLevel: () => { current: number; max: number; percentage: number };
   
@@ -210,6 +211,18 @@ export const useLearningStore = create<LearningStore>()(
         set({ 
           ...initialState, 
           trophies: [],
+          showLevelUpModal: false,
+          levelUpData: null,
+        });
+      },
+
+      resetXP: () => {
+        // Admin only function to reset XP and level
+        if (!isAdmin()) return;
+        
+        set({
+          currentXP: 0,
+          level: 'New Explorer',
           showLevelUpModal: false,
           levelUpData: null,
         });
