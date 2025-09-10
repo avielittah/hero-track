@@ -8,7 +8,7 @@ export type Level =
   | 'Project Builder' 
   | 'Pro Team Member';
 
-export const XPThresholds = [0, 50, 100, 150, 230, 280] as const;
+export const XPThresholds = [0, 100, 250, 450, 700, 1000] as const;
 
 export interface LearnerProgress {
   currentStage: StageId;

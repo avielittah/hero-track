@@ -14,7 +14,11 @@ export interface Trophy {
 interface LearningStore extends LearnerProgress {
   // XP and Level Management
   setCurrentStage: (stage: StageId) => void;
-  addXP: (amount: number) => Promise<{ leveledUp: boolean; newLevel?: Level; previousLevel?: Level }>;
+  addXP: (amount: number, source?: string) => Promise<{ leveledUp: boolean; newLevel?: Level; previousLevel?: Level }>;
+  
+  // Dynamic XP System
+  awardStageXP: (stage: StageId) => Promise<{ leveledUp: boolean; newLevel?: Level; previousLevel?: Level }>;
+  awardTaskXP: (taskType: 'task' | 'quiz' | 'project' | 'interaction') => Promise<{ leveledUp: boolean; newLevel?: Level; previousLevel?: Level }>;
   
   // Authentication
   login: (username: string) => void;
@@ -28,6 +32,11 @@ interface LearningStore extends LearnerProgress {
   resetProgress: () => void;
   getCurrentLevelIndex: () => number;
   getXPProgressInCurrentLevel: () => { current: number; max: number; percentage: number };
+  
+  // Level Up Modal State
+  showLevelUpModal: boolean;
+  levelUpData: { newLevel: Level; previousLevel: Level; currentXP: number } | null;
+  setLevelUpModal: (show: boolean) => void;
 }
 
 const getLevelFromXP = (xp: number): Level => {
@@ -81,6 +90,8 @@ export const useLearningStore = create<LearningStore>()(
     (set, get) => ({
       ...initialState,
       trophies: [],
+      showLevelUpModal: false,
+      levelUpData: null,
       
       setCurrentStage: (stage: StageId) => {
         const current = get();
@@ -99,7 +110,7 @@ export const useLearningStore = create<LearningStore>()(
         });
       },
 
-      addXP: async (amount: number) => {
+      addXP: async (amount: number, source?: string) => {
         const current = get();
         const previousLevel = current.level;
         const previousLevelIndex = getLevelIndex(previousLevel);
@@ -114,11 +125,60 @@ export const useLearningStore = create<LearningStore>()(
           level: newLevel,
         });
 
+        // Show level up modal if user leveled up
+        if (leveledUp) {
+          set({
+            showLevelUpModal: true,
+            levelUpData: {
+              newLevel,
+              previousLevel,
+              currentXP: newXP,
+            },
+          });
+        }
+
         return {
           leveledUp,
           newLevel: leveledUp ? newLevel : undefined,
           previousLevel: leveledUp ? previousLevel : undefined,
         };
+      },
+
+      // Dynamic XP System - Award XP based on stage completion
+      awardStageXP: async (stage: StageId) => {
+        const stageXPMap: Record<StageId, number> = {
+          1: 50,   // Welcome & Onboarding
+          2: 75,   // Orientation Checklist  
+          3: 100,  // Technical Orientation
+          4: 125,  // Advanced Skills
+          5: 150,  // Project Work
+          6: 175,  // Collaboration
+          7: 200,  // Leadership
+          8: 250,  // Mastery & Graduation
+        };
+        
+        const xpAmount = stageXPMap[stage] || 50;
+        return get().addXP(xpAmount, `Stage ${stage} Completion`);
+      },
+
+      // Award XP for different task types
+      awardTaskXP: async (taskType: 'task' | 'quiz' | 'project' | 'interaction') => {
+        const taskXPMap = {
+          task: 15,        // Regular task completion
+          quiz: 25,        // Quiz or assessment
+          project: 50,     // Project submission
+          interaction: 10, // Interactive elements
+        };
+        
+        const xpAmount = taskXPMap[taskType] || 10;
+        return get().addXP(xpAmount, `${taskType} completion`);
+      },
+
+      setLevelUpModal: (show: boolean) => {
+        set({ 
+          showLevelUpModal: show,
+          levelUpData: show ? get().levelUpData : null,
+        });
       },
 
       login: (username: string) => {
@@ -147,7 +207,12 @@ export const useLearningStore = create<LearningStore>()(
       },
 
       resetProgress: () => {
-        set({ ...initialState, trophies: [] });
+        set({ 
+          ...initialState, 
+          trophies: [],
+          showLevelUpModal: false,
+          levelUpData: null,
+        });
       },
 
       getCurrentLevelIndex: () => {
