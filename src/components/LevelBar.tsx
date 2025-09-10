@@ -38,6 +38,9 @@ export const LevelBar = () => {
             <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-1">
                 <span className="text-xs font-medium text-muted-foreground truncate">{t(level)}</span>
+                <span className="text-xs text-primary font-bold">
+                  {isMaxLevel ? 'MAX' : `${Math.round(((currentXP - currentThreshold) / (nextThreshold - currentThreshold)) * 100)}%`}
+                </span>
               </div>
               
               {/* Compact Gaming XP Bar */}
@@ -75,23 +78,42 @@ export const LevelBar = () => {
                   {isMaxLevel ? (
                     `${currentXP} XP`
                   ) : (
-                    `${currentXP - currentThreshold}/${nextThreshold - currentThreshold}`
+                    `${currentXP - currentThreshold}/${nextThreshold - currentThreshold} XP`
                   )}
                 </div>
               </div>
             </div>
           </div>
 
+          {/* Next Level Info */}
           {!isMaxLevel && (
             <motion.div 
-              className="text-right ml-2 hidden sm:block"
+              className="text-right ml-3 hidden sm:block"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="text-xs font-medium text-muted-foreground">Next</div>
-              <div className="text-xs font-semibold text-primary truncate max-w-20">
-                {t(['New Explorer', 'Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex + 1])?.split(' ')[0]}
+              <div className="text-xs font-medium text-muted-foreground">השלב הבא</div>
+              <div className="text-xs font-semibold text-primary truncate max-w-24">
+                {t(['Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex])}
+              </div>
+              <div className="text-[10px] text-muted-foreground mt-0.5">
+                {nextThreshold - currentXP} XP נותרים
+              </div>
+            </motion.div>
+          )}
+
+          {/* Mobile Next Level */}
+          {!isMaxLevel && (
+            <motion.div 
+              className="text-right ml-2 sm:hidden"
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="text-[10px] font-medium text-muted-foreground">הבא</div>
+              <div className="text-xs font-semibold text-primary">
+                {t(['Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex])?.split(' ')[0]}
               </div>
             </motion.div>
           )}
