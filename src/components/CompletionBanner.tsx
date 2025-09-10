@@ -9,7 +9,7 @@ interface CompletionBannerProps {
 export const CompletionBanner = ({ stageName, className = "" }: CompletionBannerProps) => {
   return (
     <motion.div
-      className={`bg-muted border-b border-border py-3 ${className}`}
+      className={`w-full bg-muted border-b border-border py-3 ${className}`}
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
