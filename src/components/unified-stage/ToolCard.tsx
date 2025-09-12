@@ -48,7 +48,6 @@ export function ToolCard({
           ? 'border-journey-complete bg-gradient-to-br from-journey-complete/5 to-journey-complete/10' 
           : 'border-border hover:border-primary/50 bg-card hover:shadow-lg'
         }
-        ${isDisabled ? 'opacity-60' : ''}
       `}>
         {/* Glow Effect for Completed */}
         {isCompleted && (
@@ -135,7 +134,6 @@ export function ToolCard({
                 ? 'bg-journey-complete hover:bg-journey-complete/90' 
                 : 'bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg hover:shadow-xl'
               }
-              ${isDisabled ? 'opacity-60 cursor-not-allowed' : ''}
             `}
           >
             <PlayCircle className="h-4 w-4 mr-2" />

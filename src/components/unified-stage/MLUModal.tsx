@@ -350,8 +350,8 @@ export function MLUModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden p-0">
-          <DialogHeader className="px-6 py-4 border-b">
+        <DialogContent className="w-[96vw] max-w-6xl h-[92vh] max-h-[92vh] p-0 overflow-hidden">
+          <DialogHeader className="px-6 py-4 border-b sticky top-0 z-10 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <h2 className="text-xl font-semibold">{unitData.title}</h2>
