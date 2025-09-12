@@ -514,31 +514,31 @@ export function MLUModal({
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="w-[98vw] max-w-7xl h-[95vh] max-h-[95vh] p-0 overflow-hidden">
-          <DialogHeader className="px-6 py-4 border-b sticky top-0 z-10 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+          <DialogHeader className="px-4 py-2 border-b sticky top-0 z-10 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-xl font-semibold">{unitData.title}</h2>
+                <h2 className="text-lg font-semibold">{unitData.title}</h2>
                 {unitData.subtitle && (
-                  <p className="text-sm text-muted-foreground">{unitData.subtitle}</p>
+                  <p className="text-xs text-muted-foreground">{unitData.subtitle}</p>
                 )}
               </div>
-              <div className="flex items-center gap-2">
-                {/* Ask Buddy Button */}
+              <div className="flex items-center gap-3">
+                {/* Ask Buddy Button - Enhanced */}
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowBuddyChat(!showBuddyChat)}
                   className={`
-                    flex items-center gap-2 transition-all duration-200 
+                    flex items-center gap-2 transition-all duration-200 font-medium
                     ${showBuddyChat 
-                      ? 'bg-primary text-primary-foreground border-primary' 
-                      : 'hover:bg-primary/10 hover:border-primary/50'
+                      ? 'bg-primary text-primary-foreground border-primary shadow-lg scale-105' 
+                      : 'hover:bg-primary/10 hover:border-primary/50 border-primary/30 text-primary hover:scale-105'
                     }
                   `}
                 >
                   <MessageCircle className="h-4 w-4" />
-                  Ask Buddy
-                  {showBuddyChat && <span className="text-xs">●</span>}
+                  <span className="font-semibold">Ask Buddy</span>
+                  {showBuddyChat && <span className="text-xs animate-pulse">●</span>}
                 </Button>
                 
                 <Button variant="ghost" size="sm" onClick={onClose}>
@@ -547,13 +547,13 @@ export function MLUModal({
               </div>
             </div>
             
-            {/* Stage XP Progress */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span>Stage Progress</span>
-                <span>{stageXP.earned} / {stageXP.total} XP</span>
+            {/* Compact Stage XP Progress */}
+            <div className="space-y-1 mt-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Stage Progress</span>
+                <span className="text-muted-foreground font-medium">{stageXP.earned} / {stageXP.total} XP</span>
               </div>
-              <Progress value={(stageXP.earned / stageXP.total) * 100} className="h-2" />
+              <Progress value={(stageXP.earned / stageXP.total) * 100} className="h-1.5" />
             </div>
           </DialogHeader>
 
