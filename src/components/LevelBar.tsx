@@ -4,6 +4,7 @@ import { Crown, Star, Trophy, Zap, Target, Book, Award, Shield, Gem } from 'luci
 import { useLearningStore } from '@/lib/store';
 import { XPThresholds } from '@/types/journey';
 import { Badge } from '@/components/ui/badge';
+import { skillProgress } from '@/lib/skillProgress';
 
 export const LevelBar = () => {
   const { t } = useTranslation();
@@ -16,11 +17,24 @@ export const LevelBar = () => {
   const totalTrophies = getTotalTrophyCount();
   const { newMedal } = checkForMedals();
 
-  // Determine skill levels based on progress
+  // Calculate skill progress based on level
+  const skillProgressData = skillProgress(levelIndex);
   const skills = [
-    { name: 'Learning', level: Math.min(Math.floor(currentXP / 50) + 1, 10), icon: Book },
-    { name: 'Problem Solving', level: Math.min(Math.floor(trophies.length * 2) + 1, 10), icon: Target },
-    { name: 'Technical', level: Math.min(Math.floor(mluTrophies.length) + 1, 10), icon: Zap },
+    { 
+      name: t('stage1:ui.skills.familiarity'), 
+      level: Math.round(skillProgressData.trainingFamiliarity / 10), 
+      icon: Book 
+    },
+    { 
+      name: t('stage1:ui.skills.mastery'), 
+      level: Math.round(skillProgressData.contentMastery / 10), 
+      icon: Target 
+    },
+    { 
+      name: t('stage1:ui.skills.applied'), 
+      level: Math.round(skillProgressData.appliedProficiency / 10), 
+      icon: Zap 
+    },
   ];
 
   const getMedalIcon = () => {

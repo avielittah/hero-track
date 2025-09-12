@@ -30,5 +30,12 @@
   "cta": {
     "start": "Let's Start Orientation →",
     "toast": "Great start! +{{xp}} XP"
+  },
+  "ui": {
+    "skills": {
+      "familiarity": "Training Familiarity",
+      "mastery": "Content Mastery",
+      "applied": "Applied Proficiency"
+    }
   }
 }
