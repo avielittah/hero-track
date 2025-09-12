@@ -10,6 +10,7 @@ interface DidYouKnowBoxProps {
   onClose?: () => void;
   onRewardClaim?: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
 export function DidYouKnowBox({
@@ -18,7 +19,8 @@ export function DidYouKnowBox({
   xpReward = 5,
   onClose,
   onRewardClaim,
-  className = ""
+  className = "",
+  disabled = false
 }: DidYouKnowBoxProps) {
   const [isRewardClaimed, setIsRewardClaimed] = useState(false);
 
@@ -72,7 +74,7 @@ export function DidYouKnowBox({
         </p>
 
         {/* XP Reward */}
-        {xpReward > 0 && !isRewardClaimed && (
+        {xpReward > 0 && !isRewardClaimed && !disabled && (
           <div className="pt-2">
             <Button
               onClick={handleClaimReward}
@@ -84,7 +86,7 @@ export function DidYouKnowBox({
           </div>
         )}
 
-        {isRewardClaimed && (
+        {(isRewardClaimed || disabled) && (
           <div className="flex items-center gap-2 text-xs text-blue-700 dark:text-blue-300">
             <span className="text-sm">✅</span>
             <span>+{xpReward} XP earned!</span>

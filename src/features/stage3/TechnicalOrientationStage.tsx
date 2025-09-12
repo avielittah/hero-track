@@ -6,6 +6,7 @@ import { StageSummary } from '@/components/unified-stage/StageSummary';
 import { DidYouKnowBox } from '@/components/unified-stage/DidYouKnowBox';
 import { MiniQuiz } from '@/components/unified-stage/MiniQuiz';
 import { TooltipTip, HelpTip, InfoBadgeTip } from '@/components/unified-stage/TooltipTip';
+import { MLUModal } from '@/components/unified-stage/MLUModal';
 import { DrawIOUnit } from './units/DrawIOUnit';
 import { VLCUnit } from './units/VLCUnit';
 import { useLearningStore } from '@/lib/store';
@@ -29,6 +30,8 @@ export function TechnicalOrientationStage() {
   const [activeUnit, setActiveUnit] = useState<string | null>(null);
   const [showDidYouKnow, setShowDidYouKnow] = useState(true);
   const [earnedBonusXP, setEarnedBonusXP] = useState(0);
+  const [showMLUModal, setShowMLUModal] = useState(false);
+  const [currentMLUData, setCurrentMLUData] = useState<any>(null);
 
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
@@ -40,25 +43,23 @@ export function TechnicalOrientationStage() {
     (vlcSubmitted ? stage3Content.units.vlc.xpOnSubmit : 0) +
     earnedBonusXP;
 
-  const handleDrawioSubmit = () => {
+  const handleDrawioSubmit = (earnedXP: number) => {
     setDrawioSubmitted(true);
-    setActiveUnit(null);
-    // Award XP and show toast
-    addXP(stage3Content.units.drawio.xpOnSubmit);
+    setShowMLUModal(false);
+    setCurrentMLUData(null);
     toast({
       title: "Draw.io Unit Complete! 🎉",
-      description: `+${stage3Content.units.drawio.xpOnSubmit} XP earned!`,
+      description: `+${earnedXP} XP earned!`,
     });
   };
 
-  const handleVlcSubmit = () => {
+  const handleVlcSubmit = (earnedXP: number) => {
     setVlcSubmitted(true);
-    setActiveUnit(null);
-    // Award XP and show toast
-    addXP(stage3Content.units.vlc.xpOnSubmit);
+    setShowMLUModal(false);
+    setCurrentMLUData(null);
     toast({
       title: "VLC Unit Complete! 🎉",
-      description: `+${stage3Content.units.vlc.xpOnSubmit} XP earned!`,
+      description: `+${earnedXP} XP earned!`,
     });
   };
 
@@ -103,6 +104,121 @@ export function TechnicalOrientationStage() {
       xpEarned: vlcSubmitted ? stage3Content.units.vlc.xpOnSubmit : undefined
     }
   ];
+
+  const handleUnitStart = (unitId: string) => {
+    if (unitId === 'drawio') {
+      setCurrentMLUData({
+        id: 'drawio',
+        title: 'Draw.io Diagrams',
+        subtitle: 'Master visual communication for engineering systems',
+        estimatedTime: '~15 min',
+        objective: stage3Content.units.drawio.objective,
+        background: stage3Content.units.drawio.background,
+        icon: <PenTool className="h-6 w-6" />,
+        visual: {
+          type: 'diagram',
+          alt: 'System architecture flow diagram',
+          caption: 'Sample Draw.io Diagram'
+        },
+        video: {
+          type: 'placeholder',
+          title: 'Draw.io Tutorial Video',
+          url: stage3Content.units.drawio.videoUrl
+        },
+        tasks: [
+          {
+            type: 'bullet-list',
+            content: stage3Content.units.drawio.tasks || [
+              'Open Draw.io in your browser',
+              'Create a simple system diagram',
+              'Export your diagram as PNG',
+              'Submit your work below'
+            ]
+          }
+        ],
+        quiz: {
+          questions: [
+            {
+              type: 'multiple-choice',
+              question: 'What is Draw.io primarily used for?',
+              options: ['Creating diagrams', 'Video editing', 'Text processing', 'File compression'],
+              correctIndex: 0
+            },
+            {
+              type: 'open-question',
+              question: 'Describe one advantage of using Draw.io for engineering documentation.'
+            },
+            {
+              type: 'file-upload',
+              question: 'Upload your Draw.io diagram (PNG format)'
+            }
+          ],
+          xpReward: 15
+        },
+        didYouKnow: {
+          title: '💡 Pro Tip',
+          content: 'Draw.io can automatically save your diagrams to Google Drive, OneDrive, or GitHub! This makes collaboration with your team super easy.',
+          xpReward: 5
+        },
+        baseXP: stage3Content.units.drawio.xpOnSubmit,
+        totalXP: stage3Content.units.drawio.xpOnSubmit + 15 + 5
+      });
+    } else if (unitId === 'vlc') {
+      setCurrentMLUData({
+        id: 'vlc',
+        title: 'VLC Media Player',
+        subtitle: 'Analyze communication streams like a pro',
+        estimatedTime: '~12 min',
+        objective: stage3Content.units.vlc.objective,
+        background: stage3Content.units.vlc.background,
+        icon: <Play className="h-6 w-6" />,
+        visual: {
+          type: 'placeholder',
+          alt: 'VLC interface showing stream analysis',
+          caption: 'VLC Stream Analysis Interface'
+        },
+        video: {
+          type: 'placeholder',
+          title: 'VLC Advanced Features',
+          url: stage3Content.units.vlc.videoUrl
+        },
+        tasks: [
+          {
+            type: 'numbered-list',
+            content: stage3Content.units.vlc.tasks || [
+              'Download and install VLC Media Player',
+              'Open a sample audio/video file',
+              'Explore the codec information panel',
+              'Try the spectrum analyzer feature'
+            ]
+          }
+        ],
+        quiz: {
+          questions: [
+            {
+              type: 'multiple-choice',
+              question: 'What makes VLC special for engineers?',
+              options: ['Only plays videos', 'Shows detailed codec info', 'Edits videos', 'Compresses files'],
+              correctIndex: 1
+            },
+            {
+              type: 'open-question',
+              question: 'What information can you learn about a media file using VLC?'
+            }
+          ],
+          xpReward: 12
+        },
+        didYouKnow: {
+          title: '🎵 Fun Fact',
+          content: 'VLC can play almost any media format without additional codec downloads! It even works with damaged or incomplete files.',
+          xpReward: 3
+        },
+        baseXP: stage3Content.units.vlc.xpOnSubmit,
+        totalXP: stage3Content.units.vlc.xpOnSubmit + 12 + 3
+      });
+    }
+    setShowMLUModal(true);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -171,7 +287,7 @@ export function TechnicalOrientationStage() {
             isCompleted={drawioSubmitted}
             videoUrl={stage3Content.units.drawio.videoUrl}
             toolLink={stage3Content.units.drawio.toolLink}
-            onStart={() => setActiveUnit('drawio')}
+            onStart={() => handleUnitStart('drawio')}
             isDisabled={isPreviewMode && !drawioSubmitted}
           />
 
@@ -184,7 +300,7 @@ export function TechnicalOrientationStage() {
             isCompleted={vlcSubmitted}
             videoUrl={stage3Content.units.vlc.videoUrl}
             toolLink={stage3Content.units.vlc.toolLink}
-            onStart={() => setActiveUnit('vlc')}
+            onStart={() => handleUnitStart('vlc')}
             isDisabled={isPreviewMode && !vlcSubmitted}
           />
         </div>
@@ -219,60 +335,23 @@ export function TechnicalOrientationStage() {
           </motion.div>
         )}
 
-        {/* Active Unit Modal/Content */}
-        <AnimatePresence>
-          {activeUnit === 'drawio' && !isPreviewMode && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto"
-            >
-              <div className="container mx-auto px-4 py-8 max-w-4xl">
-                <div className="bg-card rounded-2xl border-2 p-6">
-                  <DrawIOUnit
-                    isSubmitted={drawioSubmitted}
-                    onSubmit={handleDrawioSubmit}
-                  />
-                  <div className="mt-6 text-center">
-                    <button
-                      onClick={() => setActiveUnit(null)}
-                      className="text-muted-foreground hover:text-foreground underline"
-                    >
-                      ← Back to Stage Overview
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activeUnit === 'vlc' && !isPreviewMode && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto"
-            >
-              <div className="container mx-auto px-4 py-8 max-w-4xl">
-                <div className="bg-card rounded-2xl border-2 p-6">
-                  <VLCUnit
-                    isSubmitted={vlcSubmitted}
-                    onSubmit={handleVlcSubmit}
-                  />
-                  <div className="mt-6 text-center">
-                    <button
-                      onClick={() => setActiveUnit(null)}
-                      className="text-muted-foreground hover:text-foreground underline"
-                    >
-                      ← Back to Stage Overview
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* MLU Modal */}
+        {showMLUModal && currentMLUData && (
+          <MLUModal
+            isOpen={showMLUModal}
+            onClose={() => {
+              setShowMLUModal(false);
+              setCurrentMLUData(null);
+            }}
+            unitData={currentMLUData}
+            stageXP={{
+              earned: earnedXP,
+              total: stage3Content.xpTotalTarget
+            }}
+            onComplete={currentMLUData.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit}
+            isCompleted={currentMLUData.id === 'drawio' ? drawioSubmitted : vlcSubmitted}
+          />
+        )}
 
         {/* Stage Summary */}
         {!isPreviewMode && (
