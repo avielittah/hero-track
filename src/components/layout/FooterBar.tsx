@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Shield } from 'lucide-react';
+import { Shield, Trophy, Medal, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdminStore } from '@/lib/admin';
+import { useLearningStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { AdminGate } from '@/features/admin/AdminGate';
 import { CookieSettingsModal } from '@/components/CookieSettingsModal';
 
@@ -18,10 +20,13 @@ export const FooterBar: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const { adminMode, disableAdmin } = useAdminStore();
+  const { trophies, mluTrophies, getTotalTrophyCount, checkForMedals } = useLearningStore();
   const [showAdminGate, setShowAdminGate] = useState(false);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
   
   const isRTL = i18n.language === 'he';
+  const totalTrophies = getTotalTrophyCount();
+  const { totalTrophies: medalCheck } = checkForMedals();
 
   const handleDisableAdmin = () => {
     disableAdmin();
@@ -46,12 +51,32 @@ export const FooterBar: React.FC = () => {
           <div className="px-4 py-2 min-h-[40px]">
             {/* Desktop Layout */}
             <div className="hidden md:flex items-center justify-between gap-4 text-xs text-slate-500">
-              {/* Brand - Left (Right in RTL) */}
-              <div className={`flex items-center gap-2 ${isRTL ? 'order-3' : 'order-1'}`}>
-                <div className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
-                  <span className="text-xs font-bold text-primary">T</span>
+              {/* Brand & Trophies - Left (Right in RTL) */}
+              <div className={`flex items-center gap-4 ${isRTL ? 'order-3' : 'order-1'}`}>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">T</span>
+                  </div>
+                  <span className="font-medium">{t('ui.footer.brand')}</span>
                 </div>
-                <span className="font-medium">{t('ui.footer.brand')}</span>
+                
+                {/* Trophy Collection */}
+                {totalTrophies > 0 && (
+                  <div className="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-md">
+                    <Trophy className="h-3 w-3 text-amber-600" />
+                    <span className="text-xs font-medium text-amber-700 dark:text-amber-400">
+                      {totalTrophies}
+                    </span>
+                    
+                    {/* Medal indicators */}
+                    {totalTrophies >= 5 && (
+                      <Badge variant="secondary" className="h-4 text-xs px-1">
+                        <Medal className="h-2 w-2 mr-1" />
+                        {totalTrophies >= 100 ? '💎' : totalTrophies >= 50 ? '🏆' : totalTrophies >= 20 ? '🥇' : totalTrophies >= 10 ? '🥈' : '🥉'}
+                      </Badge>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Legal Line - Center */}
@@ -136,11 +161,28 @@ export const FooterBar: React.FC = () => {
             <div className="md:hidden space-y-2 text-xs text-slate-500">
               {/* Brand and Admin */}
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary">T</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
+                      <span className="text-xs font-bold text-primary">T</span>
+                    </div>
+                    <span className="font-medium">{t('ui.footer.brand')}</span>
                   </div>
-                  <span className="font-medium">{t('ui.footer.brand')}</span>
+                  
+                  {/* Mobile Trophy Collection */}
+                  {totalTrophies > 0 && (
+                    <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded">
+                      <Trophy className="h-3 w-3 text-amber-600" />
+                      <span className="text-xs font-medium text-amber-700 dark:text-amber-400">
+                        {totalTrophies}
+                      </span>
+                      {totalTrophies >= 5 && (
+                        <span className="text-xs">
+                          {totalTrophies >= 100 ? '💎' : totalTrophies >= 50 ? '🏆' : totalTrophies >= 20 ? '🥇' : totalTrophies >= 10 ? '🥈' : '🥉'}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="flex items-center gap-1">

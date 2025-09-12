@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Confetti from 'react-confetti';
 import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb, MessageCircle, Send } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -81,7 +82,7 @@ export function MLUModal({
   onComplete, 
   isCompleted = false 
 }: MLUModalProps) {
-  const { addXP, level: currentLevel, currentXP } = useLearningStore();
+  const { addXP, level: currentLevel, currentXP, awardMLUTrophy, checkForMedals } = useLearningStore();
   const { toast } = useToast();
   
   // State management
@@ -101,6 +102,11 @@ export function MLUModal({
     timestamp: Date;
   }>>([]);
   const [buddyInputValue, setBuddyInputValue] = useState('');
+
+  // Confetti state
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [showTrophyModal, setShowTrophyModal] = useState(false);
+  const [awardedTrophy, setAwardedTrophy] = useState<any>(null);
 
   // Sections progress
   const sectionsOrder = ['background','learning','tasks','quiz','didYouKnow','feedback'] as const;
@@ -310,28 +316,58 @@ export function MLUModal({
       // Award XP and check for level up
       const result = await addXP(totalEarnedXP);
       
+      // Award MLU Trophy
+      const trophy = awardMLUTrophy(unitData.id, unitData.title, 3); // Assuming stage 3 for now
+      setAwardedTrophy(trophy);
+      
+      // Check for medals
+      const medalCheck = checkForMedals();
+      
+      // Start confetti celebration
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000); // 5 seconds of confetti
+      
+      // Show trophy modal
+      setShowTrophyModal(true);
+      
       // Show level up modal if leveled up
       if (result.leveledUp && result.newLevel && result.previousLevel) {
         setLevelUpData({
           newLevel: result.newLevel,
           previousLevel: result.previousLevel,
         });
-        setShowLevelUpModal(true);
+        // Show level up after trophy modal
+        setTimeout(() => {
+          setShowTrophyModal(false);
+          setShowLevelUpModal(true);
+        }, 3000);
+      } else {
+        // Just show trophy for 3 seconds then close
+        setTimeout(() => {
+          setShowTrophyModal(false);
+          // Complete the unit and return to stage
+          onComplete(totalEarnedXP);
+          setTimeout(() => {
+            onClose();
+          }, 500);
+        }, 3000);
       }
 
-      // Show completion toast with confetti effect
+      // Show completion toast
       toast({
-        title: "Unit Completed! 🎉",
-        description: `Amazing work! You earned ${totalEarnedXP} XP total!`,
+        title: "MLU Completed! 🎉",
+        description: `Amazing work! You earned ${totalEarnedXP} XP and a trophy!`,
       });
 
-      // Complete the unit
-      onComplete(totalEarnedXP);
-      
-      // Small delay then close
-      setTimeout(() => {
-        onClose();
-      }, 1000);
+      // If there's a new medal, show it
+      if (medalCheck.newMedal) {
+        setTimeout(() => {
+          toast({
+            title: `🏅 New Medal Earned!`,
+            description: `You've unlocked: ${medalCheck.newMedal}`,
+          });
+        }, 1000);
+      }
       
     } catch (error) {
       toast({
@@ -1095,6 +1131,54 @@ export function MLUModal({
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Confetti */}
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={200}
+          gravity={0.1}
+          colors={['#7C3AED', '#F97316', '#10B981', '#F59E0B', '#EF4444', '#3B82F6']}
+        />
+      )}
+
+      {/* Trophy Celebration Modal */}
+      {showTrophyModal && awardedTrophy && (
+        <Dialog open={showTrophyModal} onOpenChange={() => {}}>
+          <DialogContent className="max-w-md text-center">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <div className="mx-auto w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                <Trophy className="h-12 w-12 text-white" />
+              </div>
+              
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-primary">🏆 MLU Completed!</h2>
+                <h3 className="text-lg font-semibold">{awardedTrophy.unitName}</h3>
+                <p className="text-muted-foreground">
+                  You've earned a trophy for completing this learning unit!
+                </p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-muted/50 rounded-lg p-4"
+              >
+                <p className="text-sm text-muted-foreground">
+                  Trophy added to your collection in the bottom bar!
+                </p>
+              </motion.div>
+            </motion.div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {/* Level Up Modal */}
       {showLevelUpModal && levelUpData && (

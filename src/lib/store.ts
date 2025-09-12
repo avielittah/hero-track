@@ -11,6 +11,14 @@ export interface Trophy {
   awardedAt: string;
 }
 
+export interface MLUTrophy {
+  id: string;
+  unitId: string;
+  unitName: string;
+  stage: StageId;
+  awardedAt: string;
+}
+
 interface LearningStore extends LearnerProgress {
   // XP and Level Management
   setCurrentStage: (stage: StageId) => void;
@@ -24,9 +32,13 @@ interface LearningStore extends LearnerProgress {
   login: (username: string) => void;
   logout: () => void;
   
-  // Trophies
+  // Trophies & MLU System
   trophies: Trophy[];
+  mluTrophies: MLUTrophy[];
   awardTrophy: (stage: StageId) => void;
+  awardMLUTrophy: (unitId: string, unitName: string, stage: StageId) => MLUTrophy;
+  getTotalTrophyCount: () => number;
+  checkForMedals: () => { newMedal?: string; totalTrophies: number };
   
   // Utilities
   resetProgress: () => void;
@@ -91,6 +103,7 @@ export const useLearningStore = create<LearningStore>()(
     (set, get) => ({
       ...initialState,
       trophies: [],
+      mluTrophies: [],
       showLevelUpModal: false,
       levelUpData: null,
       
@@ -205,6 +218,48 @@ export const useLearningStore = create<LearningStore>()(
             trophies: [...current.trophies, trophy],
           });
         }
+      },
+
+      awardMLUTrophy: (unitId: string, unitName: string, stage: StageId) => {
+        const current = get();
+        const existingTrophy = current.mluTrophies.find(t => t.unitId === unitId);
+        
+        if (!existingTrophy) {
+          const newTrophy: MLUTrophy = {
+            id: `mlu-${unitId}-${Date.now()}`,
+            unitId,
+            unitName,
+            stage,
+            awardedAt: new Date().toISOString(),
+          };
+          
+          set({
+            mluTrophies: [...current.mluTrophies, newTrophy],
+          });
+          
+          return newTrophy;
+        }
+        
+        return existingTrophy;
+      },
+
+      getTotalTrophyCount: () => {
+        const current = get();
+        return current.trophies.length + current.mluTrophies.length;
+      },
+
+      checkForMedals: () => {
+        const totalTrophies = get().getTotalTrophyCount();
+        let newMedal: string | undefined;
+        
+        // Medal thresholds based on gaming standards
+        if (totalTrophies === 5) newMedal = "Bronze Collector";
+        else if (totalTrophies === 10) newMedal = "Silver Achiever";
+        else if (totalTrophies === 20) newMedal = "Gold Master";
+        else if (totalTrophies === 50) newMedal = "Platinum Legend";
+        else if (totalTrophies === 100) newMedal = "Diamond Champion";
+        
+        return { newMedal, totalTrophies };
       },
 
       resetProgress: () => {
