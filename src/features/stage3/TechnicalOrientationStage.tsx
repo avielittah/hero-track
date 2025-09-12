@@ -9,6 +9,7 @@ import { TooltipTip, HelpTip, InfoBadgeTip } from '@/components/unified-stage/To
 import { MLUModal } from '@/components/unified-stage/MLUModal';
 import { DrawIOUnit } from './units/DrawIOUnit';
 import { VLCUnit } from './units/VLCUnit';
+import { Button } from '@/components/ui/button';
 import { useLearningStore } from '@/lib/store';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { useToast } from '@/hooks/use-toast';
@@ -21,7 +22,7 @@ import { AnimatePresence } from 'framer-motion';
 export function TechnicalOrientationStage() {
   const { addXP, awardTrophy } = useLearningStore();
   const journeyState = useJourneyMachine();
-  const { completeCurrentStage, goToStage, viewMode } = journeyState;
+  const { completeCurrentStage, goToStage, viewMode, isStageCompleted } = journeyState;
   const { toast } = useToast();
 
   // Unit completion state
@@ -32,10 +33,13 @@ export function TechnicalOrientationStage() {
   const [earnedBonusXP, setEarnedBonusXP] = useState(0);
   const [showMLUModal, setShowMLUModal] = useState(false);
   const [currentMLUData, setCurrentMLUData] = useState<any>(null);
+  const [showLockModal, setShowLockModal] = useState(false);
 
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
   const adminBypass = isAdmin();
+  const stage2Completed = isStageCompleted(2);
+  const canAccessStage3 = stage2Completed || adminBypass;
   
   // Calculate total earned XP
   const earnedXP = 
@@ -106,6 +110,11 @@ export function TechnicalOrientationStage() {
   ];
 
   const handleUnitStart = (unitId: string) => {
+    // Check if user can access Stage 3
+    if (!canAccessStage3) {
+      setShowLockModal(true);
+      return;
+    }
     if (unitId === 'drawio') {
       setCurrentMLUData({
         id: 'drawio',
@@ -334,6 +343,62 @@ export function TechnicalOrientationStage() {
             />
           </motion.div>
         )}
+
+        {/* Stage Lock Modal */}
+        <AnimatePresence>
+          {showLockModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+              onClick={() => setShowLockModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                className="bg-card rounded-2xl border-2 p-8 max-w-md w-full text-center space-y-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="mx-auto w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold">Stage Locked 🔒</h3>
+                  <p className="text-muted-foreground">
+                    Please complete <strong>Stage 2 (Orientation Checklist)</strong> before starting Stage 3.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    This ensures you have the foundation needed for technical training!
+                  </p>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowLockModal(false)}
+                    className="flex-1"
+                  >
+                    Stay Here
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setShowLockModal(false);
+                      goToStage(2);
+                    }}
+                    className="flex-1 bg-gradient-to-r from-primary to-primary-700"
+                  >
+                    Go to Stage 2 →
+                  </Button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* MLU Modal */}
         {showMLUModal && currentMLUData && (

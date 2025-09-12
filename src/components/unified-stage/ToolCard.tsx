@@ -135,11 +135,11 @@ export function ToolCard({
                 ? 'bg-journey-complete hover:bg-journey-complete/90' 
                 : 'bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg hover:shadow-xl'
               }
+              ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
             `}
           >
             <PlayCircle className="h-4 w-4 mr-2" />
             {isCompleted ? "Review Unit" : "Start Learning →"}
-            {isDisabled && <span className="ml-2 text-xs">(Complete previous stage first)</span>}
           </Button>
         </CardContent>
       </Card>

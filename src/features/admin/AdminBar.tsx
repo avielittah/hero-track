@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Shield, X } from 'lucide-react';
+import { Shield, X, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdminStore } from '@/lib/admin';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
@@ -13,7 +13,7 @@ export const AdminBar: React.FC = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const { adminMode, disableAdmin } = useAdminStore();
-  const { currentStage, viewingStage, goToStage } = useJourneyMachine();
+  const { currentStage, viewingStage, goToStage, isStageCompleted, completeCurrentStage } = useJourneyMachine();
   const [showGate, setShowGate] = useState(false);
 
   const handleDisableAdmin = () => {
@@ -26,6 +26,27 @@ export const AdminBar: React.FC = () => {
 
   const handleStageJump = (stageId: string) => {
     goToStage(parseInt(stageId) as StageId);
+  };
+
+  const handleCompleteStage2 = () => {
+    // Navigate to stage 2 first if not there
+    if (currentStage !== 2) {
+      goToStage(2);
+    }
+    
+    // Force complete stage 2
+    if (!isStageCompleted(2)) {
+      completeCurrentStage();
+      toast({
+        title: "Admin: Stage 2 Completed",
+        description: "Stage 2 marked complete. Stage 3 now accessible.",
+      });
+    } else {
+      toast({
+        title: "Stage 2 Already Complete",
+        description: "Stage 2 is already completed.",
+      });
+    }
   };
 
   const showJumpControls = adminMode && (process.env.NODE_ENV === 'development' || adminMode);
@@ -48,21 +69,33 @@ export const AdminBar: React.FC = () => {
             </div>
             
             {showJumpControls && (
-              <div className="flex items-center gap-1">
-                <span className="text-xs text-muted-foreground">{t('ui.admin.stage')}:</span>
-                <Select value={viewingStage.toString()} onValueChange={handleStageJump}>
-                  <SelectTrigger className="w-16 h-7 text-xs">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 8 }, (_, i) => i + 1).map((stage) => (
-                      <SelectItem key={stage} value={stage.toString()}>
-                        {stage}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs text-muted-foreground">{t('ui.admin.stage')}:</span>
+                  <Select value={viewingStage.toString()} onValueChange={handleStageJump}>
+                    <SelectTrigger className="w-16 h-7 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 8 }, (_, i) => i + 1).map((stage) => (
+                        <SelectItem key={stage} value={stage.toString()}>
+                          {stage}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <Button
+                  onClick={handleCompleteStage2}
+                  size="sm"
+                  variant="outline"
+                  className="text-xs h-7 bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700"
+                >
+                  <CheckCircle className="h-3 w-3 mr-1" />
+                  Complete S2
+                </Button>
+              </>
             )}
           </div>
         ) : (
