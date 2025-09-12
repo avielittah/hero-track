@@ -102,6 +102,19 @@ export function MLUModal({
   }>>([]);
   const [buddyInputValue, setBuddyInputValue] = useState('');
 
+  // Sections progress
+  const sectionsOrder = ['background','learning','tasks','quiz','didYouKnow','feedback'] as const;
+  type SectionKey = typeof sectionsOrder[number];
+  const [completedSections, setCompletedSections] = useState<Record<SectionKey, boolean>>({
+    background: false,
+    learning: false,
+    tasks: false,
+    quiz: false,
+    didYouKnow: false,
+    feedback: false,
+  });
+  const unitProgress = Math.round((Object.values(completedSections).filter(Boolean).length / sectionsOrder.length) * 100);
+
   // Validation
   const isQuizValid = unitData.quiz.questions.every((_, index) => {
     const answer = quizAnswers[index];
@@ -109,7 +122,8 @@ export function MLUModal({
   });
   
   const isFeedbackValid = feedback.rating > 0;
-  const canComplete = isQuizValid && isFeedbackValid && !isCompleted;
+  const allSectionsComplete = Object.values(completedSections).every(Boolean);
+  const canComplete = allSectionsComplete && !isCompleted;
 
   // Reset state when modal opens
   useEffect(() => {
@@ -120,6 +134,14 @@ export function MLUModal({
       setQuizCompleted(false);
       setEarnedXP(0);
       setCompletedTasks({});
+      setCompletedSections({
+        background: false,
+        learning: false,
+        tasks: false,
+        quiz: false,
+        didYouKnow: false,
+        feedback: false,
+      });
       setBuddyChatMessages([{
         id: '1',
         type: 'buddy',
@@ -138,6 +160,39 @@ export function MLUModal({
     }));
   };
 
+  const isAllTasksCompleted = (): boolean => {
+    let total = 0;
+    let done = 0;
+    unitData.tasks.forEach((task, taskIndex) => {
+      if (task.type === 'numbered-list' || task.type === 'bullet-list') {
+        (task.content as string[]).forEach((_, itemIndex) => {
+          total += 1;
+          const key = taskIndex * 1000 + itemIndex;
+          if (completedTasks[key]) done += 1;
+        });
+      }
+    });
+    return total > 0 ? done === total : true;
+  };
+
+  const handleSectionToggle = (key: SectionKey) => {
+    setCompletedSections(prev => ({ ...prev, [key]: !prev[key] }));
+    toast({
+      title: prevSectionTitle(key) + (completedSections[key] ? ' בוטל' : ' הושלם ✓'),
+      description: 'התקדמות עודכנה בסרגל היחידה',
+    });
+  };
+
+  const prevSectionTitle = (key: SectionKey) => {
+    switch (key) {
+      case 'background': return 'רקע';
+      case 'learning': return 'תוכן לימודי';
+      case 'tasks': return 'Your Mission';
+      case 'quiz': return 'חידון קצר';
+      case 'didYouKnow': return 'ידעת?';
+      case 'feedback': return 'משוב';
+    }
+  };
   const handleSendBuddyMessage = () => {
     if (!buddyInputValue.trim()) return;
 
@@ -547,13 +602,13 @@ export function MLUModal({
               </div>
             </div>
             
-            {/* Compact Stage XP Progress */}
+            {/* Compact Unit Progress */}
             <div className="space-y-1 mt-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Stage Progress</span>
-                <span className="text-muted-foreground font-medium">{stageXP.earned} / {stageXP.total} XP</span>
+                <span className="text-muted-foreground">Unit Progress</span>
+                <span className="text-muted-foreground font-medium">{unitProgress}%</span>
               </div>
-              <Progress value={(stageXP.earned / stageXP.total) * 100} className="h-1.5" />
+              <Progress value={unitProgress} className="h-1.5" />
             </div>
           </DialogHeader>
 
@@ -615,6 +670,22 @@ export function MLUModal({
                     </CardHeader>
                     <CardContent>
                       <p className="text-muted-foreground leading-relaxed">{unitData.background}</p>
+                      <div className="mt-4 flex justify-end">
+                        <Button
+                          variant={completedSections.background ? 'secondary' : 'outline'}
+                          onClick={() => handleSectionToggle('background')}
+                          size="sm"
+                        >
+                          {completedSections.background ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 mr-2" />
+                              Section Completed
+                            </>
+                          ) : (
+                            'Mark Section Complete'
+                          )}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -662,6 +733,22 @@ export function MLUModal({
                             )}
                           </div>
                         ))}
+                        <div className="mt-4 flex justify-end">
+                          <Button
+                            variant={completedSections.learning ? 'secondary' : 'outline'}
+                            onClick={() => handleSectionToggle('learning')}
+                            size="sm"
+                          >
+                            {completedSections.learning ? (
+                              <>
+                                <CheckCircle2 className="h-4 w-4 mr-2" />
+                                Section Completed
+                              </>
+                            ) : (
+                              'Mark Section Complete'
+                            )}
+                          </Button>
+                        </div>
                       </CardContent>
                     </Card>
                   )}
@@ -714,6 +801,24 @@ export function MLUModal({
                     </CardHeader>
                     <CardContent>
                       {renderTasks()}
+                      <div className="mt-4 flex justify-end">
+                        <Button
+                          variant={completedSections.tasks ? 'secondary' : 'outline'}
+                          onClick={() => handleSectionToggle('tasks')}
+                          size="sm"
+                          disabled={!isAllTasksCompleted()}
+                          title={!isAllTasksCompleted() ? 'יש לסמן את כל המשימות כבוצעו' : undefined}
+                        >
+                          {completedSections.tasks ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 mr-2" />
+                              Section Completed
+                            </>
+                          ) : (
+                            'Mark Section Complete'
+                          )}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -735,6 +840,24 @@ export function MLUModal({
                     </CardHeader>
                     <CardContent>
                       {renderQuizQuestions()}
+                      <div className="mt-4 flex justify-end">
+                        <Button
+                          variant={completedSections.quiz ? 'secondary' : 'outline'}
+                          onClick={() => handleSectionToggle('quiz')}
+                          size="sm"
+                          disabled={!isQuizValid}
+                          title={!isQuizValid ? 'ענה על כל שאלות החידון' : undefined}
+                        >
+                          {completedSections.quiz ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 mr-2" />
+                              Section Completed
+                            </>
+                          ) : (
+                            'Mark Section Complete'
+                          )}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -752,6 +875,24 @@ export function MLUModal({
                     onRewardClaim={handleDidYouKnowClaim}
                     disabled={didYouKnowClaimed || isCompleted}
                   />
+                  <div className="mt-4 flex justify-end">
+                    <Button
+                      variant={completedSections.didYouKnow ? 'secondary' : 'outline'}
+                      onClick={() => handleSectionToggle('didYouKnow')}
+                      size="sm"
+                      disabled={!didYouKnowClaimed}
+                      title={!didYouKnowClaimed ? 'קבל/י את ה-XP של ידעת? לפני סימון סיום' : undefined}
+                    >
+                      {completedSections.didYouKnow ? (
+                        <>
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Section Completed
+                        </>
+                      ) : (
+                        'Mark Section Complete'
+                      )}
+                    </Button>
+                  </div>
                 </motion.div>
 
                 {/* 7. Feedback */}
@@ -773,6 +914,24 @@ export function MLUModal({
                         onChange={setFeedback}
                         disabled={isCompleted}
                       />
+                      <div className="mt-4 flex justify-end">
+                        <Button
+                          variant={completedSections.feedback ? 'secondary' : 'outline'}
+                          onClick={() => handleSectionToggle('feedback')}
+                          size="sm"
+                          disabled={!isFeedbackValid}
+                          title={!isFeedbackValid ? 'סמן/י דירוג והוסף/י הערה (לא חובה) כדי להשלים' : undefined}
+                        >
+                          {completedSections.feedback ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4 mr-2" />
+                              Section Completed
+                            </>
+                          ) : (
+                            'Mark Section Complete'
+                          )}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -799,8 +958,9 @@ export function MLUModal({
                             <div className="text-sm text-muted-foreground space-y-1">
                               <p>Still needed:</p>
                               <ul className="text-xs space-y-1">
-                                {!isQuizValid && <li>• Complete the quiz questions</li>}
-                                {!isFeedbackValid && <li>• Provide a rating (1-5 stars)</li>}
+                                {sectionsOrder.filter((k) => !completedSections[k]).map((k) => (
+                                  <li key={k}>• {prevSectionTitle(k)} – not completed yet</li>
+                                ))}
                               </ul>
                             </div>
                           )}
