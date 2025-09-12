@@ -224,30 +224,56 @@ export function TechnicalOrientationStage() {
     } else if (unitId === 'vlc') {
       setCurrentMLUData({
         id: 'vlc',
-        title: 'VLC Media Player',
-        subtitle: 'Analyze communication streams like a pro',
-        estimatedTime: '~12 min',
-        objective: stage3Content.units.vlc.objective,
-        background: stage3Content.units.vlc.background,
+        title: 'Media & Stream Basics with VLC',
+        subtitle: 'Analyze communication streams like a pro.',
+        estimatedTime: '~15 minutes',
+        objective: 'Master VLC Media Player as a powerful diagnostic tool for analyzing media streams, codecs, and communication protocols in engineering environments.',
+        background: 'VLC isn\'t just a media player - it\'s a sophisticated analysis tool that engineers use to inspect media streams, debug codec issues, and understand communication protocols. As a Communication Systems Engineer, you\'ll encounter various media formats, streaming protocols, and codec configurations. VLC provides deep insights into these technologies, helping you troubleshoot streaming issues, analyze signal quality, and verify protocol implementations in real-world communication systems.',
         icon: <Play className="h-6 w-6" />,
         visual: {
-          type: 'placeholder',
-          alt: 'VLC interface showing stream analysis',
-          caption: 'VLC Stream Analysis Interface'
+          type: 'diagram',
+          alt: 'VLC Stream Analysis: Input Stream → Codec Analysis → Quality Metrics → Output Visualization',
+          caption: 'Example: VLC Stream Analysis Interface'
         },
         video: {
           type: 'placeholder',
-          title: 'VLC Advanced Features',
-          url: stage3Content.units.vlc.videoUrl
+          title: 'VLC Advanced Features: Stream Analysis & Codec Investigation'
         },
+        learningContent: [
+          {
+            type: 'text',
+            content: 'VLC Media Player is built on a modular architecture that supports virtually every media format and streaming protocol. What makes it invaluable for engineers is its ability to display detailed codec information, stream statistics, and real-time analysis data that other players hide from users.'
+          },
+          {
+            type: 'text', 
+            content: 'The power of VLC for engineering work lies in its diagnostic capabilities. You can inspect H.264/H.265 encoding parameters, analyze bitrate fluctuations, examine streaming protocol headers, and even capture network streams for detailed analysis. The codec information panel reveals frame rates, resolution changes, audio sample rates, and compression artifacts that help identify communication issues.'
+          },
+          {
+            type: 'text',
+            content: 'Key engineering features include: real-time stream statistics, network protocol analysis (RTSP, HTTP, UDP), codec parameter inspection, audio spectrum analysis, and the ability to play corrupted or incomplete files for forensic analysis. VLC can also capture screenshots at precise timestamps and log detailed playback information for troubleshooting reports.'
+          },
+          {
+            type: 'text',
+            content: 'In communication systems projects, engineers use VLC to verify streaming implementations, debug codec configurations, analyze quality degradation in transmitted media, and test protocol compatibility. It\'s particularly valuable for validating video conferencing systems, broadcast equipment, and streaming media infrastructure before deployment.'
+          }
+        ],
         tasks: [
           {
+            type: 'text',
+            content: 'Your mission: Explore VLC\'s advanced analysis features by examining a media file\'s technical properties and stream characteristics. This hands-on exercise will prepare you for real-world media debugging scenarios.'
+          },
+          {
             type: 'numbered-list',
-            content: stage3Content.units.vlc.tasks || [
-              'Download and install VLC Media Player',
-              'Open a sample audio/video file',
-              'Explore the codec information panel',
-              'Try the spectrum analyzer feature'
+            content: [
+              'Download and install VLC Media Player (if not already installed)',
+              'Open any video file in VLC (or use a sample file from your computer)',
+              'Access Tools → Codec Information to view detailed stream data',
+              'Navigate to Tools → Messages to see the debug console output',
+              'Open View → Audio Effects → Spectrometer to see real-time frequency analysis',
+              'Try Media → Open Network Stream and test with a live stream URL',
+              'Examine the bitrate and codec details in the information panel',
+              'Take a screenshot of the codec information window',
+              'Document your findings and upload the screenshot below'
             ]
           }
         ],
@@ -255,24 +281,51 @@ export function TechnicalOrientationStage() {
           questions: [
             {
               type: 'multiple-choice',
-              question: 'What makes VLC special for engineers?',
-              options: ['Only plays videos', 'Shows detailed codec info', 'Edits videos', 'Compresses files'],
+              question: 'Where in VLC can you find detailed codec information and stream statistics for engineering analysis?',
+              options: [
+                'View → Playlist menu only',
+                'Tools → Codec Information panel', 
+                'Audio → Effects menu',
+                'Help → About section'
+              ],
               correctIndex: 1
             },
             {
-              type: 'open-question',
-              question: 'What information can you learn about a media file using VLC?'
+              type: 'multiple-choice',
+              question: 'Which VLC feature is most valuable for engineers analyzing audio stream quality and frequency response?',
+              options: [
+                'Volume control',
+                'Audio Effects → Spectrometer',
+                'Subtitle settings',
+                'Playback speed adjustment'
+              ],
+              correctIndex: 1
+            },
+            {
+              type: 'multiple-choice',
+              question: 'What makes VLC particularly useful for debugging streaming protocols in communication systems?',
+              options: [
+                'It only plays local files',
+                'It can analyze network streams and show protocol details',
+                'It converts all files to MP4',
+                'It requires special codecs for each format'
+              ],
+              correctIndex: 1
+            },
+            {
+              type: 'file-upload',
+              question: 'Upload your screenshot of VLC\'s codec information panel (PNG format, max 10MB). Include the stream details and technical parameters visible!'
             }
           ],
-          xpReward: 12
+          xpReward: 15
         },
         didYouKnow: {
-          title: '🎵 Fun Fact',
-          content: 'VLC can play almost any media format without additional codec downloads! It even works with damaged or incomplete files.',
-          xpReward: 3
+          title: 'Stream Forensics Power! 🕵️',
+          content: 'Did you know? VLC can play damaged, incomplete, or corrupted media files that other players reject! This makes it invaluable for forensic analysis of communication failures. Engineers use this feature to recover partial transmissions, analyze corrupted streams, and debug protocol implementations. VLC can even stream live content to multiple clients simultaneously, making it perfect for testing multicast scenarios in network deployments!',
+          xpReward: 2
         },
-        baseXP: stage3Content.units.vlc.xpOnSubmit,
-        totalXP: stage3Content.units.vlc.xpOnSubmit + 12 + 3
+        baseXP: 10,
+        totalXP: 27
       });
     }
     setShowMLUModal(true);
