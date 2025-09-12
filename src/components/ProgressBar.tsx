@@ -65,13 +65,13 @@ export const ProgressBar = () => {
 
   return (
     <motion.div 
-      className="bg-card border-b px-6 py-4"
+      className="bg-card border-b px-4 py-2"
       initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-lg font-semibold text-foreground mb-4">{t('journeyProgress')}</h2>
+        <h2 className="text-base font-medium text-foreground mb-3">{t('journeyProgress')}</h2>
         
         <div className="relative">
           {/* Progress Line */}
