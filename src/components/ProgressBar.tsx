@@ -65,7 +65,7 @@ export const ProgressBar = () => {
 
   return (
     <motion.div 
-      className="bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-b border-border/50 px-3 py-1.5"
+      className="bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-b border-border/50 px-3 py-2"
       initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1 }}
@@ -73,7 +73,7 @@ export const ProgressBar = () => {
       <div className="max-w-7xl mx-auto">
         <div className="relative">
           {/* Gaming-style progress track */}
-          <div className="relative h-2 bg-gradient-to-r from-muted/30 to-muted/60 rounded-full overflow-hidden">
+          <div className="relative h-2 bg-gradient-to-r from-muted/30 to-muted/60 rounded-full overflow-hidden mb-6">
             {/* Animated progress fill */}
             <motion.div
               className="h-full bg-gradient-to-r from-primary via-primary/80 to-primary rounded-full relative overflow-hidden"
@@ -99,7 +99,7 @@ export const ProgressBar = () => {
               return (
                 <motion.div
                   key={stageId}
-                  className={`relative group ${isClickableStage ? 'cursor-pointer' : 'cursor-default'}`}
+                  className={`relative group ${isClickableStage ? 'cursor-pointer' : 'cursor-default'} flex flex-col items-center`}
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ 
@@ -109,7 +109,7 @@ export const ProgressBar = () => {
                     stiffness: 150
                   }}
                   onClick={() => handleStageClick(stageId)}
-                  whileHover={isClickableStage ? { scale: 1.15 } : {}}
+                  whileHover={isClickableStage ? { scale: 1.05 } : {}}
                 >
                   {/* Gaming-style node */}
                   <div className={`
@@ -135,10 +135,27 @@ export const ProgressBar = () => {
                     )}
                   </div>
 
+                  {/* Stage label */}
+                  <div className="mt-2 text-center">
+                    <div className={`text-xs font-medium transition-colors duration-300 ${getStageColor(stageId)}`}>
+                      {t('stage', { number: stageId })}
+                    </div>
+                    {status === 'current' && (
+                      <motion.div
+                        className="text-[10px] text-primary font-medium mt-0.5"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        {t('current')}
+                      </motion.div>
+                    )}
+                  </div>
+
                   {/* Pulsing effect for current stage */}
                   {status === 'current' && (
                     <motion.div
-                      className="absolute inset-0 rounded-full bg-primary/30 -z-10"
+                      className="absolute top-0 inset-x-0 h-6 rounded-full bg-primary/30 -z-10"
                       animate={{ 
                         scale: [1, 1.4, 1],
                         opacity: [0.3, 0.6, 0.3]
@@ -149,16 +166,6 @@ export const ProgressBar = () => {
                         ease: "easeInOut"
                       }}
                     />
-                  )}
-
-                  {/* Gaming-style tooltip on hover */}
-                  {isClickableStage && (
-                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                      <div className="bg-popover border border-border rounded px-2 py-1 text-xs font-medium text-popover-foreground whitespace-nowrap shadow-lg">
-                        {t('stage', { number: stageId })}
-                        {status === 'current' && ` • ${t('current')}`}
-                      </div>
-                    </div>
                   )}
                 </motion.div>
               );
