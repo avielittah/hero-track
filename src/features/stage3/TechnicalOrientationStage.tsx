@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { CompletionBanner } from '@/components/CompletionBanner';
-import { ToolUnitCard } from './ToolUnitCard';
+import { StageIntro } from '@/components/unified-stage/StageIntro';
+import { ToolCard } from '@/components/unified-stage/ToolCard';
+import { StageSummary } from '@/components/unified-stage/StageSummary';
+import { DidYouKnowBox } from '@/components/unified-stage/DidYouKnowBox';
+import { MiniQuiz } from '@/components/unified-stage/MiniQuiz';
 import { DrawIOUnit } from './units/DrawIOUnit';
 import { VLCUnit } from './units/VLCUnit';
 import { useLearningStore } from '@/lib/store';
@@ -11,8 +12,9 @@ import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { useToast } from '@/hooks/use-toast';
 import { stage3Content } from './stage3.content';
 import { isAdmin } from '@/lib/admin';
-import { Clock, Lightbulb, ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Wrench, PenTool, Play, Lightbulb } from 'lucide-react';
+import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 export function TechnicalOrientationStage() {
   const { addXP, awardTrophy } = useLearningStore();
@@ -23,30 +25,56 @@ export function TechnicalOrientationStage() {
   // Unit completion state
   const [drawioSubmitted, setDrawioSubmitted] = useState(false);
   const [vlcSubmitted, setVlcSubmitted] = useState(false);
+  const [activeUnit, setActiveUnit] = useState<string | null>(null);
+  const [showDidYouKnow, setShowDidYouKnow] = useState(true);
+  const [earnedBonusXP, setEarnedBonusXP] = useState(0);
 
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
   const adminBypass = isAdmin();
+  
+  // Calculate total earned XP
+  const earnedXP = 
+    (drawioSubmitted ? stage3Content.units.drawio.xpOnSubmit : 0) +
+    (vlcSubmitted ? stage3Content.units.vlc.xpOnSubmit : 0) +
+    earnedBonusXP;
 
   const handleDrawioSubmit = () => {
     setDrawioSubmitted(true);
+    setActiveUnit(null);
+    // Award XP and show toast
+    addXP(stage3Content.units.drawio.xpOnSubmit);
+    toast({
+      title: "Draw.io Unit Complete! 🎉",
+      description: `+${stage3Content.units.drawio.xpOnSubmit} XP earned!`,
+    });
   };
 
   const handleVlcSubmit = () => {
     setVlcSubmitted(true);
+    setActiveUnit(null);
+    // Award XP and show toast
+    addXP(stage3Content.units.vlc.xpOnSubmit);
+    toast({
+      title: "VLC Unit Complete! 🎉",
+      description: `+${stage3Content.units.vlc.xpOnSubmit} XP earned!`,
+    });
+  };
+
+  const handleBonusXPClaim = (amount: number) => {
+    setEarnedBonusXP(prev => prev + amount);
+    addXP(amount);
+    toast({
+      title: "Bonus XP! 💡",
+      description: `+${amount} XP for your curiosity!`,
+    });
   };
 
   const handleStageComplete = () => {
     if (!canComplete && !adminBypass) return;
 
-    // Calculate total XP from submitted units
-    let totalXP = 0;
-    if (drawioSubmitted) totalXP += stage3Content.units.drawio.xpOnSubmit;
-    if (vlcSubmitted) totalXP += stage3Content.units.vlc.xpOnSubmit;
-
-    // Award XP and trophy
-    addXP(totalXP);
-    awardTrophy(3); // Stage 3 trophy
+    // Award trophy for stage completion
+    awardTrophy(3);
 
     // Complete stage and advance
     completeCurrentStage();
@@ -54,10 +82,26 @@ export function TechnicalOrientationStage() {
 
     // Show completion toast
     toast({
-      title: stage3Content.toastDone.replace('{{xp}}', totalXP.toString()),
-      description: `🏆 Trophy earned: ${stage3Content.trophyOnComplete}`,
+      title: `🏆 Stage Complete! ${stage3Content.trophyOnComplete}`,
+      description: "Ready for hands-on practice!",
     });
   };
+
+  // Prepare units data for summary
+  const units = [
+    {
+      id: 'drawio',
+      title: stage3Content.units.drawio.title,
+      isCompleted: drawioSubmitted,
+      xpEarned: drawioSubmitted ? stage3Content.units.drawio.xpOnSubmit : undefined
+    },
+    {
+      id: 'vlc', 
+      title: stage3Content.units.vlc.title,
+      isCompleted: vlcSubmitted,
+      xpEarned: vlcSubmitted ? stage3Content.units.vlc.xpOnSubmit : undefined
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,158 +110,160 @@ export function TechnicalOrientationStage() {
         <CompletionBanner stageName="Technical Orientation" />
       )}
       
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        {/* Stage Intro */}
+        <StageIntro
+          title={stage3Content.title}
+          description={stage3Content.intro}
+          estimatedTime={stage3Content.estTime}
+          xpTarget={stage3Content.xpTotalTarget}
+          icon={<Wrench className="h-8 w-8" />}
+        />
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-6 mb-8"
-        >
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold text-foreground">
-              {stage3Content.title}
-            </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {stage3Content.intro}
-            </p>
-            
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Clock className="h-4 w-4" />
-                {stage3Content.estTime}
-              </div>
-              <Badge variant="outline">
-                Target: {stage3Content.xpTotalTarget} XP
-              </Badge>
-            </div>
-          </div>
-        </motion.div>
+        {/* Did You Know Box */}
+        <AnimatePresence>
+          {showDidYouKnow && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="mb-8"
+            >
+              <DidYouKnowBox
+                title="💡 Did You Know?"
+                content="Draw.io was originally called 'Diagrams.net' and is completely free! Many engineers use it for system architecture because it runs entirely in your browser - no installation needed!"
+                xpReward={5}
+                onClose={() => setShowDidYouKnow(false)}
+                onRewardClaim={() => handleBonusXPClaim(5)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <Separator className="mb-8" />
-
-        {/* Tool Units */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="space-y-6 mb-8"
-        >
-          {/* Instructions */}
-          <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              How to complete this stage:
-            </h3>
-            <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-              <li>1. Click "Start Learning" on each unit below</li>
-              <li>2. Watch tutorials and complete the activities</li>
-              <li>3. Submit your work to earn XP</li>
-              <li>4. Complete both units to advance</li>
-            </ol>
-          </div>
-
-          {/* Draw.io Unit */}
-          <ToolUnitCard
+        {/* Tool Cards Grid */}
+        <div className="grid gap-8 mb-8">
+          <ToolCard
             id="drawio"
             title={stage3Content.units.drawio.title}
-            objective={stage3Content.units.drawio.objective}
+            description={stage3Content.units.drawio.objective}
             estimatedTime={stage3Content.units.drawio.estimatedTime}
+            icon={<PenTool className="h-6 w-6" />}
+            isCompleted={drawioSubmitted}
             videoUrl={stage3Content.units.drawio.videoUrl}
             toolLink={stage3Content.units.drawio.toolLink}
-            isSubmitted={drawioSubmitted}
+            onStart={() => setActiveUnit('drawio')}
             isDisabled={isPreviewMode && !drawioSubmitted}
-          >
-            <DrawIOUnit
-              isSubmitted={drawioSubmitted}
-              onSubmit={handleDrawioSubmit}
-            />
-          </ToolUnitCard>
+          />
 
-          {/* VLC Unit */}
-          <ToolUnitCard
+          <ToolCard
             id="vlc"
             title={stage3Content.units.vlc.title}
-            objective={stage3Content.units.vlc.objective}
+            description={stage3Content.units.vlc.objective}
             estimatedTime={stage3Content.units.vlc.estimatedTime}
+            icon={<Play className="h-6 w-6" />}
+            isCompleted={vlcSubmitted}
             videoUrl={stage3Content.units.vlc.videoUrl}
             toolLink={stage3Content.units.vlc.toolLink}
-            isSubmitted={vlcSubmitted}
+            onStart={() => setActiveUnit('vlc')}
             isDisabled={isPreviewMode && !vlcSubmitted}
-          >
-            <VLCUnit
-              isSubmitted={vlcSubmitted}
-              onSubmit={handleVlcSubmit}
-            />
-          </ToolUnitCard>
-        </motion.div>
+          />
+        </div>
 
-        {/* Buddy Nudge */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mb-8 p-4 bg-primary/5 rounded-lg border border-primary/20"
-        >
-          <div className="flex items-start gap-3">
-            <Lightbulb className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                {stage3Content.buddyNudge}
-              </p>
-              <Button
-                variant="link"
-                size="sm"
-                asChild
-                className="h-auto p-0 text-primary"
-              >
-                <a 
-                  href={import.meta.env.VITE_BUDDY_URL || '#'} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  Ask Buddy →
-                </a>
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Stage Completion */}
-        {!isPreviewMode && (
+        {/* Mini Quiz */}
+        {(drawioSubmitted || vlcSubmitted) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="sticky bottom-8 pt-6"
+            className="mb-8"
           >
-            <div className="bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg p-6">
-              <div className="flex items-center justify-between gap-4">
-                <div className="space-y-1">
-                  <h3 className="font-semibold">Ready to continue?</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Complete both units to advance to hands-on practice
-                  </p>
-                </div>
-                
-                <Button
-                  onClick={handleStageComplete}
-                  disabled={!canComplete && !adminBypass}
-                  size="lg"
-                  className="shrink-0"
-                >
-                  {stage3Content.ctaComplete}
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-              
-              {!canComplete && !adminBypass && (
-                <div className="mt-4 text-xs text-muted-foreground">
-                  Progress: {[drawioSubmitted, vlcSubmitted].filter(Boolean).length}/2 units completed
-                </div>
-              )}
-            </div>
+            <MiniQuiz
+              title="🧠 Quick Knowledge Check"
+              questions={[
+                {
+                  question: "Which tool is best for creating system diagrams?",
+                  options: ["VLC Media Player", "Draw.io", "Microsoft Word", "Calculator"],
+                  correctIndex: 1
+                },
+                {
+                  question: "What is VLC primarily used for by engineers?",
+                  options: ["Creating diagrams", "Stream analysis", "Text editing", "File compression"],
+                  correctIndex: 1
+                }
+              ]}
+              xpReward={10}
+              onComplete={(score) => {
+                const earnedXP = score > 0 ? 10 : 5; // Bonus for any correct answers
+                handleBonusXPClaim(earnedXP);
+              }}
+            />
           </motion.div>
+        )}
+
+        {/* Active Unit Modal/Content */}
+        <AnimatePresence>
+          {activeUnit === 'drawio' && !isPreviewMode && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto"
+            >
+              <div className="container mx-auto px-4 py-8 max-w-4xl">
+                <div className="bg-card rounded-2xl border-2 p-6">
+                  <DrawIOUnit
+                    isSubmitted={drawioSubmitted}
+                    onSubmit={handleDrawioSubmit}
+                  />
+                  <div className="mt-6 text-center">
+                    <button
+                      onClick={() => setActiveUnit(null)}
+                      className="text-muted-foreground hover:text-foreground underline"
+                    >
+                      ← Back to Stage Overview
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeUnit === 'vlc' && !isPreviewMode && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto"
+            >
+              <div className="container mx-auto px-4 py-8 max-w-4xl">
+                <div className="bg-card rounded-2xl border-2 p-6">
+                  <VLCUnit
+                    isSubmitted={vlcSubmitted}
+                    onSubmit={handleVlcSubmit}
+                  />
+                  <div className="mt-6 text-center">
+                    <button
+                      onClick={() => setActiveUnit(null)}
+                      className="text-muted-foreground hover:text-foreground underline"
+                    >
+                      ← Back to Stage Overview
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Stage Summary */}
+        {!isPreviewMode && (
+          <StageSummary
+            units={units}
+            earnedXP={earnedXP}
+            totalXP={stage3Content.xpTotalTarget}
+            canComplete={canComplete || adminBypass}
+            onComplete={handleStageComplete}
+            nextStageName="Hands-On Practice"
+          />
         )}
       </div>
     </div>
