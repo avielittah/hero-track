@@ -90,8 +90,52 @@ export function DrawIOUnit({ isSubmitted, onSubmit }: DrawIOUnitProps) {
             Background
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <p>{unitData.background}</p>
+          
+          {/* Visual Placeholder */}
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                <Target className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h4 className="font-semibold text-blue-900 dark:text-blue-100">Visual Learning Aid</h4>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-dashed border-blue-300 dark:border-blue-700 text-center">
+              <p className="text-sm text-muted-foreground mb-2">📊 Sample Draw.io Diagram</p>
+              <div className="w-full h-32 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 rounded flex items-center justify-center">
+                <span className="text-xs text-muted-foreground">Client → Server → Database flow diagram</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Video Placeholder */}
+          <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 rounded-xl p-6 border border-red-200 dark:border-red-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-red-100 dark:bg-red-900 rounded-lg">
+                <span className="text-lg">🎥</span>
+              </div>
+              <h4 className="font-semibold text-red-900 dark:text-red-100">Video Tutorial</h4>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-red-300 dark:border-red-700">
+              <div className="aspect-video bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/50 dark:to-orange-900/50 rounded flex items-center justify-center mb-3">
+                <div className="text-center">
+                  <div className="text-4xl mb-2">▶️</div>
+                  <p className="text-sm font-medium">Draw.io Tutorial Video</p>
+                  <p className="text-xs text-muted-foreground">Click to watch on YouTube</p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                asChild
+                className="w-full"
+              >
+                <a href={unitData.videoUrl} target="_blank" rel="noopener noreferrer">
+                  🎬 Watch Tutorial Video
+                </a>
+              </Button>
+            </div>
+          </div>
           
           <div className="space-y-2">
             <h4 className="font-medium">What you'll learn:</h4>

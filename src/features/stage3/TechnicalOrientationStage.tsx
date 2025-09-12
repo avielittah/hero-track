@@ -5,6 +5,7 @@ import { ToolCard } from '@/components/unified-stage/ToolCard';
 import { StageSummary } from '@/components/unified-stage/StageSummary';
 import { DidYouKnowBox } from '@/components/unified-stage/DidYouKnowBox';
 import { MiniQuiz } from '@/components/unified-stage/MiniQuiz';
+import { TooltipTip, HelpTip, InfoBadgeTip } from '@/components/unified-stage/TooltipTip';
 import { DrawIOUnit } from './units/DrawIOUnit';
 import { VLCUnit } from './units/VLCUnit';
 import { useLearningStore } from '@/lib/store';
@@ -110,7 +111,7 @@ export function TechnicalOrientationStage() {
         <CompletionBanner stageName="Technical Orientation" />
       )}
       
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="container mx-auto px-4 py-8 max-w-5xl" dir="ltr">
         {/* Stage Intro */}
         <StageIntro
           title={stage3Content.title}
@@ -141,7 +142,26 @@ export function TechnicalOrientationStage() {
         </AnimatePresence>
 
         {/* Tool Cards Grid */}
-        <div className="grid gap-8 mb-8">
+        <div className="space-y-8 mb-8">
+          {/* Helpful Tips Section */}
+          <div className="flex flex-wrap gap-4 items-center justify-center">
+            <InfoBadgeTip
+              label="💡 Pro Tip"
+              title="Learning Strategy"
+              content="Complete units in order for the best learning experience. Each unit builds on knowledge from the previous one!"
+            />
+            <InfoBadgeTip
+              label="⚡ XP Boost"
+              title="Bonus Points"
+              content="Look out for 'Did You Know?' boxes and mini-quizzes - they give bonus XP for curious learners!"
+            />
+            <InfoBadgeTip
+              label="🎯 Quick Access"
+              title="Tool Links"
+              content="Click the 'Open Tool' buttons to access Draw.io and VLC directly in new tabs while learning."
+            />
+          </div>
+
           <ToolCard
             id="drawio"
             title={stage3Content.units.drawio.title}

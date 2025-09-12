@@ -90,8 +90,52 @@ export function VLCUnit({ isSubmitted, onSubmit }: VLCUnitProps) {
             Background
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <p>{unitData.background}</p>
+          
+          {/* Visual Placeholder */}
+          <div className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-950/30 dark:to-yellow-950/30 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
+                <Target className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h4 className="font-semibold text-orange-900 dark:text-orange-100">Visual Learning Aid</h4>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-dashed border-orange-300 dark:border-orange-700 text-center">
+              <p className="text-sm text-muted-foreground mb-2">📺 Sample VLC Interface</p>
+              <div className="w-full h-32 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/50 dark:to-red-900/50 rounded flex items-center justify-center">
+                <span className="text-xs text-muted-foreground">VLC player with codec information panel</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Video Placeholder */}
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                <span className="text-lg">🎥</span>
+              </div>
+              <h4 className="font-semibold text-purple-900 dark:text-purple-100">Video Tutorial</h4>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-purple-300 dark:border-purple-700">
+              <div className="aspect-video bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/50 dark:to-pink-900/50 rounded flex items-center justify-center mb-3">
+                <div className="text-center">
+                  <div className="text-4xl mb-2">▶️</div>
+                  <p className="text-sm font-medium">VLC Basics Tutorial</p>
+                  <p className="text-xs text-muted-foreground">Click to watch on YouTube</p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                asChild
+                className="w-full"
+              >
+                <a href={unitData.videoUrl} target="_blank" rel="noopener noreferrer">
+                  🎬 Watch Tutorial Video
+                </a>
+              </Button>
+            </div>
+          </div>
           
           <div className="space-y-2">
             <h4 className="font-medium">What you'll learn:</h4>
