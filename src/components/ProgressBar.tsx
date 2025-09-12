@@ -65,83 +65,83 @@ export const ProgressBar = () => {
 
   return (
     <motion.div 
-      className="bg-card border-b px-4 py-2"
+      className="bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-b border-border/50 px-3 py-1.5"
       initial={{ y: -10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-base font-medium text-foreground mb-3">{t('journeyProgress')}</h2>
-        
         <div className="relative">
-          {/* Progress Line */}
-          <div className="absolute top-6 left-6 right-6 h-0.5 bg-journey-bg">
+          {/* Gaming-style progress track */}
+          <div className="relative h-2 bg-gradient-to-r from-muted/30 to-muted/60 rounded-full overflow-hidden">
+            {/* Animated progress fill */}
             <motion.div
-              className="h-full bg-gradient-to-r from-journey-complete to-journey-current"
+              className="h-full bg-gradient-to-r from-primary via-primary/80 to-primary rounded-full relative overflow-hidden"
               style={{ width: `${((currentStage - 1) / (stages.length - 1)) * 100}%` }}
               initial={{ width: 0 }}
               animate={{ width: `${((currentStage - 1) / (stages.length - 1)) * 100}%` }}
               transition={{ duration: 1.5, ease: "easeOut" }}
-            />
+            >
+              {/* Glowing effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+            </motion.div>
+            
+            {/* Subtle inner glow */}
+            <div className="absolute inset-0 rounded-full shadow-inner" />
           </div>
 
-          {/* Stage Indicators */}
-          <div className="flex justify-between items-center">
+          {/* Gaming-style stage nodes */}
+          <div className="absolute -top-2 left-0 right-0 flex justify-between">
             {stages.map((stageId, index) => {
               const status = getStageStatus(stageId);
+              const isClickableStage = isClickable(stageId);
               
               return (
                 <motion.div
                   key={stageId}
-                  className={`flex flex-col items-center space-y-2 z-10 relative ${isClickable(stageId) ? 'cursor-pointer' : 'cursor-default'}`}
+                  className={`relative group ${isClickableStage ? 'cursor-pointer' : 'cursor-default'}`}
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ 
                     duration: 0.5, 
-                    delay: index * 0.1 + 0.2,
+                    delay: index * 0.05,
                     type: "spring",
-                    stiffness: 100
+                    stiffness: 150
                   }}
                   onClick={() => handleStageClick(stageId)}
-                  whileHover={isClickable(stageId) ? { scale: 1.1 } : {}}
+                  whileHover={isClickableStage ? { scale: 1.15 } : {}}
                 >
-                  {/* Stage Circle */}
+                  {/* Gaming-style node */}
                   <div className={`
-                    w-12 h-12 rounded-full border-2 flex items-center justify-center
-                    ${status === 'completed' ? 'bg-journey-complete border-journey-complete' : ''}
-                    ${status === 'current' ? 'bg-journey-current border-journey-current shadow-lg' : ''}
-                    ${status === 'peeking' ? 'bg-secondary border-secondary shadow-md' : ''}
-                    ${status === 'upcoming' ? 'bg-card border-journey-upcoming' : ''}
-                    ${stageId === viewingStage ? 'ring-2 ring-offset-2 ring-primary/50' : ''}
-                    transition-all duration-300
+                    w-6 h-6 rounded-full border-2 flex items-center justify-center
+                    transition-all duration-300 relative overflow-hidden
+                    ${status === 'completed' ? 'bg-gradient-to-br from-emerald-400 to-emerald-600 border-emerald-400 shadow-lg shadow-emerald-400/30' : ''}
+                    ${status === 'current' ? 'bg-gradient-to-br from-primary to-primary/80 border-primary shadow-lg shadow-primary/40' : ''}
+                    ${status === 'peeking' ? 'bg-gradient-to-br from-secondary to-secondary/80 border-secondary shadow-md shadow-secondary/30' : ''}
+                    ${status === 'upcoming' ? 'bg-gradient-to-br from-muted to-muted/60 border-muted-foreground/30' : ''}
+                    ${stageId === viewingStage ? 'ring-2 ring-primary/60 ring-offset-1' : ''}
                   `}>
-                    {getStageIcon(stageId)}
-                  </div>
-
-                  {/* Stage Label */}
-                  <div className="text-center">
-                    <div className={`text-sm ${getStageColor(stageId)} transition-colors duration-300`}>
-                      {t('stage', { number: stageId })}
+                    {/* Gaming icon */}
+                    <div className="relative z-10">
+                      {status === 'completed' && <CheckCircle className="h-3 w-3 text-white" />}
+                      {status === 'current' && <Circle className="h-3 w-3 text-white fill-current" />}
+                      {status === 'peeking' && <Eye className="h-3 w-3 text-white" />}
+                      {status === 'upcoming' && <Lock className="h-3 w-3 text-muted-foreground" />}
                     </div>
-                    {status === 'current' && (
-                      <motion.div
-                        className="text-xs text-journey-current font-medium mt-1"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                      >
-                        {t('current')}
-                      </motion.div>
+                    
+                    {/* Subtle inner glow for active states */}
+                    {(status === 'current' || status === 'completed') && (
+                      <div className="absolute inset-0 bg-white/10 rounded-full" />
                     )}
                   </div>
 
-                  {/* Current Stage Glow Effect */}
+                  {/* Pulsing effect for current stage */}
                   {status === 'current' && (
                     <motion.div
-                      className="absolute inset-0 rounded-full bg-journey-current/20 blur-lg -z-10"
+                      className="absolute inset-0 rounded-full bg-primary/30 -z-10"
                       animate={{ 
-                        scale: [1, 1.2, 1],
-                        opacity: [0.5, 0.8, 0.5]
+                        scale: [1, 1.4, 1],
+                        opacity: [0.3, 0.6, 0.3]
                       }}
                       transition={{ 
                         duration: 2,
@@ -149,6 +149,16 @@ export const ProgressBar = () => {
                         ease: "easeInOut"
                       }}
                     />
+                  )}
+
+                  {/* Gaming-style tooltip on hover */}
+                  {isClickableStage && (
+                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                      <div className="bg-popover border border-border rounded px-2 py-1 text-xs font-medium text-popover-foreground whitespace-nowrap shadow-lg">
+                        {t('stage', { number: stageId })}
+                        {status === 'current' && ` • ${t('current')}`}
+                      </div>
+                    </div>
                   )}
                 </motion.div>
               );
