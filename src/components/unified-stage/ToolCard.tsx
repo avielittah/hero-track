@@ -128,14 +128,14 @@ export function ToolCard({
           {/* Main CTA */}
           <Button
             onClick={onStart}
-            disabled={isDisabled}
+            aria-disabled={isDisabled}
             className={`
               w-full relative overflow-hidden transition-all duration-300
               ${isCompleted 
                 ? 'bg-journey-complete hover:bg-journey-complete/90' 
                 : 'bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg hover:shadow-xl'
               }
-              ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+              ${isDisabled ? 'opacity-60 cursor-not-allowed' : ''}
             `}
           >
             <PlayCircle className="h-4 w-4 mr-2" />
