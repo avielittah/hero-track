@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { MessageCircle, Sparkles, X, Bot } from 'lucide-react';
 
 interface BuddyButtonProps {
@@ -66,12 +67,12 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
   }, []);
 
   return (
-    <>
+    <TooltipProvider>
       {/* Main Buddy Button */}
       <motion.div
         className={`
           fixed z-50 
-          ${isRTL ? 'bottom-20 left-6' : 'bottom-20 right-6'}
+          ${isRTL ? 'bottom-32 left-6' : 'bottom-32 right-6'}
           md:${isRTL ? 'left-6' : 'right-6'}
           max-md:left-1/2 max-md:-translate-x-1/2 max-md:right-auto
         `}
@@ -179,7 +180,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
                         >
-                          Hello! I'm here to guide you through your learning journey. Need assistance?
+                          {t('stage1:ui.buddy.hover')}
                         </motion.p>
                       </div>
                       
@@ -250,44 +251,70 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
             )}
           </AnimatePresence>
 
-          {/* Buddy Button */}
-          <Button
-            onClick={handleBuddyClick}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="
-              h-14 px-4 bg-gradient-to-r from-blue-500 to-blue-600 
-              hover:from-blue-600 hover:to-blue-700 
-              text-white shadow-xl hover:shadow-2xl 
-              rounded-full transition-all duration-300
-              group focus:ring-4 focus:ring-blue-300
-            "
-            aria-label={t('ui:askBuddy')}
-          >
-            <div className="flex items-center space-x-2">
-              <motion.div
-                animate={isHovered ? { rotate: [0, -10, 10, 0] } : {}}
-                transition={{ duration: 0.5 }}
+          {/* Gaming-style Hover Tooltip */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={handleBuddyClick}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="
+                  h-14 px-4 bg-gradient-to-r from-blue-500 to-blue-600 
+                  hover:from-blue-600 hover:to-blue-700 
+                  text-white shadow-xl hover:shadow-2xl 
+                  rounded-full transition-all duration-300
+                  group focus:ring-4 focus:ring-blue-300
+                  hover:scale-110 hover:rotate-3
+                "
+                aria-label={t('ui:askBuddy')}
               >
-                <MessageCircle className="h-5 w-5" />
-              </motion.div>
-              
-              <span className="font-medium hidden sm:inline">
-                {t('ui:askBuddy')}
-              </span>
-              
-              {/* Mobile label */}
-              <span className="font-medium sm:hidden text-xs">
-                {t('ui:help')}
-              </span>
-            </div>
-          </Button>
+                <div className="flex items-center space-x-2">
+                  <motion.div
+                    animate={isHovered ? { rotate: [0, -10, 10, 0] } : {}}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                  </motion.div>
+                  
+                  <span className="font-medium hidden sm:inline">
+                    {t('ui:askBuddy')}
+                  </span>
+                  
+                  {/* Mobile label */}
+                  <span className="font-medium sm:hidden text-xs">
+                    {t('ui:help')}
+                  </span>
+                </div>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent 
+              side="left" 
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-none shadow-2xl max-w-xs p-4"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Bot className="h-5 w-5" />
+                  <span className="font-bold">Buddy AI Mentor</span>
+                  <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
+                    🤖 ONLINE
+                  </span>
+                </div>
+                <p className="text-sm opacity-90 leading-relaxed">
+                  {t('stage1:ui.buddy.hover')}
+                </p>
+                <div className="flex items-center gap-1 text-xs opacity-75">
+                  <Sparkles className="h-3 w-3" />
+                  <span>Click to start conversation</span>
+                </div>
+              </div>
+            </TooltipContent>
+          </Tooltip>
 
-          {/* Pulse animation for attention */}
+          {/* Enhanced Pulse animation */}
           <motion.div
             className="absolute inset-0 rounded-full bg-blue-400 opacity-30 -z-10"
             animate={{ 
-              scale: [1, 1.2, 1],
+              scale: [1, 1.3, 1],
               opacity: [0.3, 0.1, 0.3]
             }}
             transition={{ 
@@ -296,8 +323,22 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
               ease: "easeInOut"
             }}
           />
+          
+          {/* Extra glow on hover */}
+          <motion.div
+            className="absolute inset-0 rounded-full bg-blue-300 opacity-0 -z-10"
+            animate={isHovered ? { 
+              scale: [1, 1.5, 1],
+              opacity: [0, 0.4, 0]
+            } : {}}
+            transition={{ 
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
         </div>
       </motion.div>
-    </>
+    </TooltipProvider>
   );
 };

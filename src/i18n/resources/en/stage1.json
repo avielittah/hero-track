@@ -35,7 +35,15 @@
     "skills": {
       "familiarity": "Training Familiarity",
       "mastery": "Content Mastery",
-      "applied": "Applied Proficiency"
+      "applied": "Applied Proficiency",
+      "tooltips": {
+        "familiarity": "Getting to know the training environment, tools, and basic concepts. Your foundation level!",
+        "mastery": "Deep understanding of content and processes. You're becoming an expert!",
+        "applied": "Real-world application of skills. You can solve problems independently!"
+      }
+    },
+    "buddy": {
+      "hover": "Need help? I'm your AI mentor ready to guide you through any challenge!"
     }
   }
 }
