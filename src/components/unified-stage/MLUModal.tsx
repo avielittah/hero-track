@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb } from 'lucide-react';
+import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb, MessageCircle, Send } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { MultipleChoice } from '@/features/units/Inputs/MultipleChoice';
 import { OpenQuestion } from '@/features/units/Inputs/OpenQuestion';
 import { FileUpload } from '@/features/units/Inputs/FileUpload';
@@ -91,6 +93,14 @@ export function MLUModal({
   const [levelUpData, setLevelUpData] = useState<any>(null);
   const [earnedXP, setEarnedXP] = useState(0);
   const [completedTasks, setCompletedTasks] = useState<Record<number, boolean>>({});
+  const [showBuddyChat, setShowBuddyChat] = useState(false);
+  const [buddyChatMessages, setBuddyChatMessages] = useState<Array<{
+    id: string;
+    type: 'user' | 'buddy';
+    message: string;
+    timestamp: Date;
+  }>>([]);
+  const [buddyInputValue, setBuddyInputValue] = useState('');
 
   // Validation
   const isQuizValid = unitData.quiz.questions.every((_, index) => {
@@ -110,8 +120,15 @@ export function MLUModal({
       setQuizCompleted(false);
       setEarnedXP(0);
       setCompletedTasks({});
+      setBuddyChatMessages([{
+        id: '1',
+        type: 'buddy',
+        message: `היי! 👋 אני Buddy, המנטור הדיגיטלי שלך. אני כאן לעזור לך להצליח בלומדה "${unitData.title}". תשאל אותי כל שאלה - על התוכן, על המשימות, או בכלל! איך אני יכול לעזור לך היום?`,
+        timestamp: new Date()
+      }]);
+      setBuddyInputValue('');
     }
-  }, [isOpen, isCompleted]);
+  }, [isOpen, isCompleted, unitData.title]);
 
   const handleTaskToggle = (taskIndex: number, itemIndex: number) => {
     const key = taskIndex * 1000 + itemIndex; // Unique key for each task item
@@ -119,6 +136,84 @@ export function MLUModal({
       ...prev,
       [key]: !prev[key]
     }));
+  };
+
+  const handleSendBuddyMessage = () => {
+    if (!buddyInputValue.trim()) return;
+
+    const userMessage = {
+      id: Date.now().toString() + '_user',
+      type: 'user' as const,
+      message: buddyInputValue,
+      timestamp: new Date()
+    };
+
+    setBuddyChatMessages(prev => [...prev, userMessage]);
+    setBuddyInputValue('');
+
+    // Simulate Buddy response (in real app, this would call an AI service)
+    setTimeout(() => {
+      const buddyResponse = {
+        id: Date.now().toString() + '_buddy',
+        type: 'buddy' as const,
+        message: getBuddyResponse(userMessage.message, unitData),
+        timestamp: new Date()
+      };
+      setBuddyChatMessages(prev => [...prev, buddyResponse]);
+    }, 1000);
+  };
+
+  const getBuddyResponse = (userMessage: string, unitData: any): string => {
+    const message = userMessage.toLowerCase();
+    
+    if (message.includes('עזרה') || message.includes('help')) {
+      return `בטח! אני כאן לעזור. אתה יכול לשאול אותי על:
+• הסבר על התוכן של ${unitData.title}
+• הדרכה בביצוע המשימות
+• טיפים לענות על השאלות בחידון
+• הסבר על ${unitData.title === 'Visualizing Systems with Draw.io' ? 'Draw.io' : 'VLC'} באופן כללי
+מה תרצה לדעת?`;
+    }
+    
+    if (message.includes('משימה') || message.includes('task')) {
+      return `המשימות מתוכננות לתת לך ניסיון מעשי! 
+📋 עצה: בצע כל משימה בסדר ותסמן ✓ כשסיימת
+🎯 אם אתה תקוע במשימה מסוימת, תגיד לי באיזו ואני אעזור!`;
+    }
+    
+    if (message.includes('חידון') || message.includes('quiz')) {
+      return `החידון בודק שהבנת את העיקרון! 
+💡 עצות:
+• קרא כל שאלה בעיון
+• חזור על התוכן הלימודי אם צריך
+• אל תחפז - קח את הזמן שלך
+יש שאלה ספציפית שמבלבלת אותך?`;
+    }
+    
+    if (message.includes('draw.io') || message.includes('דיאגרמה')) {
+      return `Draw.io הוא כלי מעולה לתרשימים! 
+🔧 עיקרי המפתח:
+• משתמש בצורות פשוטות ואן connectors
+• שמור ב-PNG לשיתוף קל
+• השתמש בתבניות לחיסכון בזמן
+באיזה חלק של Draw.io אתה זקוק לעזרה?`;
+    }
+    
+    if (message.includes('vlc') || message.includes('מדיה')) {
+      return `VLC הוא יותר מסתם נגן! 
+🔍 לעבודה מהנדסית:
+• Tools → Codec Information לפרטים טכניים
+• ב-Tools → Messages תראה לוגים מפורטים  
+• View → Audio Effects → Spectrometer לניתוח תדרים
+איזה פיצ'ר של VLC מעניין אותך?`;
+    }
+    
+    return `שאלה מעניינת! אני כאן לעזור לך עם כל מה שקשור ל-${unitData.title}. 
+האם תוכל להיות יותר ספציפי? למשל:
+• "תסביר לי על..." 
+• "איך אני..."
+• "מה זה..."
+כך אוכל לעזור לך בצורה הטובה ביותר! 😊`;
   };
 
   const handleQuizAnswer = (questionIndex: number, answer: any) => {
@@ -418,7 +513,7 @@ export function MLUModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="w-[98vw] max-w-7xl h-[95vh] max-h-[95vh] p-0 overflow-hidden">....
+        <DialogContent className="w-[98vw] max-w-7xl h-[95vh] max-h-[95vh] p-0 overflow-hidden">
           <DialogHeader className="px-6 py-4 border-b sticky top-0 z-10 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
@@ -427,9 +522,29 @@ export function MLUModal({
                   <p className="text-sm text-muted-foreground">{unitData.subtitle}</p>
                 )}
               </div>
-              <Button variant="ghost" size="sm" onClick={onClose}>
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center gap-2">
+                {/* Ask Buddy Button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowBuddyChat(!showBuddyChat)}
+                  className={`
+                    flex items-center gap-2 transition-all duration-200 
+                    ${showBuddyChat 
+                      ? 'bg-primary text-primary-foreground border-primary' 
+                      : 'hover:bg-primary/10 hover:border-primary/50'
+                    }
+                  `}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Ask Buddy
+                  {showBuddyChat && <span className="text-xs">●</span>}
+                </Button>
+                
+                <Button variant="ghost" size="sm" onClick={onClose}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             
             {/* Stage XP Progress */}
@@ -442,289 +557,381 @@ export function MLUModal({
             </div>
           </DialogHeader>
 
-          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-8">
-            {/* 1. Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-4">
-                    {unitData.icon && (
-                      <div className="p-3 bg-gradient-to-br from-primary to-primary-700 text-white rounded-xl">
-                        {unitData.icon}
-                      </div>
-                    )}
-                    <div className="space-y-2 flex-1">
-                      <div className="flex items-center gap-3">
-                        <Badge variant="secondary" className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {unitData.estimatedTime}
-                        </Badge>
-                        <Badge variant="outline">+{unitData.totalXP} XP possible</Badge>
-                        {isCompleted && (
-                          <Badge className="bg-journey-complete text-white">
-                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                            Completed
-                          </Badge>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <div className="flex gap-6 h-full">
+              {/* Main Content */}
+              <div className={`space-y-8 transition-all duration-300 ${showBuddyChat ? 'w-2/3' : 'w-full'}`}>
+                {/* 1. Header */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        {unitData.icon && (
+                          <div className="p-3 bg-gradient-to-br from-primary to-primary-700 text-white rounded-xl">
+                            {unitData.icon}
+                          </div>
                         )}
+                        <div className="space-y-2 flex-1">
+                          <div className="flex items-center gap-3">
+                            <Badge variant="secondary" className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {unitData.estimatedTime}
+                            </Badge>
+                            <Badge variant="outline">+{unitData.totalXP} XP possible</Badge>
+                            {isCompleted && (
+                              <Badge className="bg-journey-complete text-white">
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                                Completed
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Target className="h-4 w-4 text-primary" />
+                            <h3 className="font-medium">Learning Objective</h3>
+                          </div>
+                          <p className="text-muted-foreground">{unitData.objective}</p>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Target className="h-4 w-4 text-primary" />
-                        <h3 className="font-medium">Learning Objective</h3>
-                      </div>
-                      <p className="text-muted-foreground">{unitData.objective}</p>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            </motion.div>
+                    </CardHeader>
+                  </Card>
+                </motion.div>
 
-            {/* 2. Background */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5" />
-                    Why This Matters
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{unitData.background}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+                {/* 2. Background */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <BookOpen className="h-5 w-5" />
+                        Why This Matters
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground leading-relaxed">{unitData.background}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-            {/* 3. Learning Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="space-y-6"
-            >
-              {/* Text Content */}
-              {unitData.learningContent && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                      <BookOpen className="h-5 w-5" />
-                      Core Learning Content
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {unitData.learningContent.map((content, index) => (
-                      <div key={index} className="prose dark:prose-invert max-w-none">
-                        {content.type === 'text' && (
-                          <p className="text-foreground leading-relaxed">
-                            {content.content as string}
-                          </p>
-                        )}
-                        {content.type === 'bullet-list' && (
-                          <ul className="space-y-2">
-                            {(content.content as string[]).map((item, i) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                                <span className="text-foreground">{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {content.type === 'numbered-list' && (
-                          <ol className="list-decimal list-inside space-y-2">
-                            {(content.content as string[]).map((item, i) => (
-                              <li key={i} className="text-foreground">{item}</li>
-                            ))}
-                          </ol>
-                        )}
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              )}
+                {/* 3. Learning Content */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-6"
+                >
+                  {/* Text Content */}
+                  {unitData.learningContent && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                          <BookOpen className="h-5 w-5" />
+                          Core Learning Content
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {unitData.learningContent.map((content, index) => (
+                          <div key={index} className="prose dark:prose-invert max-w-none">
+                            {content.type === 'text' && (
+                              <p className="text-foreground leading-relaxed">
+                                {content.content as string}
+                              </p>
+                            )}
+                            {content.type === 'bullet-list' && (
+                              <ul className="space-y-2">
+                                {(content.content as string[]).map((item, i) => (
+                                  <li key={i} className="flex items-start gap-2">
+                                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                                    <span className="text-foreground">{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                            {content.type === 'numbered-list' && (
+                              <ol className="list-decimal list-inside space-y-2">
+                                {(content.content as string[]).map((item, i) => (
+                                  <li key={i} className="text-foreground">{item}</li>
+                                ))}
+                              </ol>
+                            )}
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  )}
 
-              {/* Visual */}
-              {unitData.visual && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
-                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      Visual Guide
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {renderVisual()}
-                  </CardContent>
-                </Card>
-              )}
+                  {/* Visual */}
+                  {unitData.visual && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          Visual Guide
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        {renderVisual()}
+                      </CardContent>
+                    </Card>
+                  )}
 
-              {/* Video */}
-              {unitData.video && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
-                      <Play className="h-5 w-5" />
-                      Video Tutorial
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {renderVideo()}
-                  </CardContent>
-                </Card>
-              )}
-            </motion.div>
+                  {/* Video */}
+                  {unitData.video && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                          <Play className="h-5 w-5" />
+                          Video Tutorial
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        {renderVideo()}
+                      </CardContent>
+                    </Card>
+                  )}
+                </motion.div>
 
-            {/* 4. Guided Task */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                    <Target className="h-5 w-5" />
-                    Your Mission
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {renderTasks()}
-                </CardContent>
-              </Card>
-            </motion.div>
+                {/* 4. Guided Task */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                        <Target className="h-5 w-5" />
+                        Your Mission
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {renderTasks()}
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-            {/* 5. Mini-Quiz */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <Card className="border-purple-200 dark:border-purple-800">
-                <CardHeader className="bg-purple-50 dark:bg-purple-950/30">
-                  <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                    </svg>
-                    Knowledge Check
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {renderQuizQuestions()}
-                </CardContent>
-              </Card>
-            </motion.div>
+                {/* 5. Mini-Quiz */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <Card className="border-purple-200 dark:border-purple-800">
+                    <CardHeader className="bg-purple-50 dark:bg-purple-950/30">
+                      <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        Knowledge Check
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {renderQuizQuestions()}
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-            {/* 6. Did You Know? */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <DidYouKnowBox
-                title={unitData.didYouKnow.title}
-                content={unitData.didYouKnow.content}
-                xpReward={unitData.didYouKnow.xpReward}
-                onRewardClaim={handleDidYouKnowClaim}
-                disabled={didYouKnowClaimed || isCompleted}
-              />
-            </motion.div>
-
-            {/* 7. Feedback */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-            >
-              <Card className="border-orange-200 dark:border-orange-800">
-                <CardHeader className="bg-orange-50 dark:bg-orange-950/30">
-                  <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
-                    <Star className="h-5 w-5" />
-                    How Was This Unit?
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <QuickFeedback
-                    value={feedback}
-                    onChange={setFeedback}
-                    disabled={isCompleted}
+                {/* 6. Did You Know? */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <DidYouKnowBox
+                    title={unitData.didYouKnow.title}
+                    content={unitData.didYouKnow.content}
+                    xpReward={unitData.didYouKnow.xpReward}
+                    onRewardClaim={handleDidYouKnowClaim}
+                    disabled={didYouKnowClaimed || isCompleted}
                   />
-                </CardContent>
-              </Card>
-            </motion.div>
+                </motion.div>
 
-            {/* 8. Completion CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="space-y-4"
-            >
-              {!isCompleted && (
-                <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-primary-700/5">
-                  <CardContent className="p-6">
-                    <div className="text-center space-y-4">
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-lg">Ready to Complete?</h3>
-                        <p className="text-sm text-muted-foreground">
-                          You'll earn <strong>{unitData.baseXP + earnedXP} XP</strong> total for completing this unit!
+                {/* 7. Feedback */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <Card className="border-orange-200 dark:border-orange-800">
+                    <CardHeader className="bg-orange-50 dark:bg-orange-950/30">
+                      <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                        <Star className="h-5 w-5" />
+                        How Was This Unit?
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <QuickFeedback
+                        value={feedback}
+                        onChange={setFeedback}
+                        disabled={isCompleted}
+                      />
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* 8. Completion CTA */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="space-y-4"
+                >
+                  {!isCompleted && (
+                    <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-primary-700/5">
+                      <CardContent className="p-6">
+                        <div className="text-center space-y-4">
+                          <div className="space-y-2">
+                            <h3 className="font-semibold text-lg">Ready to Complete?</h3>
+                            <p className="text-sm text-muted-foreground">
+                              You'll earn <strong>{unitData.baseXP + earnedXP} XP</strong> total for completing this unit!
+                            </p>
+                          </div>
+                          
+                          {!canComplete && (
+                            <div className="text-sm text-muted-foreground space-y-1">
+                              <p>Still needed:</p>
+                              <ul className="text-xs space-y-1">
+                                {!isQuizValid && <li>• Complete the quiz questions</li>}
+                                {!isFeedbackValid && <li>• Provide a rating (1-5 stars)</li>}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          <Button
+                            onClick={handleFinishUnit}
+                            disabled={!canComplete}
+                            size="lg"
+                            className="w-full bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg"
+                          >
+                            <Trophy className="h-4 w-4 mr-2" />
+                            Finish Unit & Earn XP 🎉
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {isCompleted && (
+                    <Card className="border-journey-complete/30 bg-gradient-to-r from-journey-complete/10 to-journey-complete/5">
+                      <CardContent className="p-6 text-center">
+                        <div className="space-y-2">
+                          <CheckCircle2 className="h-8 w-8 text-journey-complete mx-auto" />
+                          <h3 className="font-semibold text-lg">Unit Completed! 🎉</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Great work! You've mastered this learning unit.
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  <div className="text-center">
+                    <Button
+                      variant="ghost"
+                      onClick={onClose}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      ← Back to Stage
+                    </Button>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Buddy Chat Panel */}
+              <AnimatePresence>
+                {showBuddyChat && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 300 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 300 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-1/3 border-l bg-muted/30"
+                  >
+                    <div className="h-full flex flex-col">
+                      {/* Chat Header */}
+                      <div className="p-4 border-b bg-primary/5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <MessageCircle className="h-4 w-4 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-sm">Ask Buddy</h3>
+                            <p className="text-xs text-muted-foreground">המנטור הדיגיטלי שלך</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Chat Messages */}
+                      <ScrollArea className="flex-1 p-4">
+                        <div className="space-y-4">
+                          {buddyChatMessages.map((msg) => (
+                            <div
+                              key={msg.id}
+                              className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                            >
+                              <div
+                                className={`
+                                  max-w-[85%] rounded-2xl px-3 py-2 text-sm
+                                  ${msg.type === 'user'
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-card border border-border'
+                                  }
+                                `}
+                              >
+                                <p className="whitespace-pre-wrap">{msg.message}</p>
+                                <div className="text-xs opacity-70 mt-1">
+                                  {msg.timestamp.toLocaleTimeString('he-IL', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+
+                      {/* Chat Input */}
+                      <div className="p-4 border-t">
+                        <div className="flex gap-2">
+                          <Input
+                            value={buddyInputValue}
+                            onChange={(e) => setBuddyInputValue(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSendBuddyMessage();
+                              }
+                            }}
+                            placeholder="שאל את Buddy שאלה..."
+                            className="flex-1 text-sm"
+                          />
+                          <Button
+                            onClick={handleSendBuddyMessage}
+                            disabled={!buddyInputValue.trim()}
+                            size="sm"
+                            className="px-3"
+                          >
+                            <Send className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2 text-center">
+                          💡 Buddy יכול לעזור עם השאלות, המשימות והתוכן
                         </p>
                       </div>
-                      
-                      {!canComplete && (
-                        <div className="text-sm text-muted-foreground space-y-1">
-                          <p>Still needed:</p>
-                          <ul className="text-xs space-y-1">
-                            {!isQuizValid && <li>• Complete the quiz questions</li>}
-                            {!isFeedbackValid && <li>• Provide a rating (1-5 stars)</li>}
-                          </ul>
-                        </div>
-                      )}
-                      
-                      <Button
-                        onClick={handleFinishUnit}
-                        disabled={!canComplete}
-                        size="lg"
-                        className="w-full bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg"
-                      >
-                        <Trophy className="h-4 w-4 mr-2" />
-                        Finish Unit & Earn XP 🎉
-                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {isCompleted && (
-                <Card className="border-journey-complete/30 bg-gradient-to-r from-journey-complete/10 to-journey-complete/5">
-                  <CardContent className="p-6 text-center">
-                    <div className="space-y-2">
-                      <CheckCircle2 className="h-8 w-8 text-journey-complete mx-auto" />
-                      <h3 className="font-semibold text-lg">Unit Completed! 🎉</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Great work! You've mastered this learning unit.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              <div className="text-center">
-                <Button
-                  variant="ghost"
-                  onClick={onClose}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  ← Back to Stage
-                </Button>
-              </div>
-            </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
