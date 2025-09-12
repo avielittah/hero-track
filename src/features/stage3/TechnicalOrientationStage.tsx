@@ -118,30 +118,56 @@ export function TechnicalOrientationStage() {
     if (unitId === 'drawio') {
       setCurrentMLUData({
         id: 'drawio',
-        title: 'Draw.io Diagrams',
-        subtitle: 'Master visual communication for engineering systems',
-        estimatedTime: '~15 min',
-        objective: stage3Content.units.drawio.objective,
-        background: stage3Content.units.drawio.background,
+        title: 'Visualizing Systems with Draw.io',
+        subtitle: 'Turn complex ideas into clear diagrams.',
+        estimatedTime: '~15 minutes',
+        objective: 'Master the fundamentals of creating clear, professional system diagrams that communicate complex technical concepts effectively to engineering teams.',
+        background: 'As a Communication Systems Engineer, you\'ll constantly need to visualize signal flows, system architectures, and data paths. Draw.io is a powerful, intuitive tool that helps you create professional diagrams quickly - whether you\'re explaining RF signal processing chains, network topologies, or system interfaces. Clear visual communication is essential for collaboration, documentation, and troubleshooting in engineering environments. Think of it as your visual language for complex technical concepts.',
         icon: <PenTool className="h-6 w-6" />,
         visual: {
           type: 'diagram',
-          alt: 'System architecture flow diagram',
-          caption: 'Sample Draw.io Diagram'
+          alt: 'RF Communication System: Antenna → RF Front-End → ADC → DSP Processor → Output',
+          caption: 'Example: Professional RF Communication System Diagram'
         },
         video: {
           type: 'placeholder',
-          title: 'Draw.io Tutorial Video',
-          url: stage3Content.units.drawio.videoUrl
+          title: 'Draw.io Mastery: From Beginner to Pro in 10 Minutes'
         },
+        learningContent: [
+          {
+            type: 'text',
+            content: 'Draw.io (now called diagrams.net) is a free, web-based diagramming tool that runs entirely in your browser. Unlike heavy desktop applications, it\'s instant, collaborative, and supports all the diagram types you\'ll need as an engineer.'
+          },
+          {
+            type: 'text', 
+            content: 'The core power of Draw.io lies in its extensive shape libraries. You have access to network diagrams, flowcharts, UML diagrams, electrical schematics, and custom shape sets. For RF and communication systems, you can easily create signal flow diagrams, block diagrams, and system architectures that clearly show how data moves through your designs.'
+          },
+          {
+            type: 'text',
+            content: 'Key features that make Draw.io perfect for engineering work include: automatic connector routing (arrows that stay connected when you move shapes), layers for complex diagrams, collaborative real-time editing, and direct integration with cloud storage. You can embed diagrams in documentation, export to multiple formats, and even include mathematical notation.'
+          },
+          {
+            type: 'text',
+            content: 'In real engineering projects, you\'ll use Draw.io for system architecture reviews, documenting signal processing chains, creating troubleshooting flowcharts, and explaining complex RF configurations to non-technical stakeholders. The ability to quickly sketch and share ideas visually is invaluable in fast-paced development environments.'
+          }
+        ],
         tasks: [
           {
-            type: 'bullet-list',
-            content: stage3Content.units.drawio.tasks || [
-              'Open Draw.io in your browser',
-              'Create a simple system diagram',
-              'Export your diagram as PNG',
-              'Submit your work below'
+            type: 'text',
+            content: 'Your mission: Create a professional RF communication system diagram that clearly shows how data flows from input to output. This practical exercise mirrors real-world documentation tasks you\'ll encounter in engineering roles.'
+          },
+          {
+            type: 'numbered-list',
+            content: [
+              'Open Draw.io (app.diagrams.net) and choose "Blank Diagram" - no account needed!',
+              'Create 5 system blocks using rectangles: Antenna, RF Front-End, ADC, DSP Processor, and Output',
+              'Connect them with directional arrows showing signal flow from left to right',
+              'Add descriptive labels to each arrow (e.g., "Analog RF Signal", "Digital Samples", "Processed Data")',
+              'Include a clear title at the top: "RF Communication System Architecture"',
+              'Use color coding: blue for analog signals, green for digital signals',
+              'Add a legend in the bottom corner explaining your color scheme',
+              'Export as PNG format ensuring the file size is under 10MB',
+              'Upload your completed diagram using the file upload field below'
             ]
           }
         ],
@@ -149,28 +175,51 @@ export function TechnicalOrientationStage() {
           questions: [
             {
               type: 'multiple-choice',
-              question: 'What is Draw.io primarily used for?',
-              options: ['Creating diagrams', 'Video editing', 'Text processing', 'File compression'],
+              question: 'Which Draw.io feature is most effective for showing signal direction and data flow in system diagrams?',
+              options: [
+                'Using different colored shapes only',
+                'Arrows with descriptive labels', 
+                'Larger text fonts',
+                'Avoiding connectors entirely'
+              ],
+              correctIndex: 1
+            },
+            {
+              type: 'multiple-choice',
+              question: 'When sharing diagrams with your engineering team via Slack or email, which export format provides the best balance of quality and file size?',
+              options: [
+                'PNG (recommended)',
+                'RAW binary format',
+                'Executable (.EXE)',
+                'Raw binary (.BIN)'
+              ],
               correctIndex: 0
             },
             {
-              type: 'open-question',
-              question: 'Describe one advantage of using Draw.io for engineering documentation.'
+              type: 'multiple-choice',
+              question: 'What\'s the main advantage of using Draw.io templates over starting with a blank canvas?',
+              options: [
+                'Templates always look more professional',
+                'They provide standardized layouts and save time',
+                'Blank canvases don\'t support arrows',
+                'Templates are required for complex diagrams'
+              ],
+              correctIndex: 1
             },
             {
               type: 'file-upload',
-              question: 'Upload your Draw.io diagram (PNG format)'
+              question: 'Upload your RF system diagram (PNG format, max 10MB). Make sure it includes all 5 components with clear signal flow arrows, labels, and a legend!'
             }
           ],
           xpReward: 15
         },
         didYouKnow: {
-          title: '💡 Pro Tip',
-          content: 'Draw.io can automatically save your diagrams to Google Drive, OneDrive, or GitHub! This makes collaboration with your team super easy.',
-          xpReward: 5
+          title: 'Integration Power-Up! 🚀',
+          content: 'Did you know? Draw.io integrates seamlessly with Google Docs, Confluence, GitHub, and Microsoft Teams! You can embed live diagrams that automatically update when you modify the source file. This means your documentation always stays current with your designs. Pro tip: Save your diagrams to Google Drive for instant team sharing and version control. Many engineering teams use this for real-time collaborative system design sessions!',
+          xpReward: 2
         },
-        baseXP: stage3Content.units.drawio.xpOnSubmit,
-        totalXP: stage3Content.units.drawio.xpOnSubmit + 15 + 5
+        baseXP: 10,
+        totalXP: 27
       });
     } else if (unitId === 'vlc') {
       setCurrentMLUData({

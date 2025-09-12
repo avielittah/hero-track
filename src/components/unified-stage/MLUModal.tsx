@@ -25,6 +25,10 @@ interface MLUData {
   objective: string;
   background: string;
   icon?: React.ReactNode;
+  learningContent?: Array<{
+    type: 'text' | 'bullet-list' | 'numbered-list';
+    content: string | string[];
+  }>;
   visual?: {
     type: 'image' | 'diagram' | 'placeholder';
     src?: string;
@@ -440,11 +444,56 @@ export function MLUModal({
               transition={{ delay: 0.3 }}
               className="space-y-6"
             >
+              {/* Text Content */}
+              {unitData.learningContent && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                      <BookOpen className="h-5 w-5" />
+                      Core Learning Content
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {unitData.learningContent.map((content, index) => (
+                      <div key={index} className="prose dark:prose-invert max-w-none">
+                        {content.type === 'text' && (
+                          <p className="text-foreground leading-relaxed">
+                            {content.content as string}
+                          </p>
+                        )}
+                        {content.type === 'bullet-list' && (
+                          <ul className="space-y-2">
+                            {(content.content as string[]).map((item, i) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                                <span className="text-foreground">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {content.type === 'numbered-list' && (
+                          <ol className="list-decimal list-inside space-y-2">
+                            {(content.content as string[]).map((item, i) => (
+                              <li key={i} className="text-foreground">{item}</li>
+                            ))}
+                          </ol>
+                        )}
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Visual */}
               {unitData.visual && (
                 <Card>
                   <CardHeader>
-                    <CardTitle>Visual Guide</CardTitle>
+                    <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Visual Guide
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     {renderVisual()}
@@ -456,7 +505,7 @@ export function MLUModal({
               {unitData.video && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
                       <Play className="h-5 w-5" />
                       Video Tutorial
                     </CardTitle>
@@ -476,7 +525,10 @@ export function MLUModal({
             >
               <Card>
                 <CardHeader>
-                  <CardTitle>Your Mission</CardTitle>
+                  <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                    <Target className="h-5 w-5" />
+                    Your Mission
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {renderTasks()}
@@ -490,9 +542,14 @@ export function MLUModal({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              <Card>
-                <CardHeader>
-                  <CardTitle>Knowledge Check</CardTitle>
+              <Card className="border-purple-200 dark:border-purple-800">
+                <CardHeader className="bg-purple-50 dark:bg-purple-950/30">
+                  <CardTitle className="flex items-center gap-2 text-purple-700 dark:text-purple-300">
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    Knowledge Check
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {renderQuizQuestions()}
@@ -521,9 +578,12 @@ export function MLUModal({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
             >
-              <Card>
-                <CardHeader>
-                  <CardTitle>How Was This Unit?</CardTitle>
+              <Card className="border-orange-200 dark:border-orange-800">
+                <CardHeader className="bg-orange-50 dark:bg-orange-950/30">
+                  <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                    <Star className="h-5 w-5" />
+                    How Was This Unit?
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <QuickFeedback
