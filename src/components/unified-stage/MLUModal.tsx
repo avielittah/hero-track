@@ -90,6 +90,7 @@ export function MLUModal({
   const [showLevelUpModal, setShowLevelUpModal] = useState(false);
   const [levelUpData, setLevelUpData] = useState<any>(null);
   const [earnedXP, setEarnedXP] = useState(0);
+  const [completedTasks, setCompletedTasks] = useState<Record<number, boolean>>({});
 
   // Validation
   const isQuizValid = unitData.quiz.questions.every((_, index) => {
@@ -108,8 +109,17 @@ export function MLUModal({
       setDidYouKnowClaimed(false);
       setQuizCompleted(false);
       setEarnedXP(0);
+      setCompletedTasks({});
     }
   }, [isOpen, isCompleted]);
+
+  const handleTaskToggle = (taskIndex: number, itemIndex: number) => {
+    const key = taskIndex * 1000 + itemIndex; // Unique key for each task item
+    setCompletedTasks(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
 
   const handleQuizAnswer = (questionIndex: number, answer: any) => {
     const newAnswers = [...quizAnswers];
@@ -276,27 +286,81 @@ export function MLUModal({
   const renderTasks = () => {
     return (
       <div className="space-y-4">
-        {unitData.tasks.map((task, index) => (
-          <div key={index}>
+        {unitData.tasks.map((task, taskIndex) => (
+          <div key={taskIndex}>
             {task.type === 'text' && (
-              <p className="text-muted-foreground">{task.content as string}</p>
+              <p className="text-muted-foreground leading-relaxed">{task.content as string}</p>
             )}
             {task.type === 'numbered-list' && (
-              <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
-                {(task.content as string[]).map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ol>
+              <div className="space-y-3">
+                {(task.content as string[]).map((item, itemIndex) => {
+                  const key = taskIndex * 1000 + itemIndex;
+                  const isCompleted = completedTasks[key] || false;
+                  return (
+                    <div key={itemIndex} className="flex items-start gap-3 group">
+                      <button
+                        onClick={() => handleTaskToggle(taskIndex, itemIndex)}
+                        className={`
+                          mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 flex-shrink-0
+                          ${isCompleted 
+                            ? 'bg-emerald-500 border-emerald-500 text-white' 
+                            : 'border-gray-300 dark:border-gray-600 hover:border-emerald-400 dark:hover:border-emerald-400'
+                          }
+                          hover:scale-110 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1
+                        `}
+                      >
+                        {isCompleted && (
+                          <CheckCircle2 className="h-3 w-3" />
+                        )}
+                      </button>
+                      <div className="flex items-start gap-2 flex-1">
+                        <span className="text-sm font-medium text-muted-foreground mt-0.5 min-w-[1.5rem]">
+                          {itemIndex + 1}.
+                        </span>
+                        <span className={`
+                          text-muted-foreground transition-all duration-200 leading-relaxed
+                          ${isCompleted ? 'line-through opacity-60' : ''}
+                        `}>
+                          {item}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             )}
             {task.type === 'bullet-list' && (
-              <ul className="space-y-2 text-muted-foreground">
-                {(task.content as string[]).map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <div className="space-y-3">
+                {(task.content as string[]).map((item, itemIndex) => {
+                  const key = taskIndex * 1000 + itemIndex;
+                  const isCompleted = completedTasks[key] || false;
+                  return (
+                    <div key={itemIndex} className="flex items-start gap-3 group">
+                      <button
+                        onClick={() => handleTaskToggle(taskIndex, itemIndex)}
+                        className={`
+                          mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 flex-shrink-0
+                          ${isCompleted 
+                            ? 'bg-emerald-500 border-emerald-500 text-white' 
+                            : 'border-gray-300 dark:border-gray-600 hover:border-emerald-400 dark:hover:border-emerald-400'
+                          }
+                          hover:scale-110 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1
+                        `}
+                      >
+                        {isCompleted && (
+                          <CheckCircle2 className="h-3 w-3" />
+                        )}
+                      </button>
+                      <span className={`
+                        text-muted-foreground transition-all duration-200 leading-relaxed
+                        ${isCompleted ? 'line-through opacity-60' : ''}
+                      `}>
+                        {item}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         ))}
