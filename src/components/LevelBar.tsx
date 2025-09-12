@@ -34,13 +34,13 @@ export const LevelBar = () => {
 
   return (
     <motion.div 
-      className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-900/95 via-slate-800/95 to-slate-900/95 backdrop-blur-md border-t border-amber-500/30 shadow-2xl z-40"
+      className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-background/95 via-primary/5 to-secondary/5 backdrop-blur-md border-t border-primary/20 shadow-2xl z-40"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100 }}
     >
       {/* Ambient lighting effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-amber-500/5 to-primary/5 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/3 via-secondary/3 to-primary/3 pointer-events-none" />
       
       <div className="relative px-4 py-3">
         <div className="max-w-7xl mx-auto">
@@ -54,14 +54,14 @@ export const LevelBar = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 {/* Level Border */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 p-0.5 shadow-lg">
-                  <div className="w-full h-full rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 flex flex-col items-center justify-center relative overflow-hidden">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary via-primary-700 to-primary p-0.5 shadow-lg">
+                  <div className="w-full h-full rounded-xl bg-gradient-to-br from-card to-muted flex flex-col items-center justify-center relative overflow-hidden">
                     {/* Background glow */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-primary/20 rounded-xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl" />
                     
                     {/* Level number */}
                     <motion.span 
-                      className="text-lg font-bold text-amber-400 relative z-10"
+                      className="text-lg font-bold text-primary relative z-10"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
                     >
@@ -71,16 +71,16 @@ export const LevelBar = () => {
                     {/* Icon */}
                     <div className="relative z-10">
                       {isMaxLevel ? (
-                        <Crown className="h-4 w-4 text-amber-400" />
+                        <Crown className="h-4 w-4 text-primary" />
                       ) : (
-                        <Star className="h-4 w-4 text-amber-400" />
+                        <Star className="h-4 w-4 text-primary" />
                       )}
                     </div>
                   </div>
                 </div>
                 
                 {/* Rank badge */}
-                <div className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">
+                <div className="absolute -top-1 -right-1 bg-gradient-to-r from-secondary to-secondary/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">
                   {isMaxLevel ? 'MAX' : `L${levelIndex + 1}`}
                 </div>
               </motion.div>
@@ -88,9 +88,9 @@ export const LevelBar = () => {
               {/* Player Info */}
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-white">{level}</span>
+                  <span className="text-sm font-bold text-foreground">{level}</span>
                   {getMedalIcon() && (
-                    <Badge variant="secondary" className="h-5 px-2 text-xs bg-amber-500/20 text-amber-400 border-amber-500/30">
+                    <Badge variant="secondary" className="h-5 px-2 text-xs bg-secondary/20 text-secondary border-secondary/30">
                       {getMedalIcon()}
                     </Badge>
                   )}
@@ -98,13 +98,13 @@ export const LevelBar = () => {
                 
                 {/* XP Progress Bar */}
                 <div className="flex items-center gap-2">
-                  <div className="relative w-32 h-2 bg-slate-700 rounded-full overflow-hidden shadow-inner">
+                  <div className="relative w-32 h-2 bg-muted rounded-full overflow-hidden shadow-inner">
                     {/* Background glow */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full" />
                     
                     {/* Progress fill */}
                     <motion.div
-                      className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 rounded-full relative shadow-sm"
+                      className="h-full bg-gradient-to-r from-primary via-primary-700 to-secondary rounded-full relative shadow-sm"
                       initial={{ width: 0 }}
                       animate={{ 
                         width: isMaxLevel 
@@ -127,7 +127,7 @@ export const LevelBar = () => {
                     </motion.div>
                   </div>
                   
-                  <span className="text-xs font-bold text-cyan-400 min-w-max">
+                  <span className="text-xs font-bold text-primary min-w-max">
                     {isMaxLevel ? (
                       `${currentXP} XP`
                     ) : (
@@ -140,7 +140,7 @@ export const LevelBar = () => {
 
             {/* Skills Section */}
             <div className="hidden md:flex items-center gap-4">
-              <div className="text-xs text-slate-400 font-medium">SKILLS</div>
+              <div className="text-xs text-muted-foreground font-medium">SKILLS</div>
               <div className="flex gap-3">
                 {skills.map((skill, index) => (
                   <motion.div
@@ -151,8 +151,8 @@ export const LevelBar = () => {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex items-center gap-1">
-                      <skill.icon className="h-3 w-3 text-emerald-400" />
-                      <span className="text-[10px] text-slate-300 font-medium">{skill.name}</span>
+                      <skill.icon className="h-3 w-3 text-journey-complete" />
+                      <span className="text-[10px] text-muted-foreground font-medium">{skill.name}</span>
                     </div>
                     <div className="flex gap-px">
                       {[...Array(10)].map((_, i) => (
@@ -160,8 +160,8 @@ export const LevelBar = () => {
                           key={i}
                           className={`w-1 h-2 rounded-full ${
                             i < skill.level 
-                              ? 'bg-gradient-to-t from-emerald-600 to-emerald-400' 
-                              : 'bg-slate-600'
+                              ? 'bg-gradient-to-t from-journey-complete to-journey-complete/80' 
+                              : 'bg-muted'
                           }`}
                         />
                       ))}
@@ -173,16 +173,16 @@ export const LevelBar = () => {
 
             {/* Trophy Collection */}
             <div className="flex items-center gap-3">
-              <div className="hidden sm:block text-xs text-slate-400 font-medium">ACHIEVEMENTS</div>
+              <div className="hidden sm:block text-xs text-muted-foreground font-medium">ACHIEVEMENTS</div>
               
               <div className="flex items-center gap-3">
                 {/* Trophy Count */}
                 <motion.div
-                  className="flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-lg px-3 py-1.5"
+                  className="flex items-center gap-2 bg-gradient-to-r from-secondary/20 to-secondary/30 border border-secondary/30 rounded-lg px-3 py-1.5"
                   whileHover={{ scale: 1.05 }}
                 >
-                  <Trophy className="h-4 w-4 text-amber-400" />
-                  <span className="text-sm font-bold text-amber-400">{totalTrophies}</span>
+                  <Trophy className="h-4 w-4 text-secondary" />
+                  <span className="text-sm font-bold text-secondary">{totalTrophies}</span>
                   
                   {/* Medal indicator */}
                   {getMedalIcon() && (
@@ -195,7 +195,7 @@ export const LevelBar = () => {
                   {mluTrophies.slice(-3).map((trophy, index) => (
                     <motion.div
                       key={trophy.id}
-                      className="w-6 h-6 bg-gradient-to-br from-amber-400 to-amber-600 rounded-md flex items-center justify-center shadow-lg"
+                      className="w-6 h-6 bg-gradient-to-br from-secondary to-secondary/80 rounded-md flex items-center justify-center shadow-lg"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: index * 0.1 }}
@@ -205,7 +205,7 @@ export const LevelBar = () => {
                     </motion.div>
                   ))}
                   {mluTrophies.length > 3 && (
-                    <div className="w-6 h-6 bg-slate-700 rounded-md flex items-center justify-center text-[10px] text-slate-400 font-bold">
+                    <div className="w-6 h-6 bg-muted rounded-md flex items-center justify-center text-[10px] text-muted-foreground font-bold">
                       +{mluTrophies.length - 3}
                     </div>
                   )}
@@ -221,11 +221,11 @@ export const LevelBar = () => {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <div className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">NEXT RANK</div>
-                <div className="text-xs font-bold text-white">
+                <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">NEXT RANK</div>
+                <div className="text-xs font-bold text-foreground">
                   {['Team Rookie', 'Skilled Learner', 'Problem Solver', 'Project Builder', 'Pro Team Member'][levelIndex]}
                 </div>
-                <div className="text-[10px] text-cyan-400 font-medium">
+                <div className="text-[10px] text-primary font-medium">
                   {nextThreshold - currentXP} XP to go
                 </div>
               </motion.div>
