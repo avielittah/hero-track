@@ -17,9 +17,10 @@ import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { useToast } from '@/hooks/use-toast';
 import { stage3Content } from './stage3.content';
 import { isAdmin } from '@/lib/admin';
-import { Wrench, PenTool, Play, Lightbulb } from 'lucide-react';
-import { useState } from 'react';
+import { Wrench, PenTool, Play, Lightbulb, Trophy, Award, Zap, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import Confetti from 'react-confetti';
 
 export function TechnicalOrientationStage() {
   const { addXP, awardTrophy } = useLearningStore();
@@ -37,6 +38,7 @@ export function TechnicalOrientationStage() {
   const [currentMLUData, setCurrentMLUData] = useState<any>(null);
   const [showLockModal, setShowLockModal] = useState(false);
   const [stageFeedback, setStageFeedback] = useState<any>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
@@ -81,6 +83,10 @@ export function TechnicalOrientationStage() {
 
   const handleStageComplete = () => {
     if (!canComplete && !adminBypass) return;
+
+    // Show confetti celebration
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
 
     // Award trophy for stage completion
     awardTrophy(3);
@@ -335,7 +341,17 @@ export function TechnicalOrientationStage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Confetti Effect */}
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={200}
+          gravity={0.3}
+        />
+      )}
       {/* Preview Banner */}
       {isPreviewMode && (
         <CompletionBanner stageName="Technical Orientation" />
@@ -653,33 +669,140 @@ export function TechnicalOrientationStage() {
           />
         )}
 
-        {/* Final Call to Action - Always visible */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="text-center space-y-4 mb-8"
-        >
-          {!canComplete ? (
-            <div className="bg-muted/50 border rounded-2xl p-6">
-              <h3 className="text-lg font-semibold mb-2">Ready to Continue?</h3>
-              <p className="text-muted-foreground mb-4">
-                Complete both MLUs above to unlock Stage 4 and start your hands-on practice!
+        {/* Complete Stage Flow - Shows when both MLUs completed */}
+        {canComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="space-y-8 mb-8"
+          >
+            {/* Stage Summary */}
+            <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/50 dark:to-blue-950/50 border border-green-200 dark:border-green-800 rounded-2xl p-6 space-y-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Trophy className="h-6 w-6 text-yellow-500" />
+                Stage Summary
+              </h2>
+              <p className="text-muted-foreground">
+                Excellent work! You've now been introduced to Draw.io and VLC — two essential tools that will support 
+                your ability to design, visualize, and analyze systems for your upcoming practical project. Draw.io will 
+                help you create clear system diagrams, while VLC's analysis capabilities will be invaluable for debugging 
+                communication streams and media protocols.
               </p>
+              <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 space-y-2">
+                <h3 className="font-medium text-sm">What you've mastered:</h3>
+                <div className="grid md:grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <span>System diagram creation with Draw.io</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <span>Media analysis and debugging with VLC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Did You Know Boxes */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <DidYouKnowBox
+                title="🎯 Professional Impact"
+                content="Engineers who document their work with clear diagrams are 40% more effective in team collaborations. The visual communication skills you've learned here will set you apart in your career!"
+                xpReward={3}
+                onRewardClaim={() => handleBonusXPClaim(3)}
+                onClose={() => {}}
+              />
+              <DidYouKnowBox
+                title="🔧 Real-World Usage"
+                content="VLC's stream analysis features are used by broadcast engineers worldwide to debug live transmission issues. You now have the same professional-grade tools they use!"
+                xpReward={3}
+                onRewardClaim={() => handleBonusXPClaim(3)}
+                onClose={() => {}}
+              />
+            </div>
+
+            {/* XP & Skills Recap */}
+            <XPSkillsRecap 
+              earnedXP={earnedXP}
+              stageXP={stage3Content.xpTotalTarget}
+            />
+
+            {/* Stage Feedback */}
+            {!stageFeedback && (
+              <StageFeedback
+                onSubmit={(feedback) => {
+                  setStageFeedback(feedback);
+                  toast({
+                    title: "Thanks for your feedback! 💙",
+                    description: "Your input helps us improve the learning experience.",
+                  });
+                }}
+              />
+            )}
+
+            {/* Stage CTA */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-center space-y-4"
+            >
+              <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold mb-2 flex items-center justify-center gap-2">
+                  <Award className="h-5 w-5 text-primary" />
+                  Ready for Hands-On Practice!
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  You've built a solid foundation with these essential tools. Time to apply your skills in real engineering projects!
+                </p>
+                <Button
+                  onClick={handleStageComplete}
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-4 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Continue to Stage 4 — Hands-On Practice →
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Progress Indicator - Shows when MLUs not completed */}
+        {!canComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="text-center space-y-4 mb-8"
+          >
+            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-950/50 dark:to-yellow-950/50 border border-orange-200 dark:border-orange-800 rounded-2xl p-6">
+              <h3 className="text-lg font-semibold mb-3 flex items-center justify-center gap-2">
+                <Zap className="h-5 w-5 text-orange-500" />
+                Complete Your Tool Training
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Finish both MLUs above to unlock the full stage summary, feedback form, and continue to hands-on practice!
+              </p>
+              
+              {/* Progress visualization */}
+              <div className="flex justify-center items-center gap-4 mb-4">
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${drawioSubmitted ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                  {drawioSubmitted ? <CheckCircle2 className="h-4 w-4" /> : <div className="h-4 w-4 rounded-full border-2 border-current" />}
+                  <span className="text-sm font-medium">Draw.io</span>
+                </div>
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${vlcSubmitted ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                  {vlcSubmitted ? <CheckCircle2 className="h-4 w-4" /> : <div className="h-4 w-4 rounded-full border-2 border-current" />}
+                  <span className="text-sm font-medium">VLC</span>
+                </div>
+              </div>
+              
               <div className="text-sm text-muted-foreground">
                 Progress: {(drawioSubmitted ? 1 : 0) + (vlcSubmitted ? 1 : 0)} / 2 MLUs completed
               </div>
             </div>
-          ) : (
-            <Button
-              onClick={handleStageComplete}
-              size="lg"
-              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3 text-lg font-medium"
-            >
-              Continue to Stage 4 — Hands-On Practice →
-            </Button>
-          )}
-        </motion.div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
