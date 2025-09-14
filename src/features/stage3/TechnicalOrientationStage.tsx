@@ -523,6 +523,37 @@ export function TechnicalOrientationStage() {
           />
         )}
 
+        {/* Stage Progress Info - Always visible */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="space-y-6 mb-8"
+        >
+          {/* Stage Overview */}
+          <div className="bg-card border rounded-2xl p-6 space-y-4">
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" />
+              Your Learning Journey
+            </h2>
+            <p className="text-muted-foreground">
+              This stage introduces you to two essential engineering tools. Complete both MLUs (Micro-Learning Units) 
+              to master Draw.io for system diagrams and VLC for media analysis. These skills will be crucial in your 
+              upcoming hands-on projects.
+            </p>
+            
+            {/* Progress indicators */}
+            <div className="flex gap-4 text-sm">
+              <div className={`flex items-center gap-2 ${drawioSubmitted ? 'text-green-600' : 'text-muted-foreground'}`}>
+                {drawioSubmitted ? '✅' : '⏳'} Draw.io MLU
+              </div>
+              <div className={`flex items-center gap-2 ${vlcSubmitted ? 'text-green-600' : 'text-muted-foreground'}`}>
+                {vlcSubmitted ? '✅' : '⏳'} VLC MLU
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Stage Summary Section - Shows when at least one MLU is completed */}
         {(drawioSubmitted || vlcSubmitted) && (
           <motion.div
@@ -621,6 +652,34 @@ export function TechnicalOrientationStage() {
             nextStageName="Hands-On Practice"
           />
         )}
+
+        {/* Final Call to Action - Always visible */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="text-center space-y-4 mb-8"
+        >
+          {!canComplete ? (
+            <div className="bg-muted/50 border rounded-2xl p-6">
+              <h3 className="text-lg font-semibold mb-2">Ready to Continue?</h3>
+              <p className="text-muted-foreground mb-4">
+                Complete both MLUs above to unlock Stage 4 and start your hands-on practice!
+              </p>
+              <div className="text-sm text-muted-foreground">
+                Progress: {(drawioSubmitted ? 1 : 0) + (vlcSubmitted ? 1 : 0)} / 2 MLUs completed
+              </div>
+            </div>
+          ) : (
+            <Button
+              onClick={handleStageComplete}
+              size="lg"
+              className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3 text-lg font-medium"
+            >
+              Continue to Stage 4 — Hands-On Practice →
+            </Button>
+          )}
+        </motion.div>
       </div>
     </div>
   );
