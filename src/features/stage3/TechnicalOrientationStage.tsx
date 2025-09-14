@@ -7,6 +7,8 @@ import { DidYouKnowBox } from '@/components/unified-stage/DidYouKnowBox';
 import { MiniQuiz } from '@/components/unified-stage/MiniQuiz';
 import { TooltipTip, HelpTip, InfoBadgeTip } from '@/components/unified-stage/TooltipTip';
 import { MLUModal } from '@/components/unified-stage/MLUModal';
+import { StageFeedback } from '@/components/unified-stage/StageFeedback';
+import { XPSkillsRecap } from '@/components/unified-stage/XPSkillsRecap';
 import { DrawIOUnit } from './units/DrawIOUnit';
 import { VLCUnit } from './units/VLCUnit';
 import { Button } from '@/components/ui/button';
@@ -34,6 +36,7 @@ export function TechnicalOrientationStage() {
   const [showMLUModal, setShowMLUModal] = useState(false);
   const [currentMLUData, setCurrentMLUData] = useState<any>(null);
   const [showLockModal, setShowLockModal] = useState(false);
+  const [stageFeedback, setStageFeedback] = useState<any>(null);
 
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
@@ -520,8 +523,92 @@ export function TechnicalOrientationStage() {
           />
         )}
 
-        {/* Stage Summary */}
-        {!isPreviewMode && (
+        {/* Stage Summary Section */}
+        {canComplete && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="space-y-8 mb-8"
+          >
+            {/* Stage Summary */}
+            <div className="bg-card border rounded-2xl p-6 space-y-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Lightbulb className="h-5 w-5 text-primary" />
+                What You've Achieved
+              </h2>
+              <p className="text-muted-foreground">
+                Congratulations! You've mastered two essential engineering tools that will support you throughout your practical projects. 
+                Draw.io will help you visualize complex systems and communicate your ideas clearly, while VLC's analysis capabilities 
+                will be invaluable for debugging and understanding media streams in communication systems.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                These tools will be particularly important in the upcoming hands-on project where you'll design and implement 
+                real communication systems.
+              </p>
+            </div>
+
+            {/* Did You Know Boxes */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <DidYouKnowBox
+                title="🎯 Professional Impact"
+                content="Engineers who document their work with clear diagrams are 40% more effective in team collaborations. The visual communication skills you've learned here will set you apart!"
+                xpReward={3}
+                onRewardClaim={() => handleBonusXPClaim(3)}
+                onClose={() => {}}
+              />
+              <DidYouKnowBox
+                title="🔧 Advanced Applications"
+                content="VLC's stream analysis features are used by broadcast engineers worldwide to debug live transmission issues. You now have the same tools the professionals use!"
+                xpReward={3}
+                onRewardClaim={() => handleBonusXPClaim(3)}
+                onClose={() => {}}
+              />
+            </div>
+
+            {/* XP & Skills Recap */}
+            <XPSkillsRecap 
+              earnedXP={earnedXP}
+              stageXP={stage3Content.xpTotalTarget}
+            />
+
+            {/* Stage Feedback */}
+            {!stageFeedback && (
+              <StageFeedback
+                onSubmit={(feedback) => {
+                  setStageFeedback(feedback);
+                  toast({
+                    title: "Thanks for your feedback! 💙",
+                    description: "Your input helps us improve the learning experience.",
+                  });
+                }}
+              />
+            )}
+
+            {/* Stage CTA */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 }}
+              className="text-center"
+            >
+              <Button
+                onClick={handleStageComplete}
+                disabled={!canComplete && !adminBypass}
+                size="lg"
+                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3 text-lg font-medium"
+              >
+                Continue to Stage 4 — Hands-On Practice →
+              </Button>
+              <p className="text-sm text-muted-foreground mt-2">
+                Ready to apply your skills in real projects!
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Original Stage Summary for incomplete state */}
+        {!canComplete && !isPreviewMode && (
           <StageSummary
             units={units}
             earnedXP={earnedXP}
