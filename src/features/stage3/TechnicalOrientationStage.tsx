@@ -523,8 +523,8 @@ export function TechnicalOrientationStage() {
           />
         )}
 
-        {/* Stage Summary Section */}
-        {canComplete && (
+        {/* Stage Summary Section - Shows when at least one MLU is completed */}
+        {(drawioSubmitted || vlcSubmitted) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -535,12 +535,13 @@ export function TechnicalOrientationStage() {
             <div className="bg-card border rounded-2xl p-6 space-y-4">
               <h2 className="text-xl font-semibold flex items-center gap-2">
                 <Lightbulb className="h-5 w-5 text-primary" />
-                What You've Achieved
+                What You've Achieved {canComplete ? "" : "(Progress)"}
               </h2>
               <p className="text-muted-foreground">
-                Congratulations! You've mastered two essential engineering tools that will support you throughout your practical projects. 
-                Draw.io will help you visualize complex systems and communicate your ideas clearly, while VLC's analysis capabilities 
-                will be invaluable for debugging and understanding media streams in communication systems.
+                {canComplete 
+                  ? "Congratulations! You've mastered two essential engineering tools that will support you throughout your practical projects. Draw.io will help you visualize complex systems and communicate your ideas clearly, while VLC's analysis capabilities will be invaluable for debugging and understanding media streams in communication systems."
+                  : "Great progress! You're learning essential engineering tools that will support you throughout your practical projects. Keep going to master both Draw.io for system diagrams and VLC for media analysis."
+                }
               </p>
               <p className="text-sm text-muted-foreground">
                 These tools will be particularly important in the upcoming hands-on project where you'll design and implement 
@@ -572,8 +573,8 @@ export function TechnicalOrientationStage() {
               stageXP={stage3Content.xpTotalTarget}
             />
 
-            {/* Stage Feedback */}
-            {!stageFeedback && (
+            {/* Stage Feedback - Shows when both MLUs completed */}
+            {canComplete && !stageFeedback && (
               <StageFeedback
                 onSubmit={(feedback) => {
                   setStageFeedback(feedback);
@@ -585,25 +586,27 @@ export function TechnicalOrientationStage() {
               />
             )}
 
-            {/* Stage CTA */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 }}
-              className="text-center"
-            >
-              <Button
-                onClick={handleStageComplete}
-                disabled={!canComplete && !adminBypass}
-                size="lg"
-                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3 text-lg font-medium"
+            {/* Stage CTA - Shows when both MLUs completed */}
+            {canComplete && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8 }}
+                className="text-center"
               >
-                Continue to Stage 4 — Hands-On Practice →
-              </Button>
-              <p className="text-sm text-muted-foreground mt-2">
-                Ready to apply your skills in real projects!
-              </p>
-            </motion.div>
+                <Button
+                  onClick={handleStageComplete}
+                  disabled={!canComplete && !adminBypass}
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3 text-lg font-medium"
+                >
+                  Continue to Stage 4 — Hands-On Practice →
+                </Button>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Ready to apply your skills in real projects!
+                </p>
+              </motion.div>
+            )}
           </motion.div>
         )}
 
