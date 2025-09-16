@@ -12,6 +12,7 @@ import { FinalWrapUpScreen } from '@/components/FinalWrapUpScreen';
 import { WelcomeStage } from '@/features/stage1/WelcomeStage';
 import { OrientationChecklistStage } from '@/features/stage2/OrientationChecklistStage';
 import { TechnicalOrientationStage } from '@/features/stage3';
+import { MidJourneySurvey } from '@/features/stage5';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -289,6 +290,11 @@ export const StageContainer = () => {
   // Show technical orientation for stage 3
   if (viewingStage === 3) {
     return <TechnicalOrientationStage />;
+  }
+
+  // Show mid-journey survey for stage 5
+  if (viewingStage === 5) {
+    return <MidJourneySurvey />;
   }
 
   return (
