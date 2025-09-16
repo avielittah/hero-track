@@ -1,149 +1,28 @@
 {
-  "title": "Mid-Journey Survey",
-  "intro": "We'd love to hear how your onboarding journey is going so far. Your feedback helps us improve the experience for everyone.",
-  "privacy": "Your responses will help your manager provide better support. Some questions can be marked anonymous if you prefer.",
-  "submitButton": "Submit Survey",
+  "title": "Midway Feedback Survey",
+  "intro": "We're halfway through your onboarding journey! This short survey will help us improve the process and ensure you feel confident and supported.",
+  "subtitle": "It's not a test – it's about your experience.",
+  "progressBar": "Stage 5 of 9",
+  "submitButton": "Submit Feedback →",
   "submitButtonDisabled": "Complete required fields",
-  "submittedBanner": "Submitted • Preview",
-  "progressLabel": "{{completed}}/{{total}} required fields completed",
-  "xpReward": "Thanks! +{{xp}} XP earned",
+  "submittedBanner": "Submitted • Preview Mode",
+  "xpReward": "Thanks! +{{xp}} XP",
   "bonusXP": "Bonus +{{bonus}} XP for completion!",
-  "buddyTip": "💡 Did you know? Buddy is always here to help clarify concepts or answer quick questions during your learning journey!",
+  "buddyTip": "💡 Did you know? You can always use Buddy to ask questions during onboarding and get quick clarifications.",
   
-  "sections": {
-    "toolReadiness": {
-      "title": "Setup & Access",
-      "subtitle": "Tool Readiness"
-    },
-    "learningPace": {
-      "title": "Learning Progress & Pace",
-      "subtitle": "How you're progressing"
-    },
-    "mastery": {
-      "title": "Mastery & Confidence", 
-      "subtitle": "Your confidence level"
-    },
-    "toolProficiency": {
-      "title": "Tool Proficiency",
-      "subtitle": "Stage 3 tools assessment"
-    },
-    "support": {
-      "title": "Support & Belonging",
-      "subtitle": "Team connection"
-    },
-    "risks": {
-      "title": "Risk & Blockers",
-      "subtitle": "Current challenges"
-    },
-    "buddy": {
-      "title": "Buddy Usage",
-      "subtitle": "AI Assistant feedback"
-    },
-    "satisfaction": {
-      "title": "Satisfaction & Open Feedback",
-      "subtitle": "Overall experience"
-    }
-  },
-
   "questions": {
-    "q1": {
-      "text": "I have reliable access to all required tools/systems.",
-      "tooltip": "This includes VPN, permissions, installations, and hardware access."
-    },
-    "q2": {
-      "text": "I can log in and use the company task board without friction."
-    },
-    "q3": {
-      "text": "Technical blockers (VPN/permissions/installations) are resolved."
-    },
-    "q3_blockers": {
-      "label": "If no, select your blockers:",
-      "options": ["VPN Issues", "Permissions", "Software Installations", "Hardware Problems", "Other"],
-      "other": "Please specify other blockers..."
-    },
-    "q4": {
-      "text": "The learning pace so far is appropriate for me.",
-      "tooltip": "Consider if the speed matches your learning style and available time."
-    },
-    "q5": {
-      "text": "The time expectations per unit were clear."
-    },
-    "q6": {
-      "text": "I can complete a typical unit within the suggested time.",
-      "tooltip": "A typical unit should take 20-30 minutes."
-    },
-    "q7": {
-      "text": "The workload is sustainable (I can learn and do my daily work)."
-    },
-    "q8": {
-      "text": "I understand the core concepts introduced so far."
-    },
-    "q9": {
-      "text": "I feel confident applying what I learned to real tasks."
-    },
-    "q10": {
-      "text": "Estimated time until I can perform my role independently:",
-      "options": ["0–1 weeks", "1–2 weeks", "2–3 weeks", "3–4 weeks", "4+ weeks"]
-    },
-    "q11": {
-      "text": "Which topics still need clarification?",
-      "options": ["Team Collaboration", "Communication Tools", "Technical Concepts", "Project Management", "Company Culture", "Other"],
-      "other": "Please specify other topics..."
-    },
-    "q12": {
-      "text": "Draw.io — I can create and share a clear system diagram."
-    },
-    "q13": {
-      "text": "VLC — I can open/test streams and capture diagnostics."
-    },
-    "q14": {
-      "text": "I know whom to ask for help (manager/mentor/peers)."
-    },
-    "q15": {
-      "text": "I feel connected to the team and culture."
-    },
-    "q16": {
-      "text": "The onboarding content feels relevant to my role."
-    },
-    "q17": {
-      "text": "I currently face blockers that could slow my onboarding."
-    },
-    "q17_details": {
-      "blockers": {
-        "label": "Select blockers:",
-        "options": ["Process Issues", "People/Communication", "Tools/Technology", "Time Constraints", "Other"],
-        "other": "Please specify other blockers..."
-      },
-      "urgency": {
-        "label": "Urgency level:",
-        "options": ["Low", "Medium", "High"]
-      }
-    },
-    "q18": {
-      "text": "I would benefit from a short check-in with my manager/mentor."
-    },
-    "q19": {
-      "text": "I used Buddy to get help or explanations.",
-      "options": ["Never", "Once", "2–5 times", "6+ times"]
-    },
-    "q20": {
-      "text": "Buddy's answers were helpful."
-    },
-    "q21": {
-      "text": "Overall, how satisfied are you with the onboarding so far?"
-    },
-    "q22": {
-      "text": "What should we keep doing?",
-      "placeholder": "Tell us what's working well..."
-    },
-    "q23": {
-      "text": "What should we improve next?", 
-      "placeholder": "Share your ideas for improvement..."
-    },
-    "anonymous": {
-      "label": "Make this feedback anonymous",
-      "help": "Only applies to the satisfaction questions above"
-    }
+    "q1": "I feel I am keeping up with the onboarding goals so far.",
+    "q2": "The onboarding tasks so far have prepared me to contribute to real work.",
+    "q3": "The materials so far are clear and easy to understand.",
+    "q4": "I feel motivated and engaged during the onboarding process.",
+    "q5": "Overall, my onboarding experience so far has been positive.",
+    "sentiment": "How do you currently feel about your onboarding journey?",
+    "q6": "What has helped you the most so far in this onboarding?",
+    "q6_placeholder": "Type your thoughts here...",
+    "q7": "What challenges or blockers have slowed you down?",
+    "q7_placeholder": "Type your thoughts here...",
+    "q8": "What would you like to see more (or less) of in the next stages?",
+    "q8_placeholder": "Type your thoughts here..."
   },
 
   "scales": {
@@ -154,12 +33,12 @@
       "4": "Agree",
       "5": "Strongly Agree"
     },
-    "satisfaction": {
-      "1": "Very Dissatisfied",
-      "2": "Dissatisfied",
-      "3": "Neutral", 
-      "4": "Satisfied",
-      "5": "Very Satisfied"
+    "sentiment": {
+      "excited": "🤩",
+      "happy": "🙂",
+      "neutral": "😐",
+      "concerned": "🙁",
+      "frustrated": "😡"
     }
   }
 }
