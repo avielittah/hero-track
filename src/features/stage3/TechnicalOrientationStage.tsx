@@ -426,23 +426,6 @@ export function TechnicalOrientationStage() {
           });
         }} />}
 
-            {/* Stage CTA - Shows when both MLUs completed */}
-            {canComplete && <motion.div initial={{
-          opacity: 0,
-          scale: 0.95
-        }} animate={{
-          opacity: 1,
-          scale: 1
-        }} transition={{
-          delay: 0.8
-        }} className="text-center">
-                <Button onClick={handleStageComplete} disabled={!canComplete && !adminBypass} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3 text-lg font-medium">
-                  Continue to Stage 4 — Hands-On Practice →
-                </Button>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Ready to apply your skills in real projects!
-                </p>
-              </motion.div>}
           </motion.div>}
 
         {/* Original Stage Summary for incomplete state */}
