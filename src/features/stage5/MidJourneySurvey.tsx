@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -27,11 +27,12 @@ import {
   Send, 
   Award, 
   Lightbulb,
-  Star
+  Users,
+  BookOpen
 } from 'lucide-react';
 import Confetti from 'react-confetti';
 
-// Survey form schema - simplified for new spec
+// Survey form schema
 const surveySchema = z.object({
   // Required Likert questions (1-5)
   q1: z.number().min(1).max(5), // Keeping up with goals
@@ -52,7 +53,6 @@ const surveySchema = z.object({
 type SurveyFormData = z.infer<typeof surveySchema>;
 
 export function MidJourneySurvey() {
-  const { t } = useTranslation();
   const { addXP } = useLearningStore();
   const { completeCurrentStage, viewMode } = useJourneyMachine();
   const { toast } = useToast();
@@ -66,10 +66,10 @@ export function MidJourneySurvey() {
     defaultValues: {},
   });
 
-  const { watch, formState: { errors } } = form;
+  const { watch } = form;
   const watchedValues = watch();
 
-  // Calculate progress - required fields are q1-q5 and sentiment
+  // Calculate progress - required fields
   const requiredFields = ['q1', 'q2', 'q3', 'q4', 'q5', 'sentiment'];
   const completedRequired = requiredFields.filter(field => {
     const value = watchedValues[field as keyof SurveyFormData];
@@ -105,8 +105,8 @@ export function MidJourneySurvey() {
       
       // Show success toast
       toast({
-        title: t('stage5:xpReward', { xp: baseXP }),
-        description: bonusXP > 0 ? t('stage5:bonusXP', { bonus: bonusXP }) : undefined,
+        title: `Thanks! +${baseXP} XP`,
+        description: bonusXP > 0 ? `Bonus +${bonusXP} XP for completion!` : undefined,
         duration: 5000,
       });
 
@@ -180,9 +180,9 @@ export function MidJourneySurvey() {
               </RadioGroup>
               {/* Scale anchors */}
               <div className="flex justify-between text-xs text-muted-foreground px-2">
-                <span>{t('stage5:scales.likert.1')}</span>
-                <span>{t('stage5:scales.likert.3')}</span>
-                <span>{t('stage5:scales.likert.5')}</span>
+                <span>Strongly Disagree</span>
+                <span>Neutral</span>
+                <span>Strongly Agree</span>
               </div>
             </div>
           </FormControl>
@@ -200,24 +200,30 @@ export function MidJourneySurvey() {
       render={({ field }) => (
         <FormItem className="space-y-4">
           <FormLabel className="text-base font-semibold">
-            {t('stage5:questions.sentiment')}
+            How do you currently feel about your onboarding journey?
             <span className="text-destructive ml-1">*</span>
           </FormLabel>
           <FormControl>
             <div className="flex justify-center space-x-6">
-              {['excited', 'happy', 'neutral', 'concerned', 'frustrated'].map((emotion) => (
+              {[
+                { key: 'excited', emoji: '🤩' },
+                { key: 'happy', emoji: '🙂' },
+                { key: 'neutral', emoji: '😐' },
+                { key: 'concerned', emoji: '🙁' },
+                { key: 'frustrated', emoji: '😡' }
+              ].map(({ key, emoji }) => (
                 <button
-                  key={emotion}
+                  key={key}
                   type="button"
-                  onClick={() => field.onChange(emotion)}
+                  onClick={() => field.onChange(key)}
                   className={`text-5xl p-3 rounded-2xl transition-all duration-200 ${
-                    field.value === emotion 
+                    field.value === key 
                       ? 'bg-primary/10 scale-110 shadow-lg' 
                       : 'hover:bg-muted/50 hover:scale-105'
                   }`}
                   disabled={isSubmitted}
                 >
-                  {t(`stage5:scales.sentiment.${emotion}`)}
+                  {emoji}
                 </button>
               ))}
             </div>
@@ -250,7 +256,7 @@ export function MidJourneySurvey() {
             <Alert className="mb-8 bg-green-50 border-green-200">
               <CheckCircle2 className="h-4 w-4 text-green-600" />
               <AlertDescription className="text-green-800">
-                {t('stage5:submittedBanner')}
+                Submitted • Preview Mode
               </AlertDescription>
             </Alert>
 
@@ -276,30 +282,38 @@ export function MidJourneySurvey() {
     <div className="min-h-screen bg-background pb-24">
       <div className="max-w-4xl mx-auto px-6 py-8">
         
-        {/* Header / Intro */}
+        {/* Header / Intro (Hero Block) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="bg-gradient-to-r from-primary to-secondary p-3 rounded-xl">
-              <Star className="h-8 w-8 text-white" />
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-xl">
+              <div className="flex items-center space-x-2">
+                <Users className="h-8 w-8 text-white" />
+                <BookOpen className="h-6 w-6 text-white" />
+              </div>
             </div>
             <div>
               <h1 className="text-4xl font-bold text-foreground">
-                {t('stage5:title')}
+                Midway Feedback Survey
               </h1>
-              <p className="text-muted-foreground text-lg">
-                {t('stage5:progressBar')}
-              </p>
+              <div className="flex items-center space-x-3 mt-2">
+                <Progress value={55.5} className="w-32 h-2" />
+                <span className="text-muted-foreground text-lg">Stage 5 of 9</span>
+              </div>
             </div>
           </div>
           
           <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-none shadow-lg">
             <CardContent className="p-8">
-              <p className="text-foreground text-lg mb-3">{t('stage5:intro')}</p>
-              <p className="text-muted-foreground">{t('stage5:subtitle')}</p>
+              <p className="text-foreground text-lg mb-3">
+                We're halfway through your onboarding journey! This short survey will help us improve the process and ensure you feel confident and supported.
+              </p>
+              <p className="text-muted-foreground text-base">
+                It's not a test – it's about your experience.
+              </p>
             </CardContent>
           </Card>
         </motion.div>
@@ -307,7 +321,7 @@ export function MidJourneySurvey() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             
-            {/* Quantitative Ratings (Likert 1-5) */}
+            {/* A) Quantitative Ratings (Likert 1-5) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -315,44 +329,44 @@ export function MidJourneySurvey() {
             >
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl">Rating Questions</CardTitle>
+                  <CardTitle className="text-2xl">How has your journey been so far?</CardTitle>
                   <p className="text-muted-foreground">Please rate your agreement with each statement</p>
                 </CardHeader>
                 <CardContent className="space-y-8">
                   <LikertScale
                     field="q1"
-                    question={t('stage5:questions.q1')}
+                    question="I feel I am keeping up with the onboarding goals so far."
                     required
                   />
                   <Separator />
                   <LikertScale
                     field="q2"
-                    question={t('stage5:questions.q2')}
+                    question="The onboarding tasks so far have prepared me to contribute to real work."
                     required
                   />
                   <Separator />
                   <LikertScale
                     field="q3"
-                    question={t('stage5:questions.q3')}
+                    question="The materials so far are clear and easy to understand."
                     required
                   />
                   <Separator />
                   <LikertScale
                     field="q4"
-                    question={t('stage5:questions.q4')}
+                    question="I feel motivated and engaged during the onboarding process."
                     required
                   />
                   <Separator />
                   <LikertScale
                     field="q5"
-                    question={t('stage5:questions.q5')}
+                    question="Overall, my onboarding experience so far has been positive."
                     required
                   />
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Sentiment Check */}
+            {/* B) Sentiment Check (Emoji Scale) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -360,7 +374,7 @@ export function MidJourneySurvey() {
             >
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl">How are you feeling?</CardTitle>
+                  <CardTitle className="text-2xl">Your Current Feeling</CardTitle>
                   <p className="text-muted-foreground">Select the emoji that best represents your current sentiment</p>
                 </CardHeader>
                 <CardContent>
@@ -369,7 +383,7 @@ export function MidJourneySurvey() {
               </Card>
             </motion.div>
 
-            {/* Open-Ended Questions */}
+            {/* C) Open-Ended Questions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -377,8 +391,8 @@ export function MidJourneySurvey() {
             >
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl">Your Thoughts</CardTitle>
-                  <p className="text-muted-foreground">Help us understand your experience better (optional)</p>
+                  <CardTitle className="text-2xl">Share Your Thoughts</CardTitle>
+                  <p className="text-muted-foreground">Help us understand your experience better (optional but valuable)</p>
                 </CardHeader>
                 <CardContent className="space-y-8">
                   <FormField
@@ -386,11 +400,11 @@ export function MidJourneySurvey() {
                     name="q6"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base">{t('stage5:questions.q6')}</FormLabel>
+                        <FormLabel className="text-base font-medium">What has helped you the most so far in this onboarding?</FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder={t('stage5:questions.q6_placeholder')}
+                            placeholder="Type your thoughts here..."
                             className="min-h-24 resize-none"
                             disabled={isSubmitted}
                           />
@@ -405,11 +419,11 @@ export function MidJourneySurvey() {
                     name="q7"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base">{t('stage5:questions.q7')}</FormLabel>
+                        <FormLabel className="text-base font-medium">What challenges or blockers have slowed you down?</FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder={t('stage5:questions.q7_placeholder')}
+                            placeholder="Type your thoughts here..."
                             className="min-h-24 resize-none"
                             disabled={isSubmitted}
                           />
@@ -424,11 +438,11 @@ export function MidJourneySurvey() {
                     name="q8"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base">{t('stage5:questions.q8')}</FormLabel>
+                        <FormLabel className="text-base font-medium">What would you like to see more (or less) of in the next stages?</FormLabel>
                         <FormControl>
                           <Textarea
                             {...field}
-                            placeholder={t('stage5:questions.q8_placeholder')}
+                            placeholder="Type your thoughts here..."
                             className="min-h-24 resize-none"
                             disabled={isSubmitted}
                           />
@@ -441,7 +455,7 @@ export function MidJourneySurvey() {
               </Card>
             </motion.div>
 
-            {/* Buddy Tip Box */}
+            {/* 3. Buddy Tip / Did You Know Box */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -452,14 +466,14 @@ export function MidJourneySurvey() {
                   <div className="flex items-start space-x-3">
                     <Lightbulb className="h-6 w-6 text-purple-600 mt-1 flex-shrink-0" />
                     <p className="text-purple-800 font-medium">
-                      {t('stage5:buddyTip')}
+                      💡 Did you know? You can always use Buddy to ask questions during onboarding and get quick clarifications.
                     </p>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Submit Section */}
+            {/* 4. Submit & CTA Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -491,7 +505,7 @@ export function MidJourneySurvey() {
                   ) : (
                     <>
                       <Send className="mr-2 h-5 w-5" />
-                      {isFormReady ? t('stage5:submitButton') : t('stage5:submitButtonDisabled')}
+                      {isFormReady ? 'Submit Feedback →' : 'Complete required fields'}
                     </>
                   )}
                 </Button>
