@@ -399,23 +399,23 @@ export function MidJourneySurvey() {
                             <FormItem>
                               <FormLabel>{t('stage5:questions.q3_blockers.label')}</FormLabel>
                               <div className="grid grid-cols-2 gap-3">
-                                {(t('stage5:questions.q3_blockers.options', { returnObjects: true }) as string[]).map((option: string, index: number) => (
-                                  <div key={index} className="flex items-center space-x-2">
-                                    <Checkbox
-                                      checked={field.value?.includes(option)}
-                                      onCheckedChange={(checked) => {
-                                        const current = field.value || [];
-                                        if (checked) {
-                                          field.onChange([...current, option]);
-                                        } else {
-                                          field.onChange(current.filter((item) => item !== option));
-                                        }
-                                      }}
-                                      disabled={isSubmitted}
-                                    />
-                                    <Label className="text-sm">{option}</Label>
-                                  </div>
-                                ))}
+                                 {["VPN Issues", "Permissions", "Software Installations", "Hardware Problems", "Other"].map((option: string, index: number) => (
+                                   <div key={index} className="flex items-center space-x-2">
+                                     <Checkbox
+                                       checked={field.value?.includes(option)}
+                                       onCheckedChange={(checked) => {
+                                         const current = field.value || [];
+                                         if (checked) {
+                                           field.onChange([...current, option]);
+                                         } else {
+                                           field.onChange(current.filter((item) => item !== option));
+                                         }
+                                       }}
+                                       disabled={isSubmitted}
+                                     />
+                                     <Label className="text-sm">{option}</Label>
+                                   </div>
+                                 ))}
                               </div>
                             </FormItem>
                           )}
@@ -521,11 +521,11 @@ export function MidJourneySurvey() {
                                 <SelectValue placeholder="Select timeframe..." />
                               </SelectTrigger>
                               <SelectContent>
-                                {(t('stage5:questions.q10.options', { returnObjects: true }) as string[]).map((option: string, index: number) => (
-                                  <SelectItem key={index} value={option}>
-                                    {option}
-                                  </SelectItem>
-                                ))}
+                                 {["0–1 weeks", "1–2 weeks", "2–3 weeks", "3–4 weeks", "4+ weeks"].map((option: string, index: number) => (
+                                   <SelectItem key={index} value={option}>
+                                     {option}
+                                   </SelectItem>
+                                 ))}
                               </SelectContent>
                             </Select>
                           </FormControl>
