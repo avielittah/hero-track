@@ -16,6 +16,7 @@ import { ApplicationSkillsStage } from '@/features/stage4';
 import { MidJourneySurvey } from '@/features/stage5';
 import { AdvancedSkillsStage } from '@/features/stage6';
 import { MasteryStage } from '@/features/stage7';
+import { FinalOrientationSurvey } from '@/features/stage8';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -313,6 +314,11 @@ export const StageContainer = () => {
   // Show mastery stage for stage 7
   if (viewingStage === 7) {
     return <MasteryStage />;
+  }
+
+  // Show final orientation for stage 8
+  if (viewingStage === 8) {
+    return <FinalOrientationSurvey />;
   }
 
   return (
