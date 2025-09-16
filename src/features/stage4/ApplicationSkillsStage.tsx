@@ -296,10 +296,10 @@ export function ApplicationSkillsStage() {
           </div>
 
           {/* Draw.io Card */}
-          <ToolCard id="drawio" icon={<PenTool className="h-8 w-8" />} title={stage3Content.units.drawio.title} objective={stage3Content.units.drawio.objective} estimatedTime={stage3Content.units.drawio.estimatedTime} xpReward={stage3Content.units.drawio.xpOnSubmit} isCompleted={drawioSubmitted} onStart={() => handleUnitStart('drawio')} toolLink="https://app.diagrams.net/" videoUrl="https://www.youtube.com/watch?v=Z0D96ZikMkc" />
+          <ToolCard id="drawio" icon={<PenTool className="h-8 w-8" />} title={stage3Content.units.drawio.title} description={stage3Content.units.drawio.objective} estimatedTime={stage3Content.units.drawio.estimatedTime} isCompleted={drawioSubmitted} onStart={() => handleUnitStart('drawio')} toolLink="https://app.diagrams.net/" videoUrl="https://www.youtube.com/watch?v=Z0D96ZikMkc" />
 
           {/* VLC Card */}
-          <ToolCard id="vlc" icon={<Play className="h-8 w-8" />} title={stage3Content.units.vlc.title} objective={stage3Content.units.vlc.objective} estimatedTime={stage3Content.units.vlc.estimatedTime} xpReward={stage3Content.units.vlc.xpOnSubmit} isCompleted={vlcSubmitted} onStart={() => handleUnitStart('vlc')} toolLink="https://www.videolan.org/vlc/" videoUrl="https://www.youtube.com/watch?v=example-vlc" />
+          <ToolCard id="vlc" icon={<Play className="h-8 w-8" />} title={stage3Content.units.vlc.title} description={stage3Content.units.vlc.objective} estimatedTime={stage3Content.units.vlc.estimatedTime} isCompleted={vlcSubmitted} onStart={() => handleUnitStart('vlc')} toolLink="https://www.videolan.org/vlc/" videoUrl="https://www.youtube.com/watch?v=example-vlc" />
         </div>
 
         {/* Mini Quiz - Appears after both units completed */}
@@ -313,13 +313,11 @@ export function ApplicationSkillsStage() {
             <MiniQuiz title="🧠 Quick Knowledge Check" questions={[{
             question: "What's the biggest advantage of using browser-based tools like Draw.io?",
             options: ["Better performance than desktop apps", "No installation required, instant collaboration", "They only work on mobile devices", "They cost less than desktop software"],
-            correctIndex: 1,
-            explanation: "Browser-based tools eliminate installation barriers and enable instant team collaboration!"
+            correctIndex: 1
           }, {
             question: "Why is VLC valuable for engineering work beyond just playing videos?",
             options: ["It converts all video formats", "It provides detailed codec analysis and stream diagnostics", "It only works with engineering files", "It's faster than other media players"],
-            correctIndex: 1,
-            explanation: "VLC's diagnostic capabilities make it an essential tool for analyzing media streams and debugging communication protocols!"
+            correctIndex: 1
           }]} onComplete={() => handleBonusXPClaim(8)} />
           </motion.div>}
 
@@ -331,7 +329,7 @@ export function ApplicationSkillsStage() {
         opacity: 1,
         y: 0
       }} className="mb-8">
-            <StageSummary title="🎯 Stage 4 Summary" completedUnits={units.filter(u => u.isCompleted)} totalXP={earnedXP} keyLearnings={["Professional diagram creation with Draw.io", "Advanced media analysis using VLC", "Browser-based tool collaboration", "Engineering diagnostic methodologies"]} nextSteps={["Apply these tools in real engineering scenarios", "Collaborate on team diagrams", "Use VLC for media troubleshooting"]} />
+            <StageSummary units={units.filter(u => u.isCompleted)} earnedXP={earnedXP} totalXP={30} canComplete={canComplete} onComplete={handleStageComplete} />
           </motion.div>}
 
         {/* Stage Feedback */}
@@ -342,7 +340,7 @@ export function ApplicationSkillsStage() {
         opacity: 1,
         y: 0
       }} className="mb-8">
-            <StageFeedback stageNumber={4} onSubmit={setStageFeedback} />
+            <StageFeedback onSubmit={setStageFeedback} />
           </motion.div>}
 
         {/* XP & Skills Recap */}
@@ -353,7 +351,7 @@ export function ApplicationSkillsStage() {
         opacity: 1,
         y: 0
       }} className="mb-8">
-            <XPSkillsRecap currentXP={earnedXP} gainedSkills={["Advanced Tool Mastery", "Technical Communication", "System Visualization"]} />
+            <XPSkillsRecap earnedXP={earnedXP} stageXP={30} />
           </motion.div>}
 
         {/* Final CTA */}
@@ -379,13 +377,10 @@ export function ApplicationSkillsStage() {
           </div>}
 
         {/* MLU Modal */}
-        <MLUModal isOpen={showMLUModal} onClose={() => {
+        {currentMLUData && <MLUModal isOpen={showMLUModal} onClose={() => {
         setShowMLUModal(false);
         setCurrentMLUData(null);
-      }} data={currentMLUData} onSubmit={currentMLUData?.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit}>
-          {currentMLUData?.id === 'drawio' && <DrawIOUnit isSubmitted={drawioSubmitted} onSubmit={() => handleDrawioSubmit(stage3Content.units.drawio.xpOnSubmit)} />}
-          {currentMLUData?.id === 'vlc' && <VLCUnit isSubmitted={vlcSubmitted} onSubmit={() => handleVlcSubmit(stage3Content.units.vlc.xpOnSubmit)} />}
-        </MLUModal>
+      }} unitData={currentMLUData} stageXP={{ earned: earnedXP, total: 30 }} onComplete={currentMLUData?.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit} />}
       </div>
     </div>;
 }
