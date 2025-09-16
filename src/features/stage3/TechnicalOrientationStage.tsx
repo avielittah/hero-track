@@ -408,11 +408,6 @@ export function TechnicalOrientationStage() {
             {/* Stage Summary */}
             
 
-            {/* Did You Know Boxes */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <DidYouKnowBox title="🎯 Professional Impact" content="Engineers who document their work with clear diagrams are 40% more effective in team collaborations. The visual communication skills you've learned here will set you apart!" xpReward={3} onRewardClaim={() => handleBonusXPClaim(3)} onClose={() => {}} />
-              <DidYouKnowBox title="🔧 Advanced Applications" content="VLC's stream analysis features are used by broadcast engineers worldwide to debug live transmission issues. You now have the same tools the professionals use!" xpReward={3} onRewardClaim={() => handleBonusXPClaim(3)} onClose={() => {}} />
-            </div>
 
             {/* XP & Skills Recap */}
             <XPSkillsRecap earnedXP={earnedXP} stageXP={stage3Content.xpTotalTarget} />
