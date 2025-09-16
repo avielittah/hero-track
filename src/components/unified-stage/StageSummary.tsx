@@ -35,9 +35,9 @@ export function StageSummary({
       initial={{ opacity: 0, y: 20 }} 
       animate={{ opacity: 1, y: 0 }} 
       transition={{ delay: 0.4 }} 
-      className={`sticky bottom-8 ${className}`}
+      className={`w-full max-w-3xl mx-auto ${className}`}
     >
-      <Card className="bg-card/95 backdrop-blur-sm border-2">
+      <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-sm border-2 shadow-lg">
         <CardContent className="p-6">
           <div className="space-y-4">
             {/* Header */}

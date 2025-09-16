@@ -22,7 +22,7 @@ export const CompletionSummary = ({ checkedTasks }: CompletionSummaryProps) => {
 
   return (
     <motion.div
-      className="bg-white rounded-2xl border border-border p-6 sticky top-6"
+      className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-sm rounded-2xl border-2 shadow-lg p-6 w-full max-w-md"
       initial={{ x: 30, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.6, delay: 0.3 }}
