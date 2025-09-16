@@ -12,10 +12,7 @@ import { FinalWrapUpScreen } from '@/components/FinalWrapUpScreen';
 import { WelcomeStage } from '@/features/stage1/WelcomeStage';
 import { OrientationChecklistStage } from '@/features/stage2/OrientationChecklistStage';
 import { TechnicalOrientationStage } from '@/features/stage3';
-import { ApplicationSkillsStage } from '@/features/stage4';
 import { MidJourneySurvey } from '@/features/stage5';
-import { AdvancedSkillsStage } from '@/features/stage6';
-import { MasteryStage } from '@/features/stage7';
 import { useLearningStore } from '@/lib/store';
 import { persistAdapter } from '@/lib/persist';
 import { useToast } from '@/hooks/use-toast';
@@ -295,24 +292,9 @@ export const StageContainer = () => {
     return <TechnicalOrientationStage />;
   }
 
-  // Show application skills for stage 4
-  if (viewingStage === 4) {
-    return <ApplicationSkillsStage />;
-  }
-
   // Show mid-journey survey for stage 5
   if (viewingStage === 5) {
     return <MidJourneySurvey />;
-  }
-
-  // Show advanced skills for stage 6
-  if (viewingStage === 6) {
-    return <AdvancedSkillsStage />;
-  }
-
-  // Show mastery stage for stage 7
-  if (viewingStage === 7) {
-    return <MasteryStage />;
   }
 
   return (
