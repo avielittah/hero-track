@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle, Circle, Lock, Eye } from 'lucide-react';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { StageId } from '@/types/journey';
+import { isAdmin } from '@/lib/admin';
 
 export const ProgressBar = () => {
   const { t } = useTranslation();
@@ -48,6 +49,13 @@ export const ProgressBar = () => {
   };
 
   const handleStageClick = (stageId: StageId) => {
+    // Admin can go to any stage directly
+    if (isAdmin()) {
+      goToStage(stageId);
+      return;
+    }
+    
+    // Regular user logic
     if (canPreviewBack(stageId)) {
       previewStage(stageId);
     } else if (stageId === currentStage + 1 && canPeekNext()) {
@@ -58,6 +66,10 @@ export const ProgressBar = () => {
   };
 
   const isClickable = (stageId: StageId) => {
+    // Admin can click any stage
+    if (isAdmin()) return true;
+    
+    // Regular user logic
     return canPreviewBack(stageId) || 
            (stageId === currentStage + 1 && canPeekNext()) ||
            stageId === currentStage;
