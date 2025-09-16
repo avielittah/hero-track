@@ -684,10 +684,7 @@ export function TechnicalOrientationStage() {
                 Stage Summary
               </h2>
               <p className="text-muted-foreground">
-                Excellent work! You've now been introduced to Draw.io and VLC — two essential tools that will support 
-                your ability to design, visualize, and analyze systems for your upcoming practical project. Draw.io will 
-                help you create clear system diagrams, while VLC's analysis capabilities will be invaluable for debugging 
-                communication streams and media protocols.
+                In this stage, you explored two essential engineering tools: Draw.io for creating clear system diagrams, and VLC for media playback and analysis. These tools will support your upcoming hands-on project and make collaboration easier.
               </p>
               <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 space-y-2">
                 <h3 className="font-medium text-sm">What you've mastered:</h3>
@@ -761,7 +758,7 @@ export function TechnicalOrientationStage() {
                   size="lg"
                   className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-4 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Continue to Stage 4 — Hands-On Practice →
+                  Continue to Stage 4 →
                 </Button>
               </div>
             </motion.div>
