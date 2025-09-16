@@ -302,6 +302,17 @@ export function MasteryStage() {
           <ToolCard id="vlc" icon={<Play className="h-8 w-8" />} title={stage3Content.units.vlc.title} description={stage3Content.units.vlc.objective} estimatedTime={stage3Content.units.vlc.estimatedTime} isCompleted={vlcSubmitted} onStart={() => handleUnitStart('vlc')} toolLink="https://www.videolan.org/vlc/" videoUrl="https://www.youtube.com/watch?v=example-vlc" />
         </div>
 
+        {/* Stage Summary - Always visible to show progress */}
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} className="mb-8">
+            <StageSummary units={units} earnedXP={earnedXP} totalXP={30} canComplete={canComplete || adminBypass} onComplete={handleStageComplete} nextStageName="Final Survey" />
+          </motion.div>
+
         {/* Mini Quiz - Appears after both units completed */}
         {canComplete && <motion.div initial={{
         opacity: 0,
@@ -319,17 +330,6 @@ export function MasteryStage() {
             options: ["It converts all video formats", "It provides detailed codec analysis and stream diagnostics", "It only works with engineering files", "It's faster than other media players"],
             correctIndex: 1
           }]} onComplete={() => handleBonusXPClaim(8)} />
-          </motion.div>}
-
-        {/* Stage Summary - Shows when both units are completed */}
-        {canComplete && <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} className="mb-8">
-            <StageSummary units={units.filter(u => u.isCompleted)} earnedXP={earnedXP} totalXP={30} canComplete={canComplete} onComplete={handleStageComplete} />
           </motion.div>}
 
         {/* Stage Feedback */}
