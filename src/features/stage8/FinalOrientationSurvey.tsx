@@ -112,13 +112,16 @@ export function FinalOrientationSurvey() {
         duration: 5000,
       });
 
+      // Generate and download completion report
+      generateCompletionReport();
+
       // Complete stage after short delay
       setTimeout(() => {
         completeCurrentStage();
-      }, 3000);
+      }, 4000);
 
       // Hide confetti after animation
-      setTimeout(() => setShowConfetti(false), 6000);
+      setTimeout(() => setShowConfetti(false), 8000);
 
       // Emit orientation data (for manager dashboard)
       console.log('Final Orientation Survey submitted:', {
@@ -143,6 +146,327 @@ export function FinalOrientationSurvey() {
         variant: "destructive",
       });
     }
+  };
+
+  // Generate completion report
+  const generateCompletionReport = () => {
+    const { currentXP, level } = useLearningStore.getState();
+    const currentDate = new Date().toLocaleDateString('he-IL');
+    
+    const reportHTML = `
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תעודת השלמת הכשרה מקצועית</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .certificate {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+        }
+        .trophy-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px;
+        }
+        .achievement-summary {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f5e8 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-right: 5px solid #4CAF50;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 3px solid #2196F3;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2196F3;
+            display: block;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .skills-section {
+            margin-bottom: 30px;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .skill-item {
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 4px solid #4CAF50;
+            display: flex;
+            align-items: center;
+        }
+        .skill-icon {
+            margin-left: 10px;
+            font-size: 1.5em;
+        }
+        .stages-completed {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .stage-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stage-item:last-child {
+            border-bottom: none;
+        }
+        .stage-check {
+            color: #4CAF50;
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
+        .footer {
+            background: #f8f9ff;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+        .signature-line {
+            border-top: 2px solid #333;
+            width: 200px;
+            margin: 20px auto;
+            padding-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 6em;
+            color: rgba(76, 175, 80, 0.05);
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @media print {
+            body { background: white; padding: 20px; }
+            .certificate { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="watermark">מוסמך</div>
+        
+        <div class="header">
+            <span class="trophy-icon">🏆</span>
+            <h1>תעודת השלמת הכשרה מקצועית</h1>
+            <div class="subtitle">מהנדס מערכות תקשורת</div>
+        </div>
+
+        <div class="content">
+            <div class="achievement-summary">
+                <h2 style="margin-top: 0; color: #2196F3; text-align: center;">🎯 סיכום הישגים</h2>
+                <p style="text-align: center; font-size: 1.1em; margin: 0;">
+                    הושלמה בהצלחה תוכנית הכשרה מקיפה למהנדס מערכות תקשורת
+                    <br>תאריך השלמה: <strong>${currentDate}</strong>
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">${currentXP}</span>
+                    <div class="stat-label">נקודות ניסיון (XP)</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">8</span>
+                    <div class="stat-label">שלבי הכשרה</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${level}</span>
+                    <div class="stat-label">רמת מומחיות</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">שיעור השלמה</div>
+                </div>
+            </div>
+
+            <div class="skills-section">
+                <h3 style="color: #2196F3; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;">🔧 כישורים מקצועיים שנרכשו</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <span class="skill-icon">📊</span>
+                        <span>יצירת דיאגרמות מערכת מקצועיות (Draw.io)</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-icon">🎥</span>
+                        <span>ניתוח מדיה וזרמים מתקדם (VLC)</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-icon">🤝</span>
+                        <span>עבודת צוות ושיתוף פעולה</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-icon">📋</span>
+                        <span>ניהול פרויקטים ומשימות</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-icon">🔍</span>
+                        <span>פתרון בעיות טכניות</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-icon">💼</span>
+                        <span>מיומנויות מקצועיות מתקדמות</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stages-completed">
+                <h3 style="color: #2196F3; margin-top: 0;">📚 שלבי ההכשרה שהושלמו</h3>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 1:</strong> קבלת פנים והכרת הצוות</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 2:</strong> אוריינטציה ראשונית</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 3:</strong> אוריינטציה טכנית - כלי עבודה</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 4:</strong> מיומנויות יישומיות</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 5:</strong> סקר ביניים ומשוב</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 6:</strong> מיומנויות מתקדמות</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 7:</strong> שלב מומחיות</span>
+                </div>
+                <div class="stage-item">
+                    <span class="stage-check">✅</span>
+                    <span><strong>שלב 8:</strong> אוריינטציה סופית</span>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #e8f5e8 0%, #f8f9ff 100%); padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
+                <h3 style="color: #4CAF50; margin: 0 0 10px 0;">🎉 מוכן לתרום ולהצליח!</h3>
+                <p style="margin: 0; color: #666;">
+                    המשתתף הוכח כמוכן לתרום באופן משמעותי לצוות הטכני ולקחת חלק בפרויקטים מורכבים במערכות תקשורת
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="margin-bottom: 30px;">
+                <strong>תעודה זו מעידה על השלמה מוצלחת של תוכנית הכשרה מקצועית מקיפה</strong>
+            </div>
+            
+            <div style="display: flex; justify-content: space-around; align-items: end;">
+                <div>
+                    <div class="signature-line">מנהל ההכשרה</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 100px; height: 100px; border: 2px solid #4CAF50; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2em;">🏆</div>
+                    <div style="font-size: 0.9em; color: #666;">חותמת הסמכה</div>
+                </div>
+                <div>
+                    <div class="signature-line">מנהל הצוות</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+    // Create and download the report
+    const blob = new Blob([reportHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `תעודת_השלמת_הכשרה_${currentDate.replace(/\//g, '_')}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    // Show download toast
+    toast({
+      title: "דוח סיכום הורד בהצלחה! 📄",
+      description: "התעודה המקצועית שלך נשמרה במחשב",
+      duration: 4000,
+    });
   };
 
   // Likert Scale Component
@@ -244,8 +568,9 @@ export function FinalOrientationSurvey() {
             width={window.innerWidth}
             height={window.innerHeight}
             recycle={false}
-            numberOfPieces={300}
+            numberOfPieces={500}
             gravity={0.1}
+            colors={['#4CAF50', '#2196F3', '#FF9800', '#E91E63', '#9C27B0']}
           />
         )}
         
@@ -270,6 +595,11 @@ export function FinalOrientationSurvey() {
               <p className="text-green-700 text-lg mb-6">
                 Congratulations! You've successfully completed your onboarding. +{earnedXP} XP earned!
               </p>
+              <div className="bg-white/50 rounded-xl p-4 mb-4">
+                <p className="text-green-800 font-semibold text-center">
+                  📄 Your professional completion certificate has been downloaded to your computer!
+                </p>
+              </div>
               <div className="text-sm text-green-600">
                 Welcome to the team! Your manager will be notified of your completion.
               </div>
