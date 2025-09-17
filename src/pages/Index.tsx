@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BuddyButton } from '@/components/BuddyButton';
+import { SmartBuddyButton } from '@/components/buddy';
 import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LevelBar } from '@/components/LevelBar';
@@ -79,10 +79,10 @@ const Index = () => {
       )}
       
       {/* Buddy Button */}
-      <BuddyButton 
-        showNudge={showBuddyNudge}
-        onNudgeClose={() => setShowBuddyNudge(false)}
-      />
+        <SmartBuddyButton 
+          showNudge={showBuddyNudge} 
+          onNudgeClose={() => setShowBuddyNudge(false)}
+        />
       
       {/* Footer Bar with Admin */}
       <FooterBar />
