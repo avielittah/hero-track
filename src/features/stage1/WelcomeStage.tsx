@@ -9,6 +9,7 @@ import { CoreValues } from './CoreValues';
 import { SuccessCriteria } from './SuccessCriteria';
 import { BuddyHighlight } from './BuddyHighlight';
 import { StartCTA } from './StartCTA';
+import { VoiceGuideButton } from '@/components/VoiceGuideButton';
 import { welcomeContent } from './welcome.content';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 
@@ -25,6 +26,23 @@ export const WelcomeStage = () => {
   // regardless of current progress - it's the permanent introduction to the journey
   const isPreviewMode = viewMode === 'preview-back' || currentStage > 1;
 
+  // Create voice guide content
+  const voiceGuideContent = `
+    ברוכים הבאים לתוכנית ההדרכה של TaleAI למהנדס מערכות תקשורת.
+    
+    התוכנית מחולקת ל-8 שלבים שיכינו אתכם לתפקיד החדש.
+    
+    בכל שלב תלמדו כלים חדשים, תבצעו תרגילים מעשיים, ותקבלו משוב מיידי.
+    
+    התוכנית נמשכת כ-3 שבועות, שעה עד שעתיים ביום, בקצב שלכם.
+    
+    תקבלו נקודות ניסיון על כל משימה שתשלימו, ותעלו רמות בהתקדמכם.
+    
+    באדי, המנטור החכם שלכם, ילווה אתכם לאורך כל הדרך ויענה על כל שאלה.
+    
+    בואו נתחיל במסע!
+  `.trim();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Preview Banner */}
@@ -34,6 +52,13 @@ export const WelcomeStage = () => {
       
       {/* Main Container */}
       <div className="max-w-4xl mx-auto px-6 py-12">
+        {/* Voice Guide Button */}
+        <div className="flex justify-center mb-8">
+          <VoiceGuideButton 
+            content={voiceGuideContent}
+            className="mb-4"
+          />
+        </div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
