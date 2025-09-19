@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SmartBuddyButton } from '@/components/buddy';
+import { BuddyButton } from '@/components/BuddyButton';
 import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LevelBar } from '@/components/LevelBar';
@@ -56,7 +56,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background font-sans relative">
+    <div className="min-h-screen bg-background font-sans relative pb-20">
       <TopBar 
         currentLanguage={currentLanguage}
         onLanguageToggle={handleLanguageToggle}
@@ -64,7 +64,7 @@ const Index = () => {
       <ProgressBar />
       <StageContainer />
       
-      {/* Gaming XP Bar */}
+      {/* Fixed Gaming XP Bar */}
       <LevelBar />
       
       {/* Level Up Modal */}
@@ -79,10 +79,10 @@ const Index = () => {
       )}
       
       {/* Buddy Button */}
-        <SmartBuddyButton 
-          showNudge={showBuddyNudge} 
-          onNudgeClose={() => setShowBuddyNudge(false)}
-        />
+      <BuddyButton 
+        showNudge={showBuddyNudge}
+        onNudgeClose={() => setShowBuddyNudge(false)}
+      />
       
       {/* Footer Bar with Admin */}
       <FooterBar />

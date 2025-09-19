@@ -45,13 +45,13 @@ export const StageBanner = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="relative z-10 bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-sm mb-6"
+          className="fixed bottom-0 left-0 right-0 z-50"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <div className="relative z-10 max-w-7xl mx-auto px-6 pb-6">
+          <div className="max-w-7xl mx-auto px-6 pb-6">
             <motion.div
               className={`
                 flex items-center justify-between p-4 rounded-lg border backdrop-blur-sm

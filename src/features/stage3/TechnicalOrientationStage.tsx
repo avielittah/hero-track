@@ -381,85 +381,164 @@ export function TechnicalOrientationStage() {
         total: stage3Content.xpTotalTarget
       }} onComplete={currentMLUData.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit} isCompleted={currentMLUData.id === 'drawio' ? drawioSubmitted : vlcSubmitted} />}
 
-        {/* Mini Quiz - Appears after both units completed */}
-        {canComplete && <motion.div initial={{
+        {/* Stage Progress Info - Always visible */}
+        <motion.div initial={{
         opacity: 0,
         y: 20
       }} animate={{
         opacity: 1,
         y: 0
-      }} className="mb-8">
-            <MiniQuiz title="🧠 Quick Knowledge Check" questions={[{
-            question: "What's the biggest advantage of using browser-based tools like Draw.io?",
-            options: ["Better performance than desktop apps", "No installation required, instant collaboration", "They only work on mobile devices", "They cost less than desktop software"],
-            correctIndex: 1
-          }, {
-            question: "Why is VLC valuable for engineering work beyond just playing videos?",
-            options: ["It converts all video formats", "It provides detailed codec analysis and stream diagnostics", "It only works with engineering files", "It's faster than other media players"],
-            correctIndex: 1
-          }]} onComplete={() => handleBonusXPClaim(8)} />
-          </motion.div>}
+      }} transition={{
+        delay: 0.6
+      }} className="space-y-6 mb-8">
+          {/* Stage Overview */}
+          
+        </motion.div>
 
-        {/* Stage Summary - Shows when both units are completed */}
-        {canComplete && <motion.div initial={{
+        {/* Stage Summary Section - Shows when at least one MLU is completed */}
+        {(drawioSubmitted || vlcSubmitted) && <motion.div initial={{
         opacity: 0,
         y: 20
       }} animate={{
         opacity: 1,
         y: 0
-      }} className="mb-8">
-            <StageSummary units={units.filter(u => u.isCompleted)} earnedXP={earnedXP} totalXP={stage3Content.xpTotalTarget} canComplete={canComplete} onComplete={handleStageComplete} nextStageName="Hands-On Practice" />
-          </motion.div>}
+      }} transition={{
+        delay: 0.5
+      }} className="space-y-8 mb-8">
+            {/* Stage Summary */}
+            
 
-        {/* Stage Feedback */}
-        {canComplete && <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} className="mb-8">
-            <StageFeedback onSubmit={feedback => {
-              setStageFeedback(feedback);
-              toast({
-                title: "Thanks for your feedback! 💙",
-                description: "Your input helps us improve the learning experience."
-              });
-            }} />
-          </motion.div>}
 
-        {/* XP & Skills Recap */}
-        {canComplete && <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} className="mb-8">
+            {/* XP & Skills Recap */}
             <XPSkillsRecap earnedXP={earnedXP} stageXP={stage3Content.xpTotalTarget} />
+
+            {/* Stage Feedback - Shows when both MLUs completed */}
+            {canComplete && !stageFeedback && <StageFeedback onSubmit={feedback => {
+          setStageFeedback(feedback);
+          toast({
+            title: "Thanks for your feedback! 💙",
+            description: "Your input helps us improve the learning experience."
+          });
+        }} />}
+
           </motion.div>}
 
-        {/* Final CTA */}
+        {/* Original Stage Summary for incomplete state */}
+        {!canComplete && !isPreviewMode && <StageSummary units={units} earnedXP={earnedXP} totalXP={stage3Content.xpTotalTarget} canComplete={canComplete || adminBypass} onComplete={handleStageComplete} nextStageName="Hands-On Practice" />}
+
+        {/* Complete Stage Flow - Shows when both MLUs completed */}
         {canComplete && <motion.div initial={{
         opacity: 0,
         y: 20
       }} animate={{
         opacity: 1,
         y: 0
-      }} className="text-center mb-8">
-            <Button onClick={handleStageComplete} size="lg" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 group">
-              <span className="flex items-center space-x-2">
-                <Trophy className="h-6 w-6" />
-                <span>Continue to Next Stage →</span>
-                <Zap className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              </span>
-            </Button>
+      }} transition={{
+        delay: 0.8
+      }} className="space-y-8 mb-8">
+            {/* Stage Summary */}
+            <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/50 dark:to-blue-950/50 border border-green-200 dark:border-green-800 rounded-2xl p-6 space-y-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Trophy className="h-6 w-6 text-yellow-500" />
+                Stage Summary
+              </h2>
+              <p className="text-muted-foreground">
+                In this stage, you explored two essential engineering tools: Draw.io for creating clear system diagrams, and VLC for media playback and analysis. These tools will support your upcoming hands-on project and make collaboration easier.
+              </p>
+              <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 space-y-2">
+                <h3 className="font-medium text-sm">What you've mastered:</h3>
+                <div className="grid md:grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <span>System diagram creation with Draw.io</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <span>Media analysis and debugging with VLC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Did You Know Boxes */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <DidYouKnowBox title="🎯 Professional Impact" content="Engineers who document their work with clear diagrams are 40% more effective in team collaborations. The visual communication skills you've learned here will set you apart in your career!" xpReward={3} onRewardClaim={() => handleBonusXPClaim(3)} onClose={() => {}} />
+              <DidYouKnowBox title="🔧 Real-World Usage" content="VLC's stream analysis features are used by broadcast engineers worldwide to debug live transmission issues. You now have the same professional-grade tools they use!" xpReward={3} onRewardClaim={() => handleBonusXPClaim(3)} onClose={() => {}} />
+            </div>
+
+            {/* XP & Skills Recap */}
+            <XPSkillsRecap earnedXP={earnedXP} stageXP={stage3Content.xpTotalTarget} />
+
+            {/* Stage Feedback */}
+            {!stageFeedback && <StageFeedback onSubmit={feedback => {
+          setStageFeedback(feedback);
+          toast({
+            title: "Thanks for your feedback! 💙",
+            description: "Your input helps us improve the learning experience."
+          });
+        }} />}
+
+            {/* Stage CTA */}
+            <motion.div initial={{
+          opacity: 0,
+          scale: 0.95
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          delay: 1.2
+        }} className="text-center space-y-4">
+              <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold mb-2 flex items-center justify-center gap-2">
+                  <Award className="h-5 w-5 text-primary" />
+                  Ready for Hands-On Practice!
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  You've built a solid foundation with these essential tools. Time to apply your skills in real engineering projects!
+                </p>
+                <Button onClick={handleStageComplete} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-4 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                  Continue to Stage 4 →
+                </Button>
+              </div>
+            </motion.div>
           </motion.div>}
 
-        {/* Progress Indicator - Shows when units aren't completed yet */}
-        {!canComplete && <div className="text-center text-muted-foreground mb-8">
-            <p>Complete both units above to unlock the stage summary and advance to the next stage! 🚀</p>
-          </div>}
+        {/* Progress Indicator - Shows when MLUs not completed */}
+        {!canComplete && <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        delay: 0.7
+      }} className="text-center space-y-4 mb-8">
+            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-950/50 dark:to-yellow-950/50 border border-orange-200 dark:border-orange-800 rounded-2xl p-6">
+              <h3 className="text-lg font-semibold mb-3 flex items-center justify-center gap-2">
+                <Zap className="h-5 w-5 text-orange-500" />
+                Complete Your Tool Training
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Finish both MLUs above to unlock the full stage summary, feedback form, and continue to hands-on practice!
+              </p>
+              
+              {/* Progress visualization */}
+              <div className="flex justify-center items-center gap-4 mb-4">
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${drawioSubmitted ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                  {drawioSubmitted ? <CheckCircle2 className="h-4 w-4" /> : <div className="h-4 w-4 rounded-full border-2 border-current" />}
+                  <span className="text-sm font-medium">Draw.io</span>
+                </div>
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${vlcSubmitted ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                  {vlcSubmitted ? <CheckCircle2 className="h-4 w-4" /> : <div className="h-4 w-4 rounded-full border-2 border-current" />}
+                  <span className="text-sm font-medium">VLC</span>
+                </div>
+              </div>
+              
+              <div className="text-sm text-muted-foreground">
+                Progress: {(drawioSubmitted ? 1 : 0) + (vlcSubmitted ? 1 : 0)} / 2 MLUs completed
+              </div>
+            </div>
+          </motion.div>}
       </div>
     </div>;
 }

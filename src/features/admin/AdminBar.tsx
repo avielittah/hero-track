@@ -53,9 +53,9 @@ export const AdminBar: React.FC = () => {
 
   return (
     <>
-      <div className="inline-flex items-center gap-2 bg-background/95 backdrop-blur-sm border rounded-lg px-3 py-2 shadow-lg mb-4">
+      <div className="fixed bottom-4 right-4 md:right-4 md:bottom-4 z-50 flex items-center gap-2">
         {adminMode ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 bg-background/95 backdrop-blur-sm border rounded-lg px-3 py-2 shadow-lg">
             <div className="flex items-center gap-2 text-xs bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2 py-1 rounded">
               <span>{t('ui.admin.on')}</span>
               <Button
