@@ -94,7 +94,7 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
 
   return (
     <>
-      {/* Toggle Button - מיקום טוב יותר */}
+      {/* Toggle Button - עיצוב מקצועי חדש */}
       <motion.div
         className="fixed left-4 top-32 z-50"
         initial={{ x: -60, opacity: 0 }}
@@ -104,100 +104,108 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
         <Button
           onClick={() => setIsOpen(!isOpen)}
           className="
-            rounded-xl bg-gradient-to-br from-primary via-primary to-secondary 
-            text-white shadow-xl hover:shadow-2xl border-2 border-white/20
-            h-14 w-14 flex items-center justify-center
-            hover:scale-105 transform transition-all duration-300
-            backdrop-blur-sm bg-opacity-90
+            group relative overflow-hidden
+            bg-white/90 hover:bg-white text-foreground
+            border border-border/30 hover:border-primary/40
+            shadow-lg hover:shadow-xl
+            h-12 w-12 rounded-full
+            transition-all duration-300 ease-out
+            hover:scale-110
           "
           size="sm"
         >
-          <div className="flex flex-col items-center gap-0.5">
-            <Languages className="h-5 w-5" />
+          {/* Background gradient on hover */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          
+          <div className="relative flex flex-col items-center justify-center">
             <motion.div
-              animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
+              animate={{ 
+                scale: isOpen ? 1.1 : 1,
+                color: isOpen ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'
+              }}
+              transition={{ duration: 0.2 }}
             >
-              {isOpen ? (
-                <ChevronLeft className="h-3 w-3" />
-              ) : (
-                <ChevronRight className="h-3 w-3" />
-              )}
+              <Volume2 className="h-5 w-5" />
             </motion.div>
           </div>
+          
+          {/* Active indicator */}
+          {isOpen && (
+            <motion.div
+              className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.2 }}
+            />
+          )}
         </Button>
       </motion.div>
 
-      {/* Voice Guide Panel */}
+      {/* Compact Voice Guide Panel - slide קטן */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed left-4 top-48 z-40"
-            initial={{ x: -400, opacity: 0, scale: 0.9 }}
+            className="fixed left-20 top-32 z-40"
+            initial={{ x: -20, opacity: 0, scale: 0.95 }}
             animate={{ x: 0, opacity: 1, scale: 1 }}
-            exit={{ x: -400, opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            exit={{ x: -20, opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <div className="
-              bg-white/98 backdrop-blur-lg border border-border/30 rounded-2xl 
-              shadow-2xl w-96 p-6 
+              bg-white/95 backdrop-blur-lg border border-border/20 rounded-xl 
+              shadow-xl w-72 p-4
               ring-1 ring-white/10
             ">
-              <div className="space-y-4">
-                {/* Panel Header */}
-                <div className="text-center border-b border-border pb-4 mb-4">
-                  <h3 className="font-bold text-xl text-foreground mb-2 flex items-center justify-center gap-2">
-                    🎧 הדרכה קולית
+              <div className="space-y-3">
+                {/* Panel Header - compact */}
+                <div className="text-center pb-2 border-b border-border/30">
+                  <h3 className="font-semibold text-sm text-foreground flex items-center justify-center gap-1">
+                    <Volume2 className="h-4 w-4 text-primary" />
+                    הדרכה קולית
                   </h3>
-                  <p className="text-sm text-muted-foreground">
-                    בחרו שפה להקראת ההדרכה
-                  </p>
                 </div>
 
-                {/* Stop All Button */}
+                {/* Stop All Button - compact */}
                 {(isPlayingHe || isPlayingEn || isLoadingHe || isLoadingEn) && (
-                  <div className="mb-4">
-                    <Button
-                      onClick={stopAllSpeech}
-                      variant="destructive"
-                      size="sm"
-                      className="w-full"
-                    >
-                      <VolumeX className="h-4 w-4 mr-2" />
-                      עצור הכל
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={stopAllSpeech}
+                    variant="outline"
+                    size="sm"
+                    className="w-full h-8 text-xs border-destructive/30 text-destructive hover:bg-destructive/5"
+                  >
+                    <VolumeX className="h-3 w-3 mr-1" />
+                    עצור
+                  </Button>
                 )}
 
-                {/* Hebrew Voice Guide */}
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-foreground flex items-center gap-2">
-                    🇮🇱 עברית
-                  </h4>
+                {/* Hebrew Voice Guide - compact */}
+                <div className="space-y-2">
                   <Button
                     onClick={() => handleTextToSpeech(hebrewContent, 'he')}
                     disabled={isLoadingHe}
                     className="
-                      w-full bg-gradient-to-r from-blue-500 to-blue-600
-                      hover:from-blue-600 hover:to-blue-700 text-white
-                      shadow-md hover:shadow-lg transition-all duration-300
+                      w-full h-9 bg-blue-50 hover:bg-blue-100 text-blue-700
+                      border border-blue-200 hover:border-blue-300
+                      shadow-sm hover:shadow-md transition-all duration-200
+                      text-xs font-medium
                     "
-                    variant="default"
+                    variant="outline"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       {isLoadingHe ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <Loader2 className="h-3 w-3 animate-spin" />
                       ) : isPlayingHe ? (
-                        <VolumeX className="h-4 w-4" />
+                        <VolumeX className="h-3 w-3" />
                       ) : (
-                        <Volume2 className="h-4 w-4" />
+                        <Volume2 className="h-3 w-3" />
                       )}
-                      <span className="text-sm">
+                      <span className="flex items-center gap-1">
+                        🇮🇱
                         {isLoadingHe 
-                          ? 'מכין הקראה...' 
+                          ? 'מכין...' 
                           : isPlayingHe 
-                            ? 'עצור הקראה'
-                            : 'הקרא בעברית'
+                            ? 'עצור'
+                            : 'עברית'
                         }
                       </span>
                     </div>
@@ -254,11 +262,11 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Backdrop */}
+      {/* Light backdrop - לא חוסם את המסך */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
+            className="fixed inset-0 z-30 bg-black/5 backdrop-blur-[1px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
