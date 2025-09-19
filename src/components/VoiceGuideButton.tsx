@@ -20,19 +20,41 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
   const [audioHe, setAudioHe] = useState<HTMLAudioElement | null>(null);
   const [audioEn, setAudioEn] = useState<HTMLAudioElement | null>(null);
 
+  const stopAllSpeech = () => {
+    // Stop Web Speech API
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    
+    // Stop any playing audio
+    if (audioHe) {
+      audioHe.pause();
+      setAudioHe(null);
+    }
+    if (audioEn) {
+      audioEn.pause();
+      setAudioEn(null);
+    }
+    
+    setIsPlayingHe(false);
+    setIsPlayingEn(false);
+    setIsLoadingHe(false);
+    setIsLoadingEn(false);
+  };
+
   const handleTextToSpeech = async (content: string, lang: 'he' | 'en') => {
     const isPlaying = lang === 'he' ? isPlayingHe : isPlayingEn;
-    const audio = lang === 'he' ? audioHe : audioEn;
     const setIsPlaying = lang === 'he' ? setIsPlayingHe : setIsPlayingEn;
     const setIsLoading = lang === 'he' ? setIsLoadingHe : setIsLoadingEn;
-    const setAudio = lang === 'he' ? setAudioHe : setAudioEn;
 
-    if (isPlaying && audio) {
-      audio.pause();
-      setIsPlaying(false);
-      setAudio(null);
+    // If currently playing this language, stop it
+    if (isPlaying) {
+      stopAllSpeech();
       return;
     }
+
+    // Stop any other playing speech first
+    stopAllSpeech();
 
     try {
       setIsLoading(true);
@@ -43,6 +65,7 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
         utterance.lang = lang === 'he' ? 'he-IL' : 'en-US';
         utterance.rate = 0.8;
         utterance.pitch = 1;
+        utterance.volume = 1;
         
         utterance.onstart = () => {
           setIsLoading(false);
@@ -53,7 +76,8 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
           setIsPlaying(false);
         };
         
-        utterance.onerror = () => {
+        utterance.onerror = (event) => {
+          console.error('Speech synthesis error:', event);
           setIsPlaying(false);
           setIsLoading(false);
         };
@@ -70,29 +94,36 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
 
   return (
     <>
-      {/* Toggle Button */}
+      {/* Toggle Button - מיקום טוב יותר */}
       <motion.div
-        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50"
-        initial={{ x: -20 }}
-        animate={{ x: isOpen ? 0 : -20 }}
-        transition={{ duration: 0.3 }}
+        className="fixed left-4 top-32 z-50"
+        initial={{ x: -60, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.5 }}
       >
         <Button
           onClick={() => setIsOpen(!isOpen)}
           className="
-            rounded-l-none rounded-r-xl bg-gradient-to-r from-primary to-secondary 
-            text-white shadow-lg hover:shadow-xl border-0
-            h-16 w-12 flex items-center justify-center
+            rounded-xl bg-gradient-to-br from-primary via-primary to-secondary 
+            text-white shadow-xl hover:shadow-2xl border-2 border-white/20
+            h-14 w-14 flex items-center justify-center
+            hover:scale-105 transform transition-all duration-300
+            backdrop-blur-sm bg-opacity-90
           "
           size="sm"
         >
-          <div className="flex flex-col items-center gap-1">
-            <Languages className="h-4 w-4" />
-            {isOpen ? (
-              <ChevronLeft className="h-3 w-3" />
-            ) : (
-              <ChevronRight className="h-3 w-3" />
-            )}
+          <div className="flex flex-col items-center gap-0.5">
+            <Languages className="h-5 w-5" />
+            <motion.div
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {isOpen ? (
+                <ChevronLeft className="h-3 w-3" />
+              ) : (
+                <ChevronRight className="h-3 w-3" />
+              )}
+            </motion.div>
           </div>
         </Button>
       </motion.div>
@@ -101,20 +132,21 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed left-0 top-1/2 transform -translate-y-1/2 z-40"
-            initial={{ x: -400, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -400, opacity: 0 }}
+            className="fixed left-4 top-48 z-40"
+            initial={{ x: -400, opacity: 0, scale: 0.9 }}
+            animate={{ x: 0, opacity: 1, scale: 1 }}
+            exit={{ x: -400, opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
             <div className="
-              bg-white/95 backdrop-blur-md border border-border/50 rounded-r-2xl 
-              shadow-2xl w-80 p-6 ml-12
+              bg-white/98 backdrop-blur-lg border border-border/30 rounded-2xl 
+              shadow-2xl w-96 p-6 
+              ring-1 ring-white/10
             ">
               <div className="space-y-4">
                 {/* Panel Header */}
-                <div className="text-center border-b border-border pb-4">
-                  <h3 className="font-semibold text-lg text-foreground mb-1">
+                <div className="text-center border-b border-border pb-4 mb-4">
+                  <h3 className="font-bold text-xl text-foreground mb-2 flex items-center justify-center gap-2">
                     🎧 הדרכה קולית
                   </h3>
                   <p className="text-sm text-muted-foreground">
@@ -122,9 +154,24 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
                   </p>
                 </div>
 
+                {/* Stop All Button */}
+                {(isPlayingHe || isPlayingEn || isLoadingHe || isLoadingEn) && (
+                  <div className="mb-4">
+                    <Button
+                      onClick={stopAllSpeech}
+                      variant="destructive"
+                      size="sm"
+                      className="w-full"
+                    >
+                      <VolumeX className="h-4 w-4 mr-2" />
+                      עצור הכל
+                    </Button>
+                  </div>
+                )}
+
                 {/* Hebrew Voice Guide */}
-                <div className="space-y-2">
-                  <h4 className="font-medium text-foreground flex items-center gap-2">
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-foreground flex items-center gap-2">
                     🇮🇱 עברית
                   </h4>
                   <Button
@@ -158,8 +205,8 @@ export const VoiceGuidePanel: React.FC<VoiceGuidePanelProps> = ({
                 </div>
 
                 {/* English Voice Guide */}
-                <div className="space-y-2">
-                  <h4 className="font-medium text-foreground flex items-center gap-2">
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-foreground flex items-center gap-2">
                     🇺🇸 English
                   </h4>
                   <Button
