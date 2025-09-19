@@ -9,7 +9,7 @@ import { CoreValues } from './CoreValues';
 import { SuccessCriteria } from './SuccessCriteria';
 import { BuddyHighlight } from './BuddyHighlight';
 import { StartCTA } from './StartCTA';
-import { VoiceGuideButton } from '@/components/VoiceGuideButton';
+import { VoiceGuidePanel } from '@/components/VoiceGuideButton';
 import { welcomeContent } from './welcome.content';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 
@@ -27,20 +27,24 @@ export const WelcomeStage = () => {
   const isPreviewMode = viewMode === 'preview-back' || currentStage > 1;
 
   // Create voice guide content
-  const voiceGuideContent = `
+  const hebrewVoiceContent = `
     ברוכים הבאים לתוכנית ההדרכה של TaleAI למהנדס מערכות תקשורת.
-    
     התוכנית מחולקת ל-8 שלבים שיכינו אתכם לתפקיד החדש.
-    
     בכל שלב תלמדו כלים חדשים, תבצעו תרגילים מעשיים, ותקבלו משוב מיידי.
-    
     התוכנית נמשכת כ-3 שבועות, שעה עד שעתיים ביום, בקצב שלכם.
-    
     תקבלו נקודות ניסיון על כל משימה שתשלימו, ותעלו רמות בהתקדמכם.
-    
     באדי, המנטור החכם שלכם, ילווה אתכם לאורך כל הדרך ויענה על כל שאלה.
-    
     בואו נתחיל במסע!
+  `.trim();
+
+  const englishVoiceContent = `
+    Welcome to TaleAI's onboarding program for Communication Systems Engineers.
+    The program is divided into 8 stages that will prepare you for your new role.
+    In each stage, you'll learn new tools, perform practical exercises, and receive immediate feedback.
+    The program lasts about 3 weeks, 1-2 hours per day, at your own pace.
+    You'll earn experience points for each completed task and level up as you progress.
+    Buddy, your smart AI mentor, will accompany you throughout the journey and answer any questions.
+    Let's begin the journey!
   `.trim();
 
   return (
@@ -52,13 +56,6 @@ export const WelcomeStage = () => {
       
       {/* Main Container */}
       <div className="max-w-4xl mx-auto px-6 py-12">
-        {/* Voice Guide Button */}
-        <div className="flex justify-center mb-8">
-          <VoiceGuideButton 
-            content={voiceGuideContent}
-            className="mb-4"
-          />
-        </div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -92,6 +89,12 @@ export const WelcomeStage = () => {
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-primary/3 rounded-full blur-3xl" />
       </div>
+
+      {/* Voice Guide Panel */}
+      <VoiceGuidePanel 
+        hebrewContent={hebrewVoiceContent}
+        englishContent={englishVoiceContent}
+      />
     </div>
   );
 };
