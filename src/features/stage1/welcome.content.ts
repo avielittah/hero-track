@@ -16,6 +16,9 @@ export const welcomeContent = {
     timeTitle: "How long will it take?",
     timeBody:
       "About 3 weeks in total. Expect to spend 1–2 hours per day, at your own pace. You can pause and resume anytime.",
+    xpTitle: "How do you earn XP?",
+    xpBody:
+      "Earn experience points by completing tasks, quizzes, and activities. Each stage completion grants bonus XP. Level up to unlock achievements and track your learning progress!",
     whyTitle: "Why do we do it?",
     whyBody:
       "To make your start smoother, reduce stress, and help you become productive faster while feeling part of the team."

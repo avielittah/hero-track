@@ -10,11 +10,9 @@ export const WelcomeHero = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      {/* Main Title */}
-      <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
-        <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          {welcomeContent.hero.title}
-        </span>
+      {/* Main Title - קטן יותר כדי לתת מקום לטקסט מתחתיו */}
+      <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+        {welcomeContent.hero.title}
       </h1>
 
       {/* Subtitle */}

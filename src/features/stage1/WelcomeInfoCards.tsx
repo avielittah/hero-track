@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { HelpCircle, Cog, Clock, Target } from 'lucide-react';
+import { HelpCircle, Cog, Clock, Target, Trophy } from 'lucide-react';
 import { welcomeContent } from './welcome.content';
 
 export const WelcomeInfoCards = () => {
@@ -29,6 +29,14 @@ export const WelcomeInfoCards = () => {
       iconColor: 'text-journey-current',
     },
     {
+      key: 'xp',
+      icon: Trophy,
+      title: welcomeContent.cards.xpTitle,
+      content: welcomeContent.cards.xpBody,
+      gradient: 'from-amber-500/10 to-amber-500/5',
+      iconColor: 'text-amber-600',
+    },
+    {
       key: 'why',
       icon: Target,
       title: welcomeContent.cards.whyTitle,
@@ -39,7 +47,7 @@ export const WelcomeInfoCards = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
       {cards.map((card, index) => (
         <motion.div
           key={card.key}
