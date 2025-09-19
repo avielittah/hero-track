@@ -47,48 +47,96 @@ export const WelcomeInfoCards = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      {cards.map((card, index) => (
-        <motion.div
-          key={card.key}
-          className={`
-            relative p-6 rounded-2xl bg-gradient-to-br ${card.gradient}
-            border border-border/50 backdrop-blur-sm
-            hover:shadow-lg hover:border-border transition-all duration-300
-            group cursor-default
-          `}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ 
-            duration: 0.5, 
-            delay: 0.6 + (index * 0.1),
-            ease: "easeOut" 
-          }}
-          whileHover={{ y: -2, transition: { duration: 0.2 } }}
-        >
-          <div className="flex items-start space-x-4">
-            <div className={`
-              p-3 rounded-xl bg-card/80 ${card.iconColor}
-              group-hover:scale-110 transition-transform duration-200
-            `}>
-              <card.icon className="h-6 w-6" />
+    <div className="space-y-8 mb-12">
+      {/* Row 1: Main Program Info */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[cards[0], cards[1]].map((card, index) => (
+          <motion.div
+            key={card.key}
+            className={`
+              relative p-6 rounded-2xl bg-gradient-to-br ${card.gradient}
+              border border-border/50 backdrop-blur-sm
+              hover:shadow-lg hover:border-border transition-all duration-300
+              group cursor-default
+            `}
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ 
+              duration: 0.5, 
+              delay: 0.6 + (index * 0.1),
+              ease: "easeOut" 
+            }}
+            whileHover={{ y: -2, transition: { duration: 0.2 } }}
+          >
+            <div className="flex items-start space-x-4">
+              <div className={`
+                p-3 rounded-xl bg-card/80 ${card.iconColor}
+                group-hover:scale-110 transition-transform duration-200
+              `}>
+                <card.icon className="h-6 w-6" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-foreground mb-2 text-lg">
+                  {card.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {card.content}
+                </p>
+              </div>
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground mb-2 text-lg">
-                {card.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {card.content}
-              </p>
-            </div>
-          </div>
 
-          {/* Decorative accent */}
-          <div className={`
-            absolute top-3 right-3 w-2 h-2 rounded-full ${card.iconColor} opacity-30
-          `} />
-        </motion.div>
-      ))}
+            {/* Decorative accent */}
+            <div className={`
+              absolute top-3 right-3 w-2 h-2 rounded-full ${card.iconColor} opacity-30
+            `} />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Row 2: Practical Details */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[cards[2], cards[3], cards[4]].map((card, index) => (
+          <motion.div
+            key={card.key}
+            className={`
+              relative p-6 rounded-2xl bg-gradient-to-br ${card.gradient}
+              border border-border/50 backdrop-blur-sm
+              hover:shadow-lg hover:border-border transition-all duration-300
+              group cursor-default
+            `}
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ 
+              duration: 0.5, 
+              delay: 0.8 + (index * 0.1),
+              ease: "easeOut" 
+            }}
+            whileHover={{ y: -2, transition: { duration: 0.2 } }}
+          >
+            <div className="flex items-start space-x-4">
+              <div className={`
+                p-3 rounded-xl bg-card/80 ${card.iconColor}
+                group-hover:scale-110 transition-transform duration-200
+              `}>
+                <card.icon className="h-6 w-6" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-foreground mb-2 text-lg">
+                  {card.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {card.content}
+                </p>
+              </div>
+            </div>
+
+            {/* Decorative accent */}
+            <div className={`
+              absolute top-3 right-3 w-2 h-2 rounded-full ${card.iconColor} opacity-30
+            `} />
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 };
