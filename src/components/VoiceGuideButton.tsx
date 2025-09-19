@@ -28,10 +28,35 @@ export const VoiceGuideButton: React.FC<VoiceGuideButtonProps> = ({
     try {
       setIsLoading(true);
       
-      // Check if we have the API key stored in localStorage
+      // Try Web Speech API first (built-in browser feature)
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(content);
+        utterance.lang = 'he-IL'; // Hebrew
+        utterance.rate = 0.8;
+        utterance.pitch = 1;
+        
+        utterance.onstart = () => {
+          setIsLoading(false);
+          setIsPlaying(true);
+        };
+        
+        utterance.onend = () => {
+          setIsPlaying(false);
+        };
+        
+        utterance.onerror = () => {
+          setIsPlaying(false);
+          console.error('Speech synthesis error');
+        };
+        
+        window.speechSynthesis.speak(utterance);
+        return;
+      }
+
+      // Fallback to ElevenLabs if Web Speech API is not available
       const apiKey = localStorage.getItem('ELEVENLABS_API_KEY');
       if (!apiKey) {
-        const userApiKey = prompt('אנא הכניסו את מפתח ה-API של ElevenLabs:');
+        const userApiKey = prompt('אנא הכניסו את מפתח ה-API של ElevenLabs (או לחצו ביטול לשימוש בדיבור של הדפדפן):');
         if (!userApiKey) {
           setIsLoading(false);
           return;
@@ -60,7 +85,9 @@ export const VoiceGuideButton: React.FC<VoiceGuideButtonProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate speech');
+        // If ElevenLabs fails, clear the stored API key and fallback to Web Speech
+        localStorage.removeItem('ELEVENLABS_API_KEY');
+        throw new Error(`ElevenLabs API error: ${response.status}`);
       }
 
       const audioBlob = await response.blob();
@@ -90,6 +117,9 @@ export const VoiceGuideButton: React.FC<VoiceGuideButtonProps> = ({
       console.error('Text-to-speech error:', error);
       setIsLoading(false);
       setIsPlaying(false);
+      
+      // Show user-friendly error message
+      alert('לא הצלחתי לבצע הקראה. אנא ודאו שיש לכם חיבור לאינטרנט או נסו שוב.');
     }
   };
 
