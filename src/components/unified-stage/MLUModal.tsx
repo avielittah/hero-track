@@ -708,9 +708,10 @@ export function MLUModal({
                       <p className="text-muted-foreground leading-relaxed">{unitData.background}</p>
                       <div className="mt-4 flex justify-end">
                         <Button
-                          variant={completedSections.background ? 'secondary' : 'outline'}
+                          variant={completedSections.background ? 'secondary' : 'default'}
                           onClick={() => handleSectionToggle('background')}
-                          size="sm"
+                          size="default"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg"
                         >
                           {completedSections.background ? (
                             <>
@@ -771,9 +772,10 @@ export function MLUModal({
                         ))}
                         <div className="mt-4 flex justify-end">
                           <Button
-                            variant={completedSections.learning ? 'secondary' : 'outline'}
+                            variant={completedSections.learning ? 'secondary' : 'default'}
                             onClick={() => handleSectionToggle('learning')}
-                            size="sm"
+                            size="default"
+                            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg"
                           >
                             {completedSections.learning ? (
                               <>
@@ -839,11 +841,12 @@ export function MLUModal({
                       {renderTasks()}
                       <div className="mt-4 flex justify-end">
                         <Button
-                          variant={completedSections.tasks ? 'secondary' : 'outline'}
+                          variant={completedSections.tasks ? 'secondary' : 'default'}
                           onClick={() => handleSectionToggle('tasks')}
-                          size="sm"
+                          size="default"
                           disabled={!isAllTasksCompleted()}
                           title={!isAllTasksCompleted() ? 'יש לסמן את כל המשימות כבוצעו' : undefined}
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg disabled:opacity-50"
                         >
                           {completedSections.tasks ? (
                             <>
@@ -878,11 +881,12 @@ export function MLUModal({
                       {renderQuizQuestions()}
                       <div className="mt-4 flex justify-end">
                         <Button
-                          variant={completedSections.quiz ? 'secondary' : 'outline'}
+                          variant={completedSections.quiz ? 'secondary' : 'default'}
                           onClick={() => handleSectionToggle('quiz')}
-                          size="sm"
+                          size="default"
                           disabled={!isQuizValid}
                           title={!isQuizValid ? 'ענה על כל שאלות החידון' : undefined}
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg disabled:opacity-50"
                         >
                           {completedSections.quiz ? (
                             <>
@@ -913,11 +917,12 @@ export function MLUModal({
                   />
                   <div className="mt-4 flex justify-end">
                     <Button
-                      variant={completedSections.didYouKnow ? 'secondary' : 'outline'}
+                      variant={completedSections.didYouKnow ? 'secondary' : 'default'}
                       onClick={() => handleSectionToggle('didYouKnow')}
-                      size="sm"
+                      size="default"
                       disabled={!didYouKnowClaimed}
                       title={!didYouKnowClaimed ? 'קבל/י את ה-XP של ידעת? לפני סימון סיום' : undefined}
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg disabled:opacity-50"
                     >
                       {completedSections.didYouKnow ? (
                         <>
@@ -952,11 +957,12 @@ export function MLUModal({
                       />
                       <div className="mt-4 flex justify-end">
                         <Button
-                          variant={completedSections.feedback ? 'secondary' : 'outline'}
+                          variant={completedSections.feedback ? 'secondary' : 'default'}
                           onClick={() => handleSectionToggle('feedback')}
-                          size="sm"
+                          size="default"
                           disabled={!isFeedbackValid}
                           title={!isFeedbackValid ? 'סמן/י דירוג והוסף/י הערה (לא חובה) כדי להשלים' : undefined}
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg disabled:opacity-50"
                         >
                           {completedSections.feedback ? (
                             <>
