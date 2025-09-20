@@ -151,7 +151,7 @@ export const FinalWrapUpScreen = ({ onClose }: FinalWrapUpScreenProps) => {
           </motion.div>
 
           <motion.h1
-            className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4"
+            className="text-6xl md:text-7xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6 tracking-tight"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -160,7 +160,7 @@ export const FinalWrapUpScreen = ({ onClose }: FinalWrapUpScreenProps) => {
           </motion.h1>
           
           <motion.p
-            className="text-xl text-muted-foreground max-w-2xl mx-auto"
+            className="text-2xl font-light text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.8 }}

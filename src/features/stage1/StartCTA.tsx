@@ -62,7 +62,7 @@ export const StartCTA = () => {
       <div className="max-w-md mx-auto space-y-6">
         {/* Encouragement text */}
         <motion.p
-          className="text-muted-foreground text-lg"
+          className="text-muted-foreground text-xl font-light leading-relaxed"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
@@ -81,7 +81,7 @@ export const StartCTA = () => {
             disabled={isProcessing}
             size="lg"
             className="
-              w-full h-14 text-lg font-semibold
+              w-full h-16 text-xl font-bold
               bg-gradient-to-r from-primary to-secondary
               hover:from-primary-700 hover:to-secondary
               text-white shadow-lg hover:shadow-xl

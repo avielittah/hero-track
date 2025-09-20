@@ -161,7 +161,7 @@ export const LevelUpModal = ({
             </motion.div>
           </motion.div>
 
-          <DialogTitle className="text-2xl font-bold text-foreground">
+          <DialogTitle className="text-3xl font-black text-foreground tracking-tight">
             Level Up! 🎉
           </DialogTitle>
           
@@ -171,10 +171,10 @@ export const LevelUpModal = ({
             transition={{ delay: 0.3 }}
             className="space-y-2"
           >
-            <p className="text-lg text-muted-foreground">
+            <p className="text-xl font-light text-muted-foreground">
               You're now a
             </p>
-            <h2 className={`text-2xl font-bold ${getLevelColor(newLevel)}`}>
+            <h2 className={`text-3xl font-black tracking-tight ${getLevelColor(newLevel)}`}>
               {t(newLevel)}
             </h2>
             <p className="text-sm text-muted-foreground">

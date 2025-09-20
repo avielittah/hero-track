@@ -70,7 +70,7 @@ export function ToolCard({
             {/* Content */}
             <div className="flex-1 space-y-2">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-xl font-semibold">{title}</CardTitle>
+                <CardTitle className="text-2xl font-bold tracking-tight">{title}</CardTitle>
                 {isCompleted && (
                   <Badge variant="outline" className="text-journey-complete border-journey-complete/30">
                     <CheckCircle2 className="h-3 w-3 mr-1" />

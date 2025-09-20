@@ -125,7 +125,7 @@ export const StageCompleteModal = ({
             </motion.div>
           </motion.div>
 
-          <DialogTitle className="text-2xl font-bold text-foreground">
+          <DialogTitle className="text-3xl font-black text-foreground tracking-tight">
             {achievement.title}
           </DialogTitle>
           

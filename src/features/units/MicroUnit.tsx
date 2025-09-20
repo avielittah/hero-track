@@ -237,7 +237,7 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
       default:
         return (
           <div className="prose prose-sm max-w-none">
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed font-normal text-base">
               {content.data}
             </p>
           </div>
@@ -348,20 +348,20 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
 
           <div className="space-y-3">
             <div>
-              <h3 className="font-semibold text-foreground mb-2 flex items-center space-x-2">
-                <Target className="h-4 w-4 text-primary" />
+              <h3 className="font-bold text-foreground mb-3 flex items-center space-x-2 text-lg tracking-tight">
+                <Target className="h-5 w-5 text-primary" />
                 <span>Learning Objective</span>
               </h3>
-              <p className="text-muted-foreground">{unitData.objective}</p>
+              <p className="text-muted-foreground font-normal leading-relaxed">{unitData.objective}</p>
             </div>
 
             {unitData.background && (
               <div>
-                <h3 className="font-semibold text-foreground mb-2 flex items-center space-x-2">
-                  <BookOpen className="h-4 w-4 text-primary" />
+                <h3 className="font-bold text-foreground mb-3 flex items-center space-x-2 text-lg tracking-tight">
+                  <BookOpen className="h-5 w-5 text-primary" />
                   <span>Background</span>
                 </h3>
-                <p className="text-muted-foreground">{unitData.background}</p>
+                <p className="text-muted-foreground font-normal leading-relaxed">{unitData.background}</p>
               </div>
             )}
           </div>
@@ -371,7 +371,7 @@ export const MicroUnit = ({ unitId, unitData: initialData }: MicroUnitProps) => 
       {/* Content */}
       <Card>
         <CardHeader>
-          <h2 className="text-xl font-semibold text-foreground">Content</h2>
+          <h2 className="text-2xl font-bold text-foreground tracking-tight">Content</h2>
         </CardHeader>
         <CardContent className="space-y-4">
           {renderContent()}

@@ -76,10 +76,10 @@ export const WelcomeInfoCards = () => {
                 <card.icon className="h-6 w-6" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-foreground mb-2 text-lg">
+                <h3 className="font-bold text-foreground mb-3 text-xl tracking-tight">
                   {card.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed font-normal">
                   {card.content}
                 </p>
               </div>
@@ -121,10 +121,10 @@ export const WelcomeInfoCards = () => {
                 <card.icon className="h-6 w-6" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-foreground mb-2 text-lg">
+                <h3 className="font-bold text-foreground mb-3 text-xl tracking-tight">
                   {card.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed font-normal">
                   {card.content}
                 </p>
               </div>

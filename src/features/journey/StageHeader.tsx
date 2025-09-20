@@ -51,7 +51,7 @@ export const StageHeader = () => {
 
       {/* Main Title */}
       <motion.h1
-        className="text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight"
+        className="text-5xl md:text-6xl font-black text-foreground mb-6 leading-tight tracking-tight"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
@@ -61,7 +61,7 @@ export const StageHeader = () => {
 
       {/* Subtitle */}
       <motion.h2
-        className="text-xl md:text-2xl text-primary font-medium mb-4"
+        className="text-2xl md:text-3xl text-primary font-bold mb-6 tracking-wide"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.6 }}
@@ -71,7 +71,7 @@ export const StageHeader = () => {
 
       {/* Description */}
       <motion.p
-        className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8"
+        className="text-xl font-light text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-10"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.6 }}

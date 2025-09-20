@@ -94,7 +94,7 @@ export const UnitsList = ({ units, stageId }: UnitsListProps) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-foreground">Learning Units</h3>
+        <h3 className="text-2xl font-bold text-foreground tracking-tight">Learning Units</h3>
         <div className="text-sm text-muted-foreground">
           {units.filter((_, index) => 
             getUnitStatus(`stage-${stageId}-unit-${index}`) === 'completed'

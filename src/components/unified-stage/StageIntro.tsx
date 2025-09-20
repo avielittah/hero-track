@@ -39,11 +39,11 @@ export function StageIntro({
           )}
           
           <div className="flex-1 space-y-4">
-            <h1 className="text-4xl font-bold text-foreground leading-tight">
+            <h1 className="text-5xl md:text-6xl font-black text-foreground leading-tight tracking-tight mb-6">
               {title}
             </h1>
             
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-xl md:text-2xl font-light text-muted-foreground leading-relaxed max-w-4xl mx-auto">
               {description}
             </p>
             
