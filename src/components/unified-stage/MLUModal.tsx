@@ -644,7 +644,12 @@ export function MLUModal({
                 <span className="text-muted-foreground">Unit Progress</span>
                 <span className="text-muted-foreground font-medium">{unitProgress}%</span>
               </div>
-              <Progress value={unitProgress} className="h-1.5" />
+              <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-purple-200/30">
+                <div 
+                  className="h-full bg-gradient-to-r from-purple-700 to-purple-400 transition-all duration-300 ease-out"
+                  style={{ width: `${unitProgress}%` }}
+                />
+              </div>
             </div>
           </DialogHeader>
 
