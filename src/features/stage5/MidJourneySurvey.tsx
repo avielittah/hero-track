@@ -19,6 +19,8 @@ import {
   FormLabel, 
   FormMessage
 } from '@/components/ui/form';
+import { StageIntro } from '@/components/unified-stage/StageIntro';
+import { CompletionBanner } from '@/components/CompletionBanner';
 import { useLearningStore } from '@/lib/store';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { useToast } from '@/hooks/use-toast';
@@ -288,34 +290,13 @@ export function MidJourneySurvey() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center space-x-4 mb-8">
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-xl">
-              <div className="flex items-center space-x-2">
-                <Users className="h-8 w-8 text-white" />
-                <BookOpen className="h-6 w-6 text-white" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
-                Midway Feedback Survey
-              </h1>
-              <div className="flex items-center space-x-3 mt-2">
-                <Progress value={55.5} className="w-32 h-2" />
-                <span className="text-muted-foreground text-lg">Stage 5 of 9</span>
-              </div>
-            </div>
-          </div>
-          
-          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-none shadow-lg">
-            <CardContent className="p-8">
-              <p className="text-foreground text-lg mb-3">
-                We're halfway through your onboarding journey! This short survey will help us improve the process and ensure you feel confident and supported.
-              </p>
-              <p className="text-muted-foreground text-base">
-                It's not a test – it's about your experience.
-              </p>
-            </CardContent>
-          </Card>
+          <StageIntro 
+            title="Mid-Journey Survey — Progress Check"
+            description="Share your learning experience and help us improve the training program. We're halfway through your onboarding journey!"
+            estimatedTime="5-10 minutes"
+            xpTarget={25}
+            icon={<Users className="h-8 w-8" />}
+          />
         </motion.div>
 
         <Form {...form}>

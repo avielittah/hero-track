@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { AlertTriangle, MessageCircle } from 'lucide-react';
+import { AlertTriangle, MessageCircle, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChecklistHero } from './ChecklistHero';
+import { StageIntro } from '@/components/unified-stage/StageIntro';
 import { TaskItem } from './TaskItem';
 import { CompletionSummary } from './CompletionSummary';
 import { CompletionBanner } from '@/components/CompletionBanner';
@@ -131,8 +131,14 @@ export const OrientationChecklistStage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Hero Section */}
-          <ChecklistHero />
+          {/* Stage Intro */}
+          <StageIntro 
+            title={orientation1Content.title}
+            description={orientation1Content.intro}
+            estimatedTime={orientation1Content.estTime}
+            xpTarget={50}
+            icon={<CheckCircle2 className="h-8 w-8" />}
+          />
 
           {/* Main Content */}
           <div className="space-y-8">

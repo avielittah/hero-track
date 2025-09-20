@@ -19,6 +19,8 @@ import {
   FormLabel, 
   FormMessage
 } from '@/components/ui/form';
+import { StageIntro } from '@/components/unified-stage/StageIntro';
+import { CompletionBanner } from '@/components/CompletionBanner';
 import { useLearningStore } from '@/lib/store';
 import { useJourneyMachine } from '@/features/journey/journeyMachine';
 import { useToast } from '@/hooks/use-toast';
@@ -590,9 +592,9 @@ export function FinalOrientationSurvey() {
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-12 shadow-lg">
               <Trophy className="h-16 w-16 text-green-600 mx-auto mb-6" />
               <h2 className="text-4xl font-bold text-green-800 mb-6 tracking-tight">
-                🎯 Training Journey Complete!
+                Training Journey Complete!
               </h2>
-              <p className="text-green-700 text-xl font-medium mb-8 leading-relaxed">
+              <p className="text-green-700 text-xl font-light mb-8 leading-relaxed">
                 Congratulations! You've successfully completed your onboarding. +{earnedXP} XP earned!
               </p>
               <div className="bg-white/50 rounded-xl p-4 mb-4">
@@ -620,34 +622,13 @@ export function FinalOrientationSurvey() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center space-x-4 mb-8">
-            <div className="bg-gradient-to-r from-green-500 to-blue-600 p-4 rounded-xl">
-              <div className="flex items-center space-x-2">
-                <Trophy className="h-8 w-8 text-white" />
-                <Star className="h-6 w-6 text-white" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
-                Final Orientation Survey
-              </h1>
-              <div className="flex items-center space-x-3 mt-2">
-                <Progress value={100} className="w-32 h-2" />
-                <span className="text-muted-foreground text-lg">Final Stage - Complete!</span>
-              </div>
-            </div>
-          </div>
-          
-          <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-none shadow-lg">
-            <CardContent className="p-8">
-              <p className="text-foreground text-lg mb-3">
-                🎉 Congratulations! You've reached the end of your onboarding journey. This final orientation will help us understand how prepared you feel and provide insights to your manager for ongoing support.
-              </p>
-              <p className="text-muted-foreground text-base">
-                Your honest feedback helps us improve the program and ensures you get the support you need as you begin your role.
-              </p>
-            </CardContent>
-          </Card>
+          <StageIntro 
+            title="Final Orientation Survey — Journey Complete"
+            description="Congratulations! You've reached the end of your onboarding journey. Share your experience and help us improve the program."
+            estimatedTime="10-15 minutes"
+            xpTarget={50}
+            icon={<Trophy className="h-8 w-8" />}
+          />
         </motion.div>
 
         <Form {...form}>
