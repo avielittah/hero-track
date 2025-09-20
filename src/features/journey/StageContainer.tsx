@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,11 @@ export const StageContainer = () => {
     previewStage,
     isStageEditable 
   } = useJourneyMachine();
+
+  // Scroll to top when stage changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [viewingStage]);
 
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [showFinalWrapUp, setShowFinalWrapUp] = useState(false);
