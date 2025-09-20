@@ -142,16 +142,16 @@ export function ApplicationSkillsStage() {
         },
         learningContent: [{
           type: 'text',
-          content: 'Draw.io (now called diagrams.net) is a free, web-based diagramming tool that runs entirely in your browser. Unlike heavy desktop applications, it\'s instant, collaborative, and supports all the diagram types you\'ll need as an engineer.'
+          content: '**Draw.io** (now called **diagrams.net**) is a **free, web-based diagramming tool** that runs entirely in your browser. Unlike heavy desktop applications, it\'s **instant**, **collaborative**, and supports all the diagram types you\'ll need as an engineer.'
         }, {
           type: 'text',
-          content: 'The core power of Draw.io lies in its extensive shape libraries. You have access to network diagrams, flowcharts, UML diagrams, electrical schematics, and custom shape sets. For RF and communication systems, you can easily create signal flow diagrams, block diagrams, and system architectures that clearly show how data moves through your designs.'
+          content: 'The core power of Draw.io lies in its **extensive shape libraries**. You have access to **network diagrams**, **flowcharts**, **UML diagrams**, **electrical schematics**, and custom shape sets. For RF and communication systems, you can easily create **signal flow diagrams**, **block diagrams**, and **system architectures** that clearly show how data moves through your designs.'
         }, {
           type: 'text',
-          content: 'Key features that make Draw.io perfect for engineering work include: automatic connector routing (arrows that stay connected when you move shapes), layers for complex diagrams, collaborative real-time editing, and direct integration with cloud storage. You can embed diagrams in documentation, export to multiple formats, and even include mathematical notation.'
+          content: 'Key features that make Draw.io perfect for engineering work include: **automatic connector routing** (arrows that stay connected when you move shapes), **layers for complex diagrams**, **collaborative real-time editing**, and **direct integration with cloud storage**. You can embed diagrams in documentation, export to multiple formats, and even include mathematical notation.'
         }, {
           type: 'text',
-          content: 'In real engineering projects, you\'ll use Draw.io for system architecture reviews, documenting signal processing chains, creating troubleshooting flowcharts, and explaining complex RF configurations to non-technical stakeholders. The ability to quickly sketch and share ideas visually is invaluable in fast-paced development environments.'
+          content: 'In real engineering projects, you\'ll use Draw.io for **system architecture reviews**, **documenting signal processing chains**, **creating troubleshooting flowcharts**, and **explaining complex RF configurations** to non-technical stakeholders. The ability to quickly sketch and share ideas visually is invaluable in fast-paced development environments.'
         }],
         tasks: [{
           type: 'text',
@@ -210,16 +210,16 @@ export function ApplicationSkillsStage() {
         },
         learningContent: [{
           type: 'text',
-          content: 'VLC Media Player is built on a modular architecture that supports virtually every media format and streaming protocol. What makes it invaluable for engineers is its ability to display detailed codec information, stream statistics, and real-time analysis data that other players hide from users.'
+          content: '**VLC Media Player** is built on a **modular architecture** that supports virtually every media format and streaming protocol. What makes it invaluable for engineers is its ability to display **detailed codec information**, **stream statistics**, and **real-time analysis data** that other players hide from users.'
         }, {
           type: 'text',
-          content: 'The power of VLC for engineering work lies in its diagnostic capabilities. You can inspect H.264/H.265 encoding parameters, analyze bitrate fluctuations, examine streaming protocol headers, and even capture network streams for detailed analysis. The codec information panel reveals frame rates, resolution changes, audio sample rates, and compression artifacts that help identify communication issues.'
+          content: 'The power of VLC for engineering work lies in its **diagnostic capabilities**. You can inspect **H.264/H.265 encoding parameters**, analyze **bitrate fluctuations**, examine **streaming protocol headers**, and even capture network streams for detailed analysis. The **codec information panel** reveals frame rates, resolution changes, audio sample rates, and compression artifacts that help identify communication issues.'
         }, {
           type: 'text',
-          content: 'Key engineering features include: real-time stream statistics, network protocol analysis (RTSP, HTTP, UDP), codec parameter inspection, audio spectrum analysis, and the ability to play corrupted or incomplete files for forensic analysis. VLC can also capture screenshots at precise timestamps and log detailed playback information for troubleshooting reports.'
+          content: 'Key engineering features include: **real-time stream statistics**, **network protocol analysis** (RTSP, HTTP, UDP), **codec parameter inspection**, **audio spectrum analysis**, and the ability to **play corrupted or incomplete files** for forensic analysis. VLC can also capture screenshots at precise timestamps and log detailed playback information for troubleshooting reports.'
         }, {
           type: 'text',
-          content: 'In communication systems projects, engineers use VLC to verify streaming implementations, debug codec configurations, analyze quality degradation in transmitted media, and test protocol compatibility. It\'s particularly valuable for validating video conferencing systems, broadcast equipment, and streaming media infrastructure before deployment.'
+          content: 'In communication systems projects, engineers use VLC to **verify streaming implementations**, **debug codec configurations**, **analyze quality degradation** in transmitted media, and **test protocol compatibility**. It\'s particularly valuable for validating video conferencing systems, broadcast equipment, and streaming media infrastructure before deployment.'
         }],
         tasks: [{
           type: 'text',
