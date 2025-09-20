@@ -11,11 +11,11 @@ export const SuccessCriteria = () => {
       transition={{ duration: 0.5, delay: 0.6 }}
       className="bg-card rounded-2xl p-8 shadow-sm border"
     >
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-primary/10 rounded-lg">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="p-3 bg-primary/10 rounded-xl">
           <Target className="w-6 h-6 text-primary" />
         </div>
-        <h2 className="text-2xl font-semibold text-primary">
+        <h2 className="text-2xl font-bold text-primary tracking-tight">
           {welcomeContent.success.title}
         </h2>
       </div>
@@ -30,7 +30,7 @@ export const SuccessCriteria = () => {
             className="flex items-start gap-3"
           >
             <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-            <span className="text-foreground leading-relaxed">{criteria}</span>
+            <span className="text-foreground font-normal leading-relaxed">{criteria}</span>
           </motion.div>
         ))}
       </div>
@@ -41,7 +41,7 @@ export const SuccessCriteria = () => {
         transition={{ duration: 0.4, delay: 1.1 }}
         className="mt-6 p-4 bg-primary/5 rounded-lg border-l-4 border-primary"
       >
-        <p className="text-foreground font-medium text-center italic">
+        <p className="text-foreground font-semibold text-center italic text-lg leading-relaxed">
           {welcomeContent.success.emphasis}
         </p>
       </motion.div>

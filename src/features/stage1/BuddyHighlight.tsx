@@ -65,7 +65,7 @@ export const BuddyHighlight = () => {
 
             {/* Content */}
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-foreground mb-3 flex items-center">
+              <h3 className="text-2xl font-bold text-foreground mb-4 flex items-center tracking-tight">
                 {welcomeContent.buddy.title}
                 <motion.div
                   className="ml-2 text-secondary"
@@ -80,7 +80,7 @@ export const BuddyHighlight = () => {
                 </motion.div>
               </h3>
 
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              <p className="text-lg font-light text-muted-foreground leading-relaxed mb-6">
                 {welcomeContent.buddy.note}
               </p>
 
@@ -132,7 +132,7 @@ export const BuddyHighlight = () => {
                   </AnimatePresence>
                 </div>
 
-                <p className="text-sm text-muted-foreground italic">
+                <p className="text-sm font-medium text-muted-foreground italic">
                   You can ask Buddy anytime during your journey.
                 </p>
               </div>

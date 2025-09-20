@@ -10,14 +10,14 @@ export const WelcomeHero = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      {/* Main Title - קטן יותר כדי לתת מקום לטקסט מתחתיו */}
-      <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+      {/* Main Title */}
+      <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight tracking-tight">
         {welcomeContent.hero.title}
       </h1>
 
       {/* Subtitle */}
       <motion.p
-        className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed"
+        className="text-xl md:text-2xl font-light text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}

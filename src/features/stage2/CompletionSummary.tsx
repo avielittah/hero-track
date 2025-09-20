@@ -27,22 +27,22 @@ export const CompletionSummary = ({ checkedTasks }: CompletionSummaryProps) => {
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.6, delay: 0.3 }}
     >
-      <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
-        <Trophy className="h-5 w-5 mr-2 text-secondary" />
+      <h3 className="text-xl font-bold text-foreground mb-6 flex items-center tracking-tight">
+        <Trophy className="h-6 w-6 mr-3 text-secondary" />
         Progress Summary
       </h3>
 
       <div className="space-y-4">
         {/* Required Tasks */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Required:</span>
+          <span className="text-base font-medium text-muted-foreground">Required:</span>
           <div className="flex items-center space-x-2">
             {allRequiredComplete ? (
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
+              <CheckCircle2 className="h-5 w-5 text-green-600" />
             ) : (
-              <Circle className="h-4 w-4 text-muted-foreground" />
+              <Circle className="h-5 w-5 text-muted-foreground" />
             )}
-            <span className="text-sm font-medium">
+            <span className="text-base font-semibold">
               {completedRequired}/{requiredTasks.length}
             </span>
           </div>
@@ -50,10 +50,10 @@ export const CompletionSummary = ({ checkedTasks }: CompletionSummaryProps) => {
 
         {/* Optional Tasks */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Optional:</span>
+          <span className="text-base font-medium text-muted-foreground">Optional:</span>
           <div className="flex items-center space-x-2">
-            <Circle className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">
+            <Circle className="h-5 w-5 text-muted-foreground" />
+            <span className="text-base font-semibold">
               {completedOptional}/{optionalTasks.length}
             </span>
           </div>

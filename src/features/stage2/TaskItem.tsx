@@ -70,8 +70,8 @@ export const TaskItem = ({
           <label
             htmlFor={id}
             className={`
-              block text-sm leading-relaxed cursor-pointer
-              ${checked ? 'text-green-700 line-through' : 'text-foreground'}
+              block text-base font-medium leading-relaxed cursor-pointer
+              ${checked ? 'text-green-700 line-through font-normal' : 'text-foreground'}
               ${disabled ? 'cursor-not-allowed' : ''}
             `}
           >

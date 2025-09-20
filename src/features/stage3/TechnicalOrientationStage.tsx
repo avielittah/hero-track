@@ -438,15 +438,15 @@ export function TechnicalOrientationStage() {
       }} className="space-y-8 mb-8">
             {/* Stage Summary */}
             <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/50 dark:to-blue-950/50 border border-green-200 dark:border-green-800 rounded-2xl p-6 space-y-4">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
-                <Trophy className="h-6 w-6 text-yellow-500" />
+              <h2 className="text-2xl font-bold flex items-center gap-3 tracking-tight">
+                <Trophy className="h-7 w-7 text-yellow-500" />
                 Stage Summary
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-base font-normal text-muted-foreground leading-relaxed">
                 In this stage, you explored two essential engineering tools: Draw.io for creating clear system diagrams, and VLC for media playback and analysis. These tools will support your upcoming hands-on project and make collaboration easier.
               </p>
               <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 space-y-2">
-                <h3 className="font-medium text-sm">What you've mastered:</h3>
+                <h3 className="font-semibold text-base">What you've mastered:</h3>
                 <div className="grid md:grid-cols-2 gap-3 text-sm">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-green-500" />
@@ -489,13 +489,13 @@ export function TechnicalOrientationStage() {
           delay: 1.2
         }} className="text-center space-y-4">
               <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-2xl p-6">
-                <h3 className="text-lg font-semibold mb-2 flex items-center justify-center gap-2">
-                  <Award className="h-5 w-5 text-primary" />
-                  Ready for Hands-On Practice!
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  You've built a solid foundation with these essential tools. Time to apply your skills in real engineering projects!
-                </p>
+                 <h3 className="text-xl font-bold mb-4 flex items-center justify-center gap-3 tracking-tight">
+                   <Award className="h-6 w-6 text-primary" />
+                   Ready for Hands-On Practice!
+                 </h3>
+                 <p className="text-base font-normal text-muted-foreground mb-6 leading-relaxed">
+                   You've built a solid foundation with these essential tools. Time to apply your skills in real engineering projects!
+                 </p>
                 <Button onClick={handleStageComplete} size="lg" className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-4 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                   Continue to Stage 4 →
                 </Button>
@@ -514,10 +514,10 @@ export function TechnicalOrientationStage() {
         delay: 0.7
       }} className="text-center space-y-4 mb-8">
             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-950/50 dark:to-yellow-950/50 border border-orange-200 dark:border-orange-800 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold mb-3 flex items-center justify-center gap-2">
-                <Zap className="h-5 w-5 text-orange-500" />
-                Complete Your Tool Training
-              </h3>
+               <h3 className="text-xl font-bold mb-4 flex items-center justify-center gap-3 tracking-tight">
+                 <Zap className="h-6 w-6 text-orange-500" />
+                 Complete Your Tool Training
+               </h3>
               <p className="text-muted-foreground mb-4">
                 Finish both MLUs above to unlock the full stage summary, feedback form, and continue to hands-on practice!
               </p>

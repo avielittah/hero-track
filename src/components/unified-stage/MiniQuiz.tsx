@@ -68,14 +68,14 @@ export function MiniQuiz({
             <div className="mx-auto p-3 rounded-full bg-journey-complete text-white w-fit mb-4">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <CardTitle className="text-xl">Quiz Complete!</CardTitle>
+            <CardTitle className="text-2xl font-bold tracking-tight">Quiz Complete!</CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">
-            <div className="space-y-2">
-              <p className="text-lg font-semibold">
+            <div className="space-y-3">
+              <p className="text-xl font-bold text-primary">
                 Score: {score}/{questions.length}
               </p>
-              <p className="text-muted-foreground">
+              <p className="text-base font-medium text-muted-foreground leading-relaxed">
                 {getScoreMessage()}
               </p>
             </div>

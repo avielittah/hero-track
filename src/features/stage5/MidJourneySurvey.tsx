@@ -262,10 +262,10 @@ export function MidJourneySurvey() {
 
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-12 shadow-lg">
               <Award className="h-16 w-16 text-green-600 mx-auto mb-6" />
-              <h2 className="text-3xl font-bold text-green-800 mb-4">
+              <h2 className="text-4xl font-bold text-green-800 mb-6 tracking-tight">
                 Survey Complete! 
               </h2>
-              <p className="text-green-700 text-lg mb-6">
+              <p className="text-green-700 text-xl font-medium mb-8 leading-relaxed">
                 Thank you for your valuable feedback. +{earnedXP} XP earned!
               </p>
               <div className="text-sm text-green-600">
@@ -296,7 +296,7 @@ export function MidJourneySurvey() {
               </div>
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-foreground">
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
                 Midway Feedback Survey
               </h1>
               <div className="flex items-center space-x-3 mt-2">

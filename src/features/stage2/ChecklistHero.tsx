@@ -10,11 +10,11 @@ export const ChecklistHero = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="text-4xl font-bold text-foreground mb-4">
+      <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight tracking-tight">
         {orientation1Content.title}
       </h1>
       
-      <p className="text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl mx-auto">
+      <p className="text-xl font-light text-muted-foreground leading-relaxed mb-8 max-w-3xl mx-auto">
         {orientation1Content.intro}
       </p>
 

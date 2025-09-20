@@ -11,11 +11,11 @@ export const CoreValues = () => {
       transition={{ duration: 0.5, delay: 0.4 }}
       className="bg-card rounded-2xl p-8 shadow-sm border"
     >
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-primary/10 rounded-lg">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="p-3 bg-primary/10 rounded-xl">
           <Star className="w-6 h-6 text-primary" />
         </div>
-        <h2 className="text-2xl font-semibold text-primary">
+        <h2 className="text-2xl font-bold text-primary tracking-tight">
           {welcomeContent.values.title}
         </h2>
       </div>
@@ -30,7 +30,7 @@ export const CoreValues = () => {
             className="flex items-center gap-3"
           >
             <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
-            <span className="text-foreground font-medium">{value}</span>
+            <span className="text-foreground font-normal leading-relaxed">{value}</span>
           </motion.div>
         ))}
       </div>
