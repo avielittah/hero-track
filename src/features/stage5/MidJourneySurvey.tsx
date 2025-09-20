@@ -288,7 +288,7 @@ export function MidJourneySurvey() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center space-x-4 mb-6">
+          <div className="flex items-center space-x-4 mb-8">
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-xl">
               <div className="flex items-center space-x-2">
                 <Users className="h-8 w-8 text-white" />

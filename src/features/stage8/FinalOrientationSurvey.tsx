@@ -589,10 +589,10 @@ export function FinalOrientationSurvey() {
 
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-12 shadow-lg">
               <Trophy className="h-16 w-16 text-green-600 mx-auto mb-6" />
-              <h2 className="text-3xl font-bold text-green-800 mb-4">
+              <h2 className="text-4xl font-bold text-green-800 mb-6 tracking-tight">
                 🎯 Training Journey Complete!
               </h2>
-              <p className="text-green-700 text-lg mb-6">
+              <p className="text-green-700 text-xl font-medium mb-8 leading-relaxed">
                 Congratulations! You've successfully completed your onboarding. +{earnedXP} XP earned!
               </p>
               <div className="bg-white/50 rounded-xl p-4 mb-4">
@@ -620,7 +620,7 @@ export function FinalOrientationSurvey() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center space-x-4 mb-6">
+          <div className="flex items-center space-x-4 mb-8">
             <div className="bg-gradient-to-r from-green-500 to-blue-600 p-4 rounded-xl">
               <div className="flex items-center space-x-2">
                 <Trophy className="h-8 w-8 text-white" />
@@ -628,7 +628,7 @@ export function FinalOrientationSurvey() {
               </div>
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-foreground">
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
                 Final Orientation Survey
               </h1>
               <div className="flex items-center space-x-3 mt-2">

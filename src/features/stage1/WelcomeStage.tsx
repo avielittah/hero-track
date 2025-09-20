@@ -48,19 +48,19 @@ export const WelcomeStage = () => {
   `.trim();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24">
       {/* Preview Banner */}
       {isPreviewMode && (
         <CompletionBanner stageName="Welcome" />
       )}
       
       {/* Main Container */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="space-y-12"
+          className="space-y-8"
         >
           {/* Hero Section */}
           <WelcomeHero />
@@ -85,7 +85,7 @@ export const WelcomeStage = () => {
         <div className="h-24 md:h-12" />
       </div>
 
-      {/* Background Decoration - פישוט הגרדיאנט */}
+      {/* Background Decoration */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-primary/3 rounded-full blur-3xl" />
       </div>

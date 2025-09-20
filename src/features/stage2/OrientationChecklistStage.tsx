@@ -118,14 +118,14 @@ export const OrientationChecklistStage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24">
       {/* Preview Banner */}
       {isPreviewMode && (
         <CompletionBanner stageName="Orientation Checklist" />
       )}
 
       {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -134,10 +134,10 @@ export const OrientationChecklistStage = () => {
           {/* Hero Section */}
           <ChecklistHero />
 
-          {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Checklist Column */}
-            <div className="lg:col-span-2">
+          {/* Main Content */}
+          <div className="space-y-8">
+            {/* Checklist */}
+            <div>
               <motion.div
                 className="space-y-4"
                 initial={{ y: 30, opacity: 0 }}
@@ -187,8 +187,8 @@ export const OrientationChecklistStage = () => {
               </motion.div>
             </div>
 
-            {/* Summary Sidebar */}
-            <div className="lg:col-span-1">
+            {/* Summary */}
+            <div className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-sm rounded-2xl border-2 shadow-lg p-6">
               <CompletionSummary checkedTasks={stage2State.tasks} />
             </div>
           </div>
