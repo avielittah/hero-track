@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Confetti from 'react-confetti';
-import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb, MessageCircle, Send } from 'lucide-react';
+import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb, MessageCircle, Send, FileImage } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -151,7 +151,7 @@ export function MLUModal({
       setBuddyChatMessages([{
         id: '1',
         type: 'buddy',
-        message: `היי! 👋 אני Buddy, המנטור הדיגיטלי שלך. אני כאן לעזור לך להצליח בלומדה "${unitData.title}". תשאל אותי כל שאלה - על התוכן, על המשימות, או בכלל! איך אני יכול לעזור לך היום?`,
+        message: `היי! אני Buddy, המנטור הדיגיטלי שלך. אני כאן לעזור לך להצליח בלומדה "${unitData.title}". תשאל אותי כל שאלה - על התוכן, על המשימות, או בכלל! איך אני יכול לעזור לך היום?`,
         timestamp: new Date()
       }]);
       setBuddyInputValue('');
@@ -184,7 +184,7 @@ export function MLUModal({
   const handleSectionToggle = (key: SectionKey) => {
     setCompletedSections(prev => ({ ...prev, [key]: !prev[key] }));
     toast({
-      title: prevSectionTitle(key) + (completedSections[key] ? ' בוטל' : ' הושלם ✓'),
+      title: prevSectionTitle(key) + (completedSections[key] ? ' cancelled' : ' completed'),
       description: 'התקדמות עודכנה בסרגל היחידה',
     });
   };
@@ -238,13 +238,13 @@ export function MLUModal({
     
     if (message.includes('משימה') || message.includes('task')) {
       return `המשימות מתוכננות לתת לך ניסיון מעשי! 
-📋 עצה: בצע כל משימה בסדר ותסמן ✓ כשסיימת
-🎯 אם אתה תקוע במשימה מסוימת, תגיד לי באיזו ואני אעזור!`;
+עצה: בצע כל משימה בסדר ותסמן כשסיימת
+אם אתה תקוע במשימה מסוימת, תגיד לי באיזו ואני אעזור!`;
     }
     
     if (message.includes('חידון') || message.includes('quiz')) {
       return `החידון בודק שהבנת את העיקרון! 
-💡 עצות:
+עצות:
 • קרא כל שאלה בעיון
 • חזור על התוכן הלימודי אם צריך
 • אל תחפז - קח את הזמן שלך
@@ -301,7 +301,7 @@ export function MLUModal({
       const xp = unitData.didYouKnow.xpReward;
       setEarnedXP(prev => prev + xp);
       toast({
-        title: "Curiosity Rewarded! 💡",
+        title: "Curiosity Rewarded!",
         description: `+${xp} XP for exploring!`,
       });
     }
@@ -355,7 +355,7 @@ export function MLUModal({
 
       // Show completion toast
       toast({
-        title: "MLU Completed! 🎉",
+        title: "MLU Completed!",
         description: `Amazing work! You earned ${totalEarnedXP} XP and a trophy!`,
       });
 
@@ -402,7 +402,7 @@ export function MLUModal({
         return (
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border-2 border-dashed border-blue-300 dark:border-blue-700 text-center">
-              <p className="text-sm text-muted-foreground mb-2">📊 {unitData.visual.caption || 'Interactive Diagram'}</p>
+              <p className="text-sm text-muted-foreground mb-2">{unitData.visual.caption || 'Interactive Diagram'}</p>
               <div className="w-full h-32 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 rounded flex items-center justify-center">
                 <span className="text-xs text-muted-foreground">{unitData.visual.alt}</span>
               </div>
@@ -413,7 +413,7 @@ export function MLUModal({
       default:
         return (
           <div className="bg-muted rounded-lg p-8 text-center">
-            <div className="text-4xl mb-2">🖼️</div>
+            <FileImage className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">Visual content placeholder</p>
           </div>
         );
@@ -458,7 +458,7 @@ export function MLUModal({
             <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-red-300 dark:border-red-700">
               <div className="aspect-video bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/50 dark:to-orange-900/50 rounded flex items-center justify-center mb-3">
                 <div className="text-center">
-                  <div className="text-4xl mb-2">▶️</div>
+                  <Play className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm font-medium">{unitData.video.title || 'Video Tutorial'}</p>
                   <p className="text-xs text-muted-foreground">Tutorial content coming soon</p>
                 </div>
@@ -1008,7 +1008,7 @@ export function MLUModal({
                             className="w-full bg-gradient-to-r from-primary to-primary-700 hover:from-primary-700 hover:to-primary shadow-lg"
                           >
                             <Trophy className="h-4 w-4 mr-2" />
-                            Finish Unit & Earn XP 🎉
+                            Finish Unit & Earn XP
                           </Button>
                         </div>
                       </CardContent>
@@ -1020,7 +1020,7 @@ export function MLUModal({
                       <CardContent className="p-6 text-center">
                         <div className="space-y-2">
                           <CheckCircle2 className="h-8 w-8 text-journey-complete mx-auto" />
-                          <h3 className="font-semibold text-lg">Unit Completed! 🎉</h3>
+                          <h3 className="font-semibold text-lg">Unit Completed!</h3>
                           <p className="text-sm text-muted-foreground">
                             Great work! You've mastered this learning unit.
                           </p>
@@ -1120,7 +1120,7 @@ export function MLUModal({
                           </Button>
                         </div>
                         <p className="text-xs text-muted-foreground mt-2 text-center">
-                          💡 Buddy יכול לעזור עם השאלות, המשימות והתוכן
+                          Buddy יכול לעזור עם השאלות, המשימות והתוכן
                         </p>
                       </div>
                     </div>
@@ -1158,7 +1158,7 @@ export function MLUModal({
               </div>
               
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold text-primary">🏆 MLU Completed!</h2>
+                <h2 className="text-2xl font-bold text-primary">MLU Completed!</h2>
                 <h3 className="text-lg font-semibold">{awardedTrophy.unitName}</h3>
                 <p className="text-muted-foreground">
                   You've earned a trophy for completing this learning unit!

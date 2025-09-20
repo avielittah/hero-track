@@ -409,7 +409,7 @@ export const ProfileSheet = ({ isOpen, onOpenChange, trigger }: ProfileSheetProp
                   {level !== 'Pro Team Member' && (
                     <div className="pt-2 border-t">
                       <p className="text-xs text-muted-foreground mb-2">
-                        🔒 More skills unlock as you level up!
+                        More skills unlock as you level up!
                       </p>
                       <div className="text-xs text-muted-foreground">
                         Next unlock: {SKILLS.find(s => !unlockedSkills.includes(s))?.unlockedAt}

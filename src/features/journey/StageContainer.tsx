@@ -372,7 +372,7 @@ export const StageContainer = () => {
               {progress.isComplete ? (
                 <span className="flex items-center justify-center space-x-2 text-green-600">
                   <CheckCircle2 className="h-5 w-5" />
-                  <span>All units completed! Ready to finish this stage? 🎉</span>
+                  <span>All units completed! Ready to finish this stage?</span>
                 </span>
               ) : (
                 `Progress: ${progress.progress} units completed`
@@ -393,7 +393,7 @@ export const StageContainer = () => {
             >
               <span className="flex items-center space-x-2">
                 <span>
-                  {progress.isComplete ? 'Mark Stage Complete! 🎯' : 'Continue This Stage'}
+                  {progress.isComplete ? 'Mark Stage Complete!' : 'Continue This Stage'}
                 </span>
                 <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </span>

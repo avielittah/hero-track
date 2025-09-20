@@ -31,7 +31,7 @@ export const StartCTA = () => {
       toast({
         title: welcomeContent.cta.xpToast,
         description: xpResult.leveledUp ? 
-          `🎉 Level up! You're now a ${xpResult.newLevel}!` : 
+          `Level up! You're now a ${xpResult.newLevel}!` : 
           "Your learning journey has begun!",
       });
       

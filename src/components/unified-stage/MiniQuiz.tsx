@@ -50,10 +50,10 @@ export function MiniQuiz({
   };
   const getScoreMessage = () => {
     const percentage = score / questions.length * 100;
-    if (percentage === 100) return "Perfect! You're a master! 🏆";
-    if (percentage >= 75) return "Great job! Well done! 🌟";
-    if (percentage >= 50) return "Good effort! Keep learning! 💪";
-    return "Nice try! Practice makes perfect! 🚀";
+    if (percentage === 100) return "Perfect! You're a master!";
+    if (percentage >= 75) return "Great job! Well done!";
+    if (percentage >= 50) return "Good effort! Keep learning!";
+    return "Nice try! Practice makes perfect!";
   };
   if (isCompleted) {
     return <motion.div initial={{

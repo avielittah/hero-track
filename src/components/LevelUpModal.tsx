@@ -162,7 +162,7 @@ export const LevelUpModal = ({
           </motion.div>
 
           <DialogTitle className="text-3xl font-black text-foreground tracking-tight">
-            Level Up! 🎉
+            Level Up!
           </DialogTitle>
           
           <motion.div

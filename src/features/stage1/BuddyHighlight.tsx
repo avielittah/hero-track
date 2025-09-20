@@ -59,7 +59,6 @@ export const BuddyHighlight = () => {
             >
               <div className="relative">
                 <MessageCircle className="h-8 w-8" />
-                <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-yellow-300" />
               </div>
             </motion.div>
 
@@ -67,17 +66,6 @@ export const BuddyHighlight = () => {
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-foreground mb-4 flex items-center tracking-tight">
                 {welcomeContent.buddy.title}
-                <motion.div
-                  className="ml-2 text-secondary"
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
-                    repeatDelay: 3 
-                  }}
-                >
-                  👋
-                </motion.div>
               </h3>
 
               <p className="text-lg font-light text-muted-foreground leading-relaxed mb-6">
@@ -119,13 +107,13 @@ export const BuddyHighlight = () => {
                         "
                         style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))' }}
                       >
-                        💡 זקוק לעזרה? נסה את Buddy!
+                        Need help? Try Buddy!
                         <button
                           onClick={() => setShowNudge(false)}
                           className="mr-2 text-white/90 hover:text-white text-sm font-bold leading-none"
                           aria-label="סגור הודעה"
                         >
-                          ✕
+                          ×
                         </button>
                       </motion.div>
                     )}

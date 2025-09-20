@@ -62,7 +62,7 @@ export function TooltipTip({
           {/* Content */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-yellow-400 text-lg">💡</span>
+              <HelpCircle className="h-4 w-4 text-yellow-500" />
               <h4 className="font-semibold text-sm">{title}</h4>
             </div>
             <p className="text-xs text-gray-300 leading-relaxed">{content}</p>
@@ -94,7 +94,7 @@ export function InfoBadgeTip({ label, title, content }: { label: string; title: 
     <TooltipTip
       trigger={
         <Badge variant="outline" className="cursor-help bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100">
-          {label} ℹ️
+          {label}
         </Badge>
       }
       title={title}

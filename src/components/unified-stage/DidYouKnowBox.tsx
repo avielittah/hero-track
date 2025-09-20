@@ -81,14 +81,13 @@ export function DidYouKnowBox({
               size="sm"
               className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
             >
-              💡 Claim +{xpReward} XP
+              Claim +{xpReward} XP
             </Button>
           </div>
         )}
 
         {(isRewardClaimed || disabled) && (
           <div className="flex items-center gap-2 text-xs text-blue-700 dark:text-blue-300">
-            <span className="text-sm">✅</span>
             <span>+{xpReward} XP earned!</span>
           </div>
         )}

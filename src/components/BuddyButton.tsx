@@ -296,7 +296,7 @@ export const BuddyButton = ({ showNudge = false, onNudgeClose }: BuddyButtonProp
                   <Bot className="h-5 w-5" />
                   <span className="font-bold">Buddy AI Mentor</span>
                   <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
-                    🤖 ONLINE
+                    ONLINE
                   </span>
                 </div>
                 <p className="text-sm opacity-90 leading-relaxed">

@@ -45,11 +45,11 @@ export const LevelBar = () => {
   ];
 
   const getMedalIcon = () => {
-    if (totalTrophies >= 100) return '💎';
-    if (totalTrophies >= 50) return '🏆';
-    if (totalTrophies >= 20) return '🥇';
-    if (totalTrophies >= 10) return '🥈';
-    if (totalTrophies >= 5) return '🥉';
+    if (totalTrophies >= 100) return <Award className="h-4 w-4" />;
+    if (totalTrophies >= 50) return <Trophy className="h-4 w-4" />;
+    if (totalTrophies >= 20) return <Award className="h-4 w-4" />;
+    if (totalTrophies >= 10) return <Award className="h-4 w-4" />;
+    if (totalTrophies >= 5) return <Award className="h-4 w-4" />;
     return null;
   };
 

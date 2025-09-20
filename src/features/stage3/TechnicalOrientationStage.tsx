@@ -61,7 +61,7 @@ export function TechnicalOrientationStage() {
     setShowMLUModal(false);
     setCurrentMLUData(null);
     toast({
-      title: "Draw.io Unit Complete! 🎉",
+      title: "Draw.io Unit Complete!",
       description: `+${earnedXP} XP earned!`
     });
   };
@@ -70,7 +70,7 @@ export function TechnicalOrientationStage() {
     setShowMLUModal(false);
     setCurrentMLUData(null);
     toast({
-      title: "VLC Unit Complete! 🎉",
+      title: "VLC Unit Complete!",
       description: `+${earnedXP} XP earned!`
     });
   };
@@ -78,7 +78,7 @@ export function TechnicalOrientationStage() {
     setEarnedBonusXP(prev => prev + amount);
     addXP(amount);
     toast({
-      title: "Bonus XP! 💡",
+      title: "Bonus XP!",
       description: `+${amount} XP for your curiosity!`
     });
   };
@@ -282,7 +282,7 @@ export function TechnicalOrientationStage() {
           opacity: 0,
           y: -20
         }} className="mb-8">
-              <DidYouKnowBox title="💡 Did You Know?" content="Draw.io was originally called 'Diagrams.net' and is completely free! Many engineers use it for system architecture because it runs entirely in your browser - no installation needed!" xpReward={5} onClose={() => setShowDidYouKnow(false)} onRewardClaim={() => handleBonusXPClaim(5)} />
+              <DidYouKnowBox title="Did You Know?" content="Draw.io was originally called 'Diagrams.net' and is completely free! Many engineers use it for system architecture because it runs entirely in your browser - no installation needed!" xpReward={5} onClose={() => setShowDidYouKnow(false)} onRewardClaim={() => handleBonusXPClaim(5)} />
             </motion.div>}
         </AnimatePresence>
 
@@ -290,9 +290,9 @@ export function TechnicalOrientationStage() {
         <div className="space-y-8 mb-8">
           {/* Helpful Tips Section */}
           <div className="flex flex-wrap gap-4 items-center justify-center">
-            <InfoBadgeTip label="💡 Pro Tip" title="Learning Strategy" content="Complete units in order for the best learning experience. Each unit builds on knowledge from the previous one!" />
-            <InfoBadgeTip label="⚡ XP Boost" title="Bonus Points" content="Look out for 'Did You Know?' boxes and mini-quizzes - they give bonus XP for curious learners!" />
-            <InfoBadgeTip label="🎯 Quick Access" title="Tool Links" content="Click the 'Open Tool' buttons to access Draw.io and VLC directly in new tabs while learning." />
+            <InfoBadgeTip label="Pro Tip" title="Learning Strategy" content="Complete units in order for the best learning experience. Each unit builds on knowledge from the previous one!" />
+            <InfoBadgeTip label="XP Boost" title="Bonus Points" content="Look out for 'Did You Know?' boxes and mini-quizzes - they give bonus XP for curious learners!" />
+            <InfoBadgeTip label="Quick Access" title="Tool Links" content="Click the 'Open Tool' buttons to access Draw.io and VLC directly in new tabs while learning." />
           </div>
 
           <ToolCard id="drawio" title={stage3Content.units.drawio.title} description={stage3Content.units.drawio.objective} estimatedTime={stage3Content.units.drawio.estimatedTime} icon={<PenTool className="h-6 w-6" />} isCompleted={drawioSubmitted} videoUrl={stage3Content.units.drawio.videoUrl} toolLink={stage3Content.units.drawio.toolLink} onStart={() => handleUnitStart('drawio')} isDisabled={isPreviewMode && !drawioSubmitted} />
@@ -348,7 +348,7 @@ export function TechnicalOrientationStage() {
                 </div>
                 
                 <div className="space-y-3">
-                  <h3 className="text-xl font-semibold">Stage Locked 🔒</h3>
+                  <h3 className="text-xl font-semibold">Stage Locked</h3>
                   <p className="text-muted-foreground">
                     Please complete <strong>Stage 2 (Orientation Checklist)</strong> before starting Stage 3.
                   </p>
