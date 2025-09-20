@@ -290,9 +290,12 @@ export function ApplicationSkillsStage() {
         {/* Tool Cards Grid */}
         <div className="space-y-8 mb-8">
           {/* Helpful Tips Section */}
-          <div className="flex flex-wrap gap-4 items-center justify-center">
-            <InfoBadgeTip label="💡 Pro Tip" title="Learning Strategy" content="Complete units in order for the best learning experience. Each unit builds on knowledge from the previous one!" />
-            <InfoBadgeTip label="⚡ XP Boost" title="Bonus Points" content="Look out for 'Did You Know?' boxes and mini-quizzes - they give bonus XP for curious learners!" />
+          <div className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900/50 dark:to-blue-900/20 border border-slate-200 dark:border-slate-700 rounded-2xl p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4 text-center">Learning Tips</h3>
+            <div className="flex flex-wrap gap-3 items-center justify-center">
+              <InfoBadgeTip label="Pro Tip" title="Learning Strategy" content="Complete units in order for the best learning experience. Each unit builds on knowledge from the previous one!" type="pro-tip" />
+              <InfoBadgeTip label="XP Boost" title="Bonus Points" content="Look out for 'Did You Know?' boxes and mini-quizzes - they give bonus XP for curious learners!" type="xp-boost" />
+            </div>
           </div>
 
           {/* Draw.io Card */}

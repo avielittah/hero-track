@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { HelpCircle, X } from 'lucide-react';
+import { HelpCircle, X, Lightbulb, Zap, Target } from 'lucide-react';
 import { useState } from 'react';
 
 interface TooltipTipProps {
@@ -89,12 +89,47 @@ export function HelpTip({ title, content, position }: Omit<TooltipTipProps, 'tri
   );
 }
 
-export function InfoBadgeTip({ label, title, content }: { label: string; title: string; content: string }) {
+export function InfoBadgeTip({ label, title, content, type = 'default' }: { 
+  label: string; 
+  title: string; 
+  content: string;
+  type?: 'pro-tip' | 'xp-boost' | 'quick-access' | 'default';
+}) {
+  const getStylesAndIcon = () => {
+    switch (type) {
+      case 'pro-tip':
+        return {
+          className: "cursor-help bg-gradient-to-r from-purple-50 to-purple-100 border-purple-300 text-purple-800 hover:from-purple-100 hover:to-purple-200 shadow-sm hover:shadow-md transition-all duration-200",
+          icon: <Lightbulb className="h-3 w-3 mr-1" />
+        };
+      case 'xp-boost':
+        return {
+          className: "cursor-help bg-gradient-to-r from-amber-50 to-amber-100 border-amber-300 text-amber-800 hover:from-amber-100 hover:to-amber-200 shadow-sm hover:shadow-md transition-all duration-200",
+          icon: <Zap className="h-3 w-3 mr-1" />
+        };
+      case 'quick-access':
+        return {
+          className: "cursor-help bg-gradient-to-r from-green-50 to-green-100 border-green-300 text-green-800 hover:from-green-100 hover:to-green-200 shadow-sm hover:shadow-md transition-all duration-200",
+          icon: <Target className="h-3 w-3 mr-1" />
+        };
+      default:
+        return {
+          className: "cursor-help bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100",
+          icon: <HelpCircle className="h-3 w-3 mr-1" />
+        };
+    }
+  };
+
+  const { className, icon } = getStylesAndIcon();
+  
   return (
     <TooltipTip
       trigger={
-        <Badge variant="outline" className="cursor-help bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100">
-          {label}
+        <Badge variant="outline" className={className}>
+          <span className="flex items-center font-medium">
+            {icon}
+            {label}
+          </span>
         </Badge>
       }
       title={title}
