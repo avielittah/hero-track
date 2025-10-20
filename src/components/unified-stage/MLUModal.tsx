@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Confetti from 'react-confetti';
-import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb, MessageCircle, Send, FileImage } from 'lucide-react';
+import { X, Clock, Target, BookOpen, CheckCircle2, Star, Play, ExternalLink, Trophy, Lightbulb, MessageCircle, Send, FileImage, Bot, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -108,6 +108,11 @@ export function MLUModal({
   const [showTrophyModal, setShowTrophyModal] = useState(false);
   const [awardedTrophy, setAwardedTrophy] = useState<any>(null);
 
+  // Chat animation state
+  const [visibleMessages, setVisibleMessages] = useState<number>(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   // Sections progress
   const sectionsOrder = ['background','learning','tasks','quiz','didYouKnow','feedback'] as const;
   type SectionKey = typeof sectionsOrder[number];
@@ -155,8 +160,27 @@ export function MLUModal({
         timestamp: new Date()
       }]);
       setBuddyInputValue('');
+      setVisibleMessages(0);
+      setIsTyping(false);
     }
   }, [isOpen, isCompleted, unitData.title]);
+
+  // Animate messages appearing one by one
+  useEffect(() => {
+    if (isOpen && visibleMessages === 0) {
+      const timer = setTimeout(() => {
+        setVisibleMessages(1);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, visibleMessages]);
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [visibleMessages]);
 
   const handleTaskToggle = (taskIndex: number, itemIndex: number) => {
     const key = taskIndex * 1000 + itemIndex; // Unique key for each task item
