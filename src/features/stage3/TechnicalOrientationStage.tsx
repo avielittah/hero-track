@@ -45,9 +45,17 @@ export function TechnicalOrientationStage() {
   const [earnedBonusXP, setEarnedBonusXP] = useState(0);
   const [showMLUModal, setShowMLUModal] = useState(false);
   const [currentMLUData, setCurrentMLUData] = useState<any>(null);
+  const [currentMLUIndex, setCurrentMLUIndex] = useState(0);
   const [showLockModal, setShowLockModal] = useState(false);
   const [stageFeedback, setStageFeedback] = useState<any>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  
+  // MLU tracking
+  const mluTitles = ['Draw.io Mastery', 'VLC Stream Analysis'];
+  const completedMLUIndices = [
+    ...(drawioSubmitted ? [0] : []),
+    ...(vlcSubmitted ? [1] : [])
+  ];
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
   const adminBypass = isAdmin();
@@ -122,6 +130,7 @@ export function TechnicalOrientationStage() {
       return;
     }
     if (unitId === 'drawio') {
+      setCurrentMLUIndex(0);
       setCurrentMLUData({
         id: 'drawio',
         title: 'Visualizing Systems with Draw.io',
@@ -190,6 +199,7 @@ export function TechnicalOrientationStage() {
         totalXP: 27
       });
     } else if (unitId === 'vlc') {
+      setCurrentMLUIndex(1);
       setCurrentMLUData({
         id: 'vlc',
         title: 'Media & Stream Basics with VLC',
@@ -376,13 +386,24 @@ export function TechnicalOrientationStage() {
         </AnimatePresence>
 
         {/* MLU Modal */}
-        {showMLUModal && currentMLUData && <ChatMLUModal isOpen={showMLUModal} onClose={() => {
-        setShowMLUModal(false);
-        setCurrentMLUData(null);
-      }} unitData={currentMLUData} stageXP={{
-        earned: earnedXP,
-        total: stage3Content.xpTotalTarget
-      }} onComplete={currentMLUData.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit} isCompleted={currentMLUData.id === 'drawio' ? drawioSubmitted : vlcSubmitted} />}
+        {showMLUModal && currentMLUData && <ChatMLUModal 
+          isOpen={showMLUModal} 
+          onClose={() => {
+            setShowMLUModal(false);
+            setCurrentMLUData(null);
+          }} 
+          unitData={currentMLUData} 
+          stageXP={{
+            earned: earnedXP,
+            total: stage3Content.xpTotalTarget
+          }} 
+          onComplete={currentMLUData.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit} 
+          isCompleted={currentMLUData.id === 'drawio' ? drawioSubmitted : vlcSubmitted}
+          currentMLUIndex={currentMLUIndex}
+          totalMLUs={2}
+          completedMLUs={completedMLUIndices}
+          mluTitles={mluTitles}
+        />}
 
         {/* Stage Progress Info - Always visible */}
         <motion.div initial={{

@@ -46,9 +46,17 @@ export function ApplicationSkillsStage() {
   const [earnedBonusXP, setEarnedBonusXP] = useState(0);
   const [showMLUModal, setShowMLUModal] = useState(false);
   const [currentMLUData, setCurrentMLUData] = useState<any>(null);
+  const [currentMLUIndex, setCurrentMLUIndex] = useState(0);
   const [showLockModal, setShowLockModal] = useState(false);
   const [stageFeedback, setStageFeedback] = useState<any>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  
+  // MLU tracking
+  const mluTitles = ['Advanced Draw.io', 'Advanced VLC'];
+  const completedMLUIndices = [
+    ...(drawioSubmitted ? [0] : []),
+    ...(vlcSubmitted ? [1] : [])
+  ];
   const isPreviewMode = viewMode === 'preview-back';
   const canComplete = drawioSubmitted && vlcSubmitted;
   const adminBypass = isAdmin();
@@ -123,6 +131,7 @@ export function ApplicationSkillsStage() {
       return;
     }
     if (unitId === 'drawio') {
+      setCurrentMLUIndex(0);
       setCurrentMLUData({
         id: 'drawio',
         title: 'Visualizing Systems with Draw.io',
@@ -191,6 +200,7 @@ export function ApplicationSkillsStage() {
         totalXP: 27
       });
     } else if (unitId === 'vlc') {
+      setCurrentMLUIndex(1);
       setCurrentMLUData({
         id: 'vlc',
         title: 'Media & Stream Basics with VLC',
@@ -380,10 +390,20 @@ export function ApplicationSkillsStage() {
           </div>}
 
         {/* MLU Modal */}
-        {currentMLUData && <ChatMLUModal isOpen={showMLUModal} onClose={() => {
-        setShowMLUModal(false);
-        setCurrentMLUData(null);
-      }} unitData={currentMLUData} stageXP={{ earned: earnedXP, total: 30 }} onComplete={currentMLUData?.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit} />}
+        {currentMLUData && <ChatMLUModal 
+          isOpen={showMLUModal} 
+          onClose={() => {
+            setShowMLUModal(false);
+            setCurrentMLUData(null);
+          }} 
+          unitData={currentMLUData} 
+          stageXP={{ earned: earnedXP, total: 30 }} 
+          onComplete={currentMLUData?.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit}
+          currentMLUIndex={currentMLUIndex}
+          totalMLUs={2}
+          completedMLUs={completedMLUIndices}
+          mluTitles={mluTitles}
+        />}
       </div>
     </div>;
 }
