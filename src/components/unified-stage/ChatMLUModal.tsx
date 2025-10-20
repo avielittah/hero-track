@@ -12,9 +12,11 @@ import { FileUpload } from '@/features/units/Inputs/FileUpload';
 import { QuickFeedback } from '@/features/units/Inputs/QuickFeedback';
 import { MentorChatMessage, TypingIndicator } from './MentorChatMessage';
 import { TasksChecklist } from './TasksChecklist';
+import { MLUProgressSidebar } from '@/components/journey/MLUProgressSidebar';
 import { useLearningStore } from '@/lib/store';
 import { useToast } from '@/hooks/use-toast';
 import { LevelUpModal } from '@/components/LevelUpModal';
+import { useJourneyMachine } from '@/features/journey/journeyMachine';
 
 interface MLUData {
   id: string;
@@ -68,6 +70,10 @@ interface ChatMLUModalProps {
   stageXP: { earned: number; total: number };
   onComplete: (earnedXP: number) => void;
   isCompleted?: boolean;
+  currentMLUIndex?: number;
+  totalMLUs?: number;
+  completedMLUs?: number[];
+  mluTitles?: string[];
 }
 
 type ChatMessage = {
@@ -84,9 +90,14 @@ export function ChatMLUModal({
   unitData, 
   stageXP, 
   onComplete, 
-  isCompleted = false 
+  isCompleted = false,
+  currentMLUIndex = 0,
+  totalMLUs = 1,
+  completedMLUs = [],
+  mluTitles = []
 }: ChatMLUModalProps) {
   const { addXP, awardMLUTrophy, checkForMedals, currentXP } = useLearningStore();
+  const { currentStage } = useJourneyMachine();
   const { toast } = useToast();
   const scrollRef = useRef<HTMLDivElement>(null);
   
@@ -498,6 +509,18 @@ export function ChatMLUModal({
 
   return (
     <>
+      {/* MLU Progress Sidebar */}
+      {isOpen && (
+        <MLUProgressSidebar
+          currentMLUIndex={currentMLUIndex}
+          totalMLUs={totalMLUs}
+          completedMLUs={completedMLUs}
+          currentStage={currentStage}
+          totalStages={8}
+          mluTitles={mluTitles}
+        />
+      )}
+
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col">
           {/* Header */}
