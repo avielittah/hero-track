@@ -11,6 +11,7 @@ import { OpenQuestion } from '@/features/units/Inputs/OpenQuestion';
 import { FileUpload } from '@/features/units/Inputs/FileUpload';
 import { QuickFeedback } from '@/features/units/Inputs/QuickFeedback';
 import { MentorChatMessage, TypingIndicator } from './MentorChatMessage';
+import { TasksChecklist } from './TasksChecklist';
 import { useLearningStore } from '@/lib/store';
 import { useToast } from '@/hooks/use-toast';
 import { LevelUpModal } from '@/components/LevelUpModal';
@@ -301,50 +302,20 @@ export function ChatMLUModal({
             <p className="text-sm">Let's put your learning into practice with these hands-on tasks:</p>
           </div>
         )
-      }
-    ];
-
-    unitData.tasks.forEach((task, taskIndex) => {
-      newMessages.push({
-        id: `task-${taskIndex}`,
+      },
+      {
+        id: 'tasks-list',
         type: 'mentor',
         section: 'tasks',
         content: (
-          <div className="space-y-3">
-            {task.type === 'text' && (
-              <p className="text-sm">{task.content as string}</p>
-            )}
-            {task.type === 'numbered-list' && (
-              <div className="space-y-2">
-                {(task.content as string[]).map((item, itemIndex) => {
-                  const key = taskIndex * 1000 + itemIndex;
-                  const isCompleted = completedTasks[key] || false;
-                  return (
-                    <div key={itemIndex} className="flex items-start gap-3 group">
-                      <button
-                        onClick={() => handleTaskToggle(taskIndex, itemIndex)}
-                        className={`
-                          mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all flex-shrink-0
-                          ${isCompleted 
-                            ? 'bg-emerald-500 border-emerald-500 text-white' 
-                            : 'border-gray-300 dark:border-gray-600 hover:border-emerald-400'
-                          }
-                        `}
-                      >
-                        {isCompleted && <CheckCircle2 className="h-3 w-3" />}
-                      </button>
-                      <span className={`text-sm ${isCompleted ? 'line-through opacity-60' : ''}`}>
-                        {item}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+          <TasksChecklist 
+            tasks={unitData.tasks}
+            completedTasks={completedTasks}
+            onTaskToggle={handleTaskToggle}
+          />
         )
-      });
-    });
+      }
+    ];
 
     setMessages(prev => [...prev, ...newMessages]);
     setVisibleCount(prev => prev + newMessages.length);
