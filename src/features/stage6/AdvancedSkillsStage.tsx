@@ -6,7 +6,7 @@ import { StageSummary } from '@/components/unified-stage/StageSummary';
 import { DidYouKnowBox } from '@/components/unified-stage/DidYouKnowBox';
 import { MiniQuiz } from '@/components/unified-stage/MiniQuiz';
 import { TooltipTip, HelpTip, InfoBadgeTip } from '@/components/unified-stage/TooltipTip';
-import { MLUModal } from '@/components/unified-stage/MLUModal';
+import { ChatMLUModal } from '@/components/unified-stage/ChatMLUModal';
 import { StageFeedback } from '@/components/unified-stage/StageFeedback';
 import { XPSkillsRecap } from '@/components/unified-stage/XPSkillsRecap';
 import { DrawIOUnit } from '../stage3/units/DrawIOUnit';
@@ -380,7 +380,7 @@ export function AdvancedSkillsStage() {
           </div>}
 
         {/* MLU Modal */}
-        {currentMLUData && <MLUModal isOpen={showMLUModal} onClose={() => {
+        {currentMLUData && <ChatMLUModal isOpen={showMLUModal} onClose={() => {
         setShowMLUModal(false);
         setCurrentMLUData(null);
       }} unitData={currentMLUData} stageXP={{ earned: earnedXP, total: 30 }} onComplete={currentMLUData?.id === 'drawio' ? handleDrawioSubmit : handleVlcSubmit} />}
