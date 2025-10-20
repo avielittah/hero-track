@@ -74,7 +74,7 @@ type ChatMessage = {
   id: string;
   type: 'mentor' | 'user';
   section?: 'intro' | 'background' | 'learning' | 'tasks' | 'quiz' | 'didYouKnow' | 'feedback' | 'complete';
-  content?: React.ReactNode;
+  content?: React.ReactNode | ((props: any) => React.ReactNode);
   delay?: number;
 };
 
@@ -307,11 +307,11 @@ export function ChatMLUModal({
         id: 'tasks-list',
         type: 'mentor',
         section: 'tasks',
-        content: (
+        content: (props: any) => (
           <TasksChecklist 
             tasks={unitData.tasks}
-            completedTasks={completedTasks}
-            onTaskToggle={handleTaskToggle}
+            completedTasks={props.completedTasks}
+            onTaskToggle={props.onTaskToggle}
           />
         )
       }
@@ -343,30 +343,30 @@ export function ChatMLUModal({
         id: `quiz-${index}`,
         type: 'mentor',
         section: 'quiz',
-        content: (
+        content: (props: any) => (
           <div className="w-full">
             {question.type === 'multiple-choice' && (
               <MultipleChoice
                 question={question.question}
                 options={question.options || []}
-                value={quizAnswers[index] || ''}
-                onChange={(value) => handleQuizAnswer(index, value)}
+                value={props.quizAnswers[index] || ''}
+                onChange={(value) => props.handleQuizAnswer(index, value)}
                 disabled={false}
               />
             )}
             {question.type === 'open-question' && (
               <OpenQuestion
                 question={question.question}
-                value={quizAnswers[index] || ''}
-                onChange={(value) => handleQuizAnswer(index, value)}
+                value={props.quizAnswers[index] || ''}
+                onChange={(value) => props.handleQuizAnswer(index, value)}
                 disabled={false}
               />
             )}
             {question.type === 'file-upload' && (
               <FileUpload
                 question={question.question}
-                value={quizAnswers[index]}
-                onChange={(value) => handleQuizAnswer(index, value)}
+                value={props.quizAnswers[index]}
+                onChange={(value) => props.handleQuizAnswer(index, value)}
                 disabled={false}
               />
             )}
@@ -385,7 +385,7 @@ export function ChatMLUModal({
         id: 'didyouknow',
         type: 'mentor',
         section: 'didYouKnow',
-        content: (
+        content: (props: any) => (
           <div className="space-y-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
             <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
               💡 {unitData.didYouKnow.title}
@@ -394,8 +394,8 @@ export function ChatMLUModal({
             <Button
               size="sm"
               onClick={() => {
-                setEarnedXP(prev => prev + unitData.didYouKnow.xpReward);
-                toast({
+                props.setEarnedXP((prev: number) => prev + unitData.didYouKnow.xpReward);
+                props.toast({
                   title: "Curiosity Rewarded!",
                   description: `+${unitData.didYouKnow.xpReward} XP`,
                 });
@@ -420,13 +420,13 @@ export function ChatMLUModal({
         id: 'feedback',
         type: 'mentor',
         section: 'feedback',
-        content: (
+        content: (props: any) => (
           <div className="space-y-3">
             <p className="text-sm font-semibold">⭐ How Was This Unit?</p>
             <p className="text-sm">Your feedback helps us improve the learning experience!</p>
             <QuickFeedback
-              value={feedback}
-              onChange={setFeedback}
+              value={props.feedback}
+              onChange={props.setFeedback}
               disabled={false}
             />
           </div>
@@ -537,7 +537,18 @@ export function ChatMLUModal({
             <div className="space-y-1 pb-4">
               {messages.slice(0, visibleCount).map((msg) => (
                 <MentorChatMessage key={msg.id} type={msg.type}>
-                  {msg.content}
+                  {typeof msg.content === 'function' 
+                    ? msg.content({ 
+                        completedTasks, 
+                        onTaskToggle: handleTaskToggle,
+                        quizAnswers,
+                        handleQuizAnswer,
+                        feedback,
+                        setFeedback,
+                        setEarnedXP,
+                        toast
+                      }) 
+                    : msg.content}
                 </MentorChatMessage>
               ))}
               
