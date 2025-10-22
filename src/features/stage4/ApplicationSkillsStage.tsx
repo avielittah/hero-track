@@ -9,6 +9,7 @@ import { TooltipTip, HelpTip, InfoBadgeTip } from '@/components/unified-stage/To
 import { ChatMLUModal } from '@/components/unified-stage/ChatMLUModal';
 import { StageFeedback } from '@/components/unified-stage/StageFeedback';
 import { XPSkillsRecap } from '@/components/unified-stage/XPSkillsRecap';
+import { MLUProgressSidebar } from '@/components/journey/MLUProgressSidebar';
 import { DrawIOUnit } from '../stage3/units/DrawIOUnit';
 import { VLCUnit } from '../stage3/units/VLCUnit';
 import { Button } from '@/components/ui/button';
@@ -272,6 +273,16 @@ export function ApplicationSkillsStage() {
     setShowMLUModal(true);
   };
   return <div className="min-h-screen bg-background relative">
+      {/* MLU Progress Sidebar */}
+      <MLUProgressSidebar
+        currentMLUIndex={currentMLUIndex}
+        totalMLUs={mluTitles.length}
+        completedMLUs={completedMLUIndices}
+        currentStage={4}
+        totalStages={8}
+        mluTitles={mluTitles}
+      />
+
       {/* Confetti Effect */}
       {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={200} gravity={0.3} />}
       {/* Preview Banner */}

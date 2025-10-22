@@ -12,7 +12,6 @@ import { FileUpload } from '@/features/units/Inputs/FileUpload';
 import { QuickFeedback } from '@/features/units/Inputs/QuickFeedback';
 import { MentorChatMessage, TypingIndicator } from './MentorChatMessage';
 import { TasksChecklist } from './TasksChecklist';
-import { MLUProgressSidebar } from '@/components/journey/MLUProgressSidebar';
 import { useLearningStore } from '@/lib/store';
 import { useToast } from '@/hooks/use-toast';
 import { LevelUpModal } from '@/components/LevelUpModal';
@@ -509,18 +508,6 @@ export function ChatMLUModal({
 
   return (
     <>
-      {/* MLU Progress Sidebar */}
-      {isOpen && (
-        <MLUProgressSidebar
-          currentMLUIndex={currentMLUIndex}
-          totalMLUs={totalMLUs}
-          completedMLUs={completedMLUs}
-          currentStage={currentStage}
-          totalStages={8}
-          mluTitles={mluTitles}
-        />
-      )}
-
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="w-[95vw] max-w-4xl h-[90vh] p-0 flex flex-col">
           {/* Header */}
