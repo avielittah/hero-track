@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2, Circle, X, ArrowRight, Trophy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -394,17 +395,24 @@ export const GuidedLearningPanel = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="default"
-          size="lg"
-          className="fixed right-0 top-1/2 -translate-y-1/2 rounded-r-none rounded-l-xl shadow-xl z-40 px-4 py-10 writing-mode-vertical bg-gradient-to-b from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 flex flex-col items-center gap-3"
-          style={{ writingMode: 'vertical-rl' }}
-        >
-          <Compass className="w-6 h-6 rotate-90 flex-shrink-0" />
-          <span className="font-bold text-xs tracking-widest whitespace-nowrap flex-shrink-0">LEARNING</span>
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button
+                variant="default"
+                size="icon"
+                className="fixed right-4 top-1/2 -translate-y-1/2 rounded-full shadow-lg z-40 w-14 h-14 bg-gradient-to-br from-primary to-primary/70 hover:from-primary/90 hover:to-primary/60 hover:scale-110 transition-transform"
+              >
+                <Compass className="w-6 h-6" />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent side="left" className="font-semibold">
+            Guided Learning Map
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       
       <DialogContent className="max-w-full w-screen h-screen max-h-screen p-0 gap-0 overflow-hidden flex flex-col">
         {/* Celebration Confetti */}
