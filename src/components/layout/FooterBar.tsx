@@ -56,17 +56,13 @@ export const FooterBar: React.FC = () => {
                 <div className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
                   <span className="text-xs font-bold text-primary">T</span>
                 </div>
-                <span className="font-medium">{t('ui.footer.brand')}</span>
+                <span className="font-medium">TaleAI Learning Platform</span>
               </div>
 
               {/* Legal Line - Center */}
               <div className="flex-1 text-center order-2">
                 <span>
-                  {t('ui.footer.legalLine', {
-                    year: getCurrentYear(),
-                    reg: getCompanyReg(),
-                    address: getCompanyAddress()
-                  })}
+                  © {getCurrentYear()} TaleAI. All rights reserved.
                 </span>
               </div>
 
@@ -76,37 +72,25 @@ export const FooterBar: React.FC = () => {
                   onClick={() => handleLinkClick('#')}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.terms')}
+                  Terms of Service
                 </button>
                 <button
                   onClick={() => handleLinkClick('#')}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.privacy')}
-                </button>
-                <button
-                  onClick={() => handleLinkClick('#')}
-                  className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
-                >
-                  {t('ui.footer.dpa')}
+                  Privacy Policy
                 </button>
                 <button
                   onClick={() => setShowCookieSettings(true)}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.cookies')}
-                </button>
-                <button
-                  onClick={() => handleLinkClick('#')}
-                  className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
-                >
-                  {t('ui.footer.a11y')}
+                  Cookie Settings
                 </button>
                 <button
                   onClick={handleContactClick}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.contact', { email: getContactEmail() })}
+                  Contact
                 </button>
                 
                 {/* Admin Section */}
@@ -145,7 +129,7 @@ export const FooterBar: React.FC = () => {
                   <div className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
                     <span className="text-xs font-bold text-primary">T</span>
                   </div>
-                  <span className="font-medium">{t('ui.footer.brand')}</span>
+                  <span className="font-medium">TaleAI</span>
                 </div>
                 
                 <div className="flex items-center gap-1">
@@ -177,11 +161,7 @@ export const FooterBar: React.FC = () => {
               {/* Legal Line */}
               <div className="text-center">
                 <span>
-                  {t('ui.footer.legalLine', {
-                    year: getCurrentYear(),
-                    reg: getCompanyReg(),
-                    address: getCompanyAddress()
-                  })}
+                  © {getCurrentYear()} TaleAI. All rights reserved.
                 </span>
               </div>
 
@@ -191,38 +171,35 @@ export const FooterBar: React.FC = () => {
                   onClick={() => handleLinkClick('#')}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.terms')}
+                  Terms of Service
                 </button>
                 <span className="text-slate-300 dark:text-slate-600">•</span>
                 <button
                   onClick={() => handleLinkClick('#')}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.privacy')}
+                  Privacy Policy
                 </button>
                 <span className="text-slate-300 dark:text-slate-600">•</span>
                 <button
                   onClick={() => setShowCookieSettings(true)}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.cookies')}
+                  Cookie Settings
                 </button>
                 <span className="text-slate-300 dark:text-slate-600">•</span>
                 <button
                   onClick={handleContactClick}
                   className="hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  {t('ui.footer.contact', { email: getContactEmail() })}
+                  Contact
                 </button>
               </div>
 
               {/* Version */}
               <div className="text-center text-slate-400">
                 <span>
-                  {t('ui.footer.version', {
-                    v: getAppVersion(),
-                    date: getLastUpdated()
-                  })}
+                  v{getAppVersion()} • Updated {getLastUpdated()}
                 </span>
               </div>
             </div>
