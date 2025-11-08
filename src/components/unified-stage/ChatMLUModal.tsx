@@ -288,41 +288,26 @@ export function ChatMLUModal({
     const nextIdx = currentSection + 1;
     setCurrentSection(nextIdx);
 
-    // Add new messages based on section
+    // Add new messages based on section with delays for typing effect
     if (nextIdx === 1) {
-      // Tasks section
       addTasksMessages();
     } else if (nextIdx === 2) {
-      // Quiz section
       addQuizMessages();
     } else if (nextIdx === 3) {
-      // Did you know
       addDidYouKnowMessages();
     } else if (nextIdx === 4) {
-      // Feedback
       addFeedbackMessages();
     }
-
-    // Scroll to bottom smoothly after adding new messages
-    setTimeout(() => {
-      if (scrollRef.current) {
-        const scrollElement = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollElement) {
-          scrollElement.scrollTo({
-            top: scrollElement.scrollHeight,
-            behavior: 'smooth'
-          });
-        }
-      }
-    }, 100);
   };
 
   const addTasksMessages = () => {
+    const baseDelay = 0.5;
     const newMessages: ChatMessage[] = [
       {
         id: 'tasks-intro',
         type: 'mentor',
         section: 'tasks',
+        delay: baseDelay,
         content: (
           <div className="space-y-3">
             <p className="text-sm font-semibold text-purple-600 dark:text-purple-400">
@@ -336,6 +321,7 @@ export function ChatMLUModal({
         id: 'tasks-list',
         type: 'mentor',
         section: 'tasks',
+        delay: baseDelay + 1.5,
         content: (props: any) => (
           <TasksChecklist 
             tasks={unitData.tasks}
@@ -347,15 +333,16 @@ export function ChatMLUModal({
     ];
 
     setMessages(prev => [...prev, ...newMessages]);
-    setVisibleCount(prev => prev + newMessages.length);
   };
 
   const addQuizMessages = () => {
+    const baseDelay = 0.5;
     const newMessages: ChatMessage[] = [
       {
         id: 'quiz-intro',
         type: 'mentor',
         section: 'quiz',
+        delay: baseDelay,
         content: (
           <div className="space-y-2">
             <p className="text-sm font-semibold text-purple-600 dark:text-purple-400">
@@ -372,6 +359,7 @@ export function ChatMLUModal({
         id: `quiz-${index}`,
         type: 'mentor',
         section: 'quiz',
+        delay: baseDelay + 1.5 + (index * 1),
         content: (props: any) => (
           <div className="w-full">
             {question.type === 'multiple-choice' && (
@@ -405,7 +393,6 @@ export function ChatMLUModal({
     });
 
     setMessages(prev => [...prev, ...newMessages]);
-    setVisibleCount(prev => prev + newMessages.length);
   };
 
   const addDidYouKnowMessages = () => {
@@ -414,6 +401,7 @@ export function ChatMLUModal({
         id: 'didyouknow',
         type: 'mentor',
         section: 'didYouKnow',
+        delay: 0.5,
         content: (props: any) => (
           <div className="space-y-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
             <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
@@ -440,7 +428,6 @@ export function ChatMLUModal({
     ];
 
     setMessages(prev => [...prev, ...newMessages]);
-    setVisibleCount(prev => prev + newMessages.length);
   };
 
   const addFeedbackMessages = () => {
@@ -449,6 +436,7 @@ export function ChatMLUModal({
         id: 'feedback',
         type: 'mentor',
         section: 'feedback',
+        delay: 0.5,
         content: (props: any) => (
           <div className="space-y-3">
             <p className="text-sm font-semibold">⭐ How Was This Unit?</p>
@@ -464,7 +452,6 @@ export function ChatMLUModal({
     ];
 
     setMessages(prev => [...prev, ...newMessages]);
-    setVisibleCount(prev => prev + newMessages.length);
   };
 
   const handleFinishUnit = async () => {
