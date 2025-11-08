@@ -283,20 +283,20 @@ const OnboardingSection = ({ onDismiss }: { onDismiss: () => void }) => (
           <div className="p-2 rounded-full bg-primary/20">
             <Compass className="w-6 h-6 text-primary" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">ברוכים הבאים למפת הלמידה המודרכת</h3>
+          <h3 className="text-xl font-bold text-foreground">Welcome to the Guided Learning Map</h3>
         </div>
         <div className="space-y-2 text-muted-foreground">
           <p>
-            מפת הלמידה המודרכת מלווה אותך לאורך כל תהליך ההכשרה ומספקת לך גישה למקורות מידע ורפרנסים חיצוניים.
+            The Guided Learning Map accompanies you throughout your entire training process and provides access to external knowledge sources and references.
           </p>
           <p className="font-semibold text-foreground">
-            איך להשתמש במפה:
+            How to use the map:
           </p>
-          <ul className="list-disc list-inside space-y-1 mr-4">
-            <li>עקוב אחר המסלול מלמעלה למטה - כל נושא מוביל לנושא הבא</li>
-            <li>לחץ על כל נושא כדי לראות את תתי הנושאים שלו</li>
-            <li>סמן נושאים שהשלמת על ידי לחיצה על הסמל ליד השם</li>
-            <li>עקוב אחר ההתקדמות שלך בעזרת סרגל ההתקדמות בראש העמוד</li>
+          <ul className="list-disc list-inside space-y-1 ml-4">
+            <li>Follow the path from top to bottom - each topic leads to the next</li>
+            <li>Click on any topic to see its subtopics</li>
+            <li>Mark topics as completed by clicking the icon next to the title</li>
+            <li>Track your progress with the progress bar at the top of the page</li>
           </ul>
         </div>
       </div>
@@ -335,10 +335,10 @@ export const GuidedLearningPanel = () => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
         newSet.delete(id);
-        toast({ title: "נושא סומן כלא הושלם" });
+        toast({ title: "Topic marked as incomplete" });
       } else {
         newSet.add(id);
-        toast({ title: "נושא סומן כהושלם! 🎉" });
+        toast({ title: "Topic completed! 🎉" });
       }
       return newSet;
     });
@@ -381,9 +381,9 @@ export const GuidedLearningPanel = () => {
                     <Compass className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold">מפת למידה מודרכת</h2>
+                    <h2 className="text-2xl font-bold">Guided Learning Map</h2>
                     <p className="text-sm text-muted-foreground">
-                      סילבוס מלא עם מקורות מידע חיצוניים
+                      Complete syllabus with external knowledge sources
                     </p>
                   </div>
                 </div>
@@ -400,9 +400,9 @@ export const GuidedLearningPanel = () => {
               {/* Progress Bar */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-foreground">התקדמות כללית</span>
+                  <span className="font-semibold text-foreground">Overall Progress</span>
                   <span className="text-muted-foreground">
-                    {completedCount} / {totalNodes} נושאים הושלמו
+                    {completedCount} / {totalNodes} topics completed
                   </span>
                 </div>
                 <Progress value={progressPercentage} className="h-2" />
@@ -441,7 +441,7 @@ export const GuidedLearningPanel = () => {
                 className="mt-12 p-6 rounded-xl bg-muted/50 border border-border text-center"
               >
                 <p className="text-muted-foreground">
-                  💡 לחץ על כל נושא לחקור מקורות מידע חיצוניים ולהרחיב את הידע שלך
+                  💡 Click on any topic to explore external resources and expand your knowledge
                 </p>
               </motion.div>
             </div>
