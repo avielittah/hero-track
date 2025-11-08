@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2, Circle, X } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2, Circle, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -188,6 +189,7 @@ const NodeCard = ({
       
       {/* Main Card */}
       <motion.div
+        id={`node-${node.id}`}
         whileHover={{ scale: 1.01 }}
         className={cn(
           'p-4 rounded-lg border-2 transition-all',
@@ -349,6 +351,25 @@ export const GuidedLearningPanel = () => {
     localStorage.setItem('guided-learning-onboarding-dismissed', 'true');
   };
 
+  // Find next incomplete topic
+  const findNextIncomplete = (): { node: LearningNode; parent?: LearningNode } | null => {
+    for (const mainNode of learningMap) {
+      if (!completedNodes.has(mainNode.id)) {
+        return { node: mainNode };
+      }
+      if (mainNode.children) {
+        for (const childNode of mainNode.children) {
+          if (!completedNodes.has(childNode.id)) {
+            return { node: childNode, parent: mainNode };
+          }
+        }
+      }
+    }
+    return null;
+  };
+
+  const nextIncomplete = findNextIncomplete();
+
   // Calculate progress
   const totalNodes = learningMap.reduce((acc, node) => {
     return acc + 1 + (node.children?.length || 0);
@@ -414,6 +435,57 @@ export const GuidedLearningPanel = () => {
           <div className="container mx-auto px-6 py-8">
               {/* Onboarding Section */}
               {showOnboarding && <OnboardingSection onDismiss={handleDismissOnboarding} />}
+
+              {/* Continue Learning Card */}
+              {nextIncomplete && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-8"
+                >
+                  <Card className="border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-background to-background shadow-lg">
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                              המשך מהמקום שבו הפסקת
+                            </Badge>
+                          </div>
+                          <h3 className="text-xl font-bold text-foreground mb-1">
+                            {nextIncomplete.node.title}
+                          </h3>
+                          {nextIncomplete.parent && (
+                            <p className="text-sm text-muted-foreground mb-3">
+                              חלק מ: {nextIncomplete.parent.title}
+                            </p>
+                          )}
+                          {nextIncomplete.node.subtitle && (
+                            <p className="text-sm text-muted-foreground">
+                              {nextIncomplete.node.subtitle}
+                            </p>
+                          )}
+                        </div>
+                        <Button
+                          onClick={() => {
+                            if (nextIncomplete.node.children && nextIncomplete.node.children.length > 0) {
+                              // Scroll to the node in the list
+                              const element = document.getElementById(`node-${nextIncomplete.node.id}`);
+                              element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            } else {
+                              window.open(nextIncomplete.node.url, '_blank');
+                            }
+                          }}
+                          className="gap-2"
+                        >
+                          התחל
+                          <ArrowRight className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
 
               {/* Learning Path */}
               <div className="relative">
