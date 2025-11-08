@@ -5,6 +5,7 @@ import { TopBar } from '@/components/TopBar';
 import { ProgressBar } from '@/components/ProgressBar';
 import { LevelBar } from '@/components/LevelBar';
 import { LevelUpModal } from '@/components/LevelUpModal';
+import { GuidedLearningPanel } from '@/components/GuidedLearningPanel';
 
 import { StageContainer } from '@/features/journey/StageContainer';
 import { FooterBar } from '@/components/layout/FooterBar';
@@ -83,6 +84,9 @@ const Index = () => {
         showNudge={showBuddyNudge}
         onNudgeClose={() => setShowBuddyNudge(false)}
       />
+      
+      {/* Guided Learning Panel */}
+      <GuidedLearningPanel />
       
       {/* Footer Bar with Admin */}
       <FooterBar />
