@@ -402,25 +402,6 @@ export const GuidedLearningPanel = () => {
   const visitedCount = countVisitedNodes(visitedNodes, allNodeIds);
   const progressPercentage = (visitedCount / allNodeIds.length) * 100;
 
-  // Find next recommended topic (first unvisited one)
-  const getNextRecommendedTopic = (): LearningNode | null => {
-    for (const node of learningMap) {
-      if (!visitedNodes.has(node.id)) {
-        return node;
-      }
-      if (node.children) {
-        for (const child of node.children) {
-          if (!visitedNodes.has(child.id)) {
-            return child;
-          }
-        }
-      }
-    }
-    return null; // All completed
-  };
-
-  const nextTopic = getNextRecommendedTopic();
-
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -450,68 +431,10 @@ export const GuidedLearningPanel = () => {
           </SheetTitle>
         </SheetHeader>
 
-        {/* Start Here Section */}
-        {nextTopic ? (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-6 rounded-lg bg-gradient-to-br from-primary to-primary/80 border-2 border-primary"
-          >
-            <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 rounded-full bg-primary-foreground/20">
-                <Compass className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-primary-foreground/80 uppercase tracking-wider mb-1">
-                  Start Here
-                </h3>
-                <p className="text-xl font-bold text-primary-foreground mb-1">
-                  {nextTopic.title}
-                </p>
-                {nextTopic.subtitle && (
-                  <p className="text-sm text-primary-foreground/80">
-                    {nextTopic.subtitle}
-                  </p>
-                )}
-              </div>
-            </div>
-            <Button
-              onClick={() => {
-                handleVisit(nextTopic.id);
-                window.open(nextTopic.url, '_blank');
-              }}
-              className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold"
-              size="lg"
-            >
-              <BookOpen className="w-4 h-4 mr-2" />
-              Start Learning
-            </Button>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-6 rounded-lg bg-gradient-to-br from-green-500 to-green-600 border-2 border-green-600"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <CheckCircle2 className="w-8 h-8 text-white" />
-              <div>
-                <p className="text-xl font-bold text-white">
-                  All Topics Completed! 🎉
-                </p>
-                <p className="text-sm text-white/90">
-                  You've explored all learning resources
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
         {/* Progress Overview */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
           className="mb-6 p-4 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20"
         >
           <div className="flex items-center justify-between mb-2">
