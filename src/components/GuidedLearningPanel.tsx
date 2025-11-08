@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2, Circle, X, ArrowRight } from 'lucide-react';
+import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2, Circle, X, ArrowRight, Trophy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import Confetti from 'react-confetti';
 
 interface LearningNode {
   id: string;
@@ -313,6 +314,7 @@ export const GuidedLearningPanel = () => {
   const [open, setOpen] = useState(false);
   const [completedNodes, setCompletedNodes] = useState<Set<string>>(new Set());
   const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showCelebration, setShowCelebration] = useState(false);
   const { toast } = useToast();
 
   // Load completed nodes from localStorage
@@ -341,6 +343,21 @@ export const GuidedLearningPanel = () => {
       } else {
         newSet.add(id);
         toast({ title: "Topic completed! 🎉" });
+        
+        // Check if this completion means 100%
+        const newTotal = newSet.size;
+        const totalNodes = learningMap.reduce((acc, node) => {
+          return acc + 1 + (node.children?.length || 0);
+        }, 0);
+        
+        if (newTotal === totalNodes) {
+          setShowCelebration(true);
+          toast({ 
+            title: "🎉 Congratulations!", 
+            description: "You've completed the entire learning path!"
+          });
+          setTimeout(() => setShowCelebration(false), 5000);
+        }
       }
       return newSet;
     });
@@ -376,6 +393,16 @@ export const GuidedLearningPanel = () => {
   }, 0);
   const completedCount = completedNodes.size;
   const progressPercentage = (completedCount / totalNodes) * 100;
+  const isFullyCompleted = completedCount === totalNodes;
+
+  // Show celebration on mount if already completed
+  useEffect(() => {
+    if (open && isFullyCompleted && completedCount > 0) {
+      setShowCelebration(true);
+      const timer = setTimeout(() => setShowCelebration(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [open, isFullyCompleted, completedCount]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -392,6 +419,17 @@ export const GuidedLearningPanel = () => {
       </DialogTrigger>
       
       <DialogContent className="max-w-full w-screen h-screen max-h-screen p-0 gap-0 overflow-hidden flex flex-col">
+        {/* Celebration Confetti */}
+        {showCelebration && (
+          <Confetti
+            width={window.innerWidth}
+            height={window.innerHeight}
+            recycle={false}
+            numberOfPieces={500}
+            gravity={0.3}
+          />
+        )}
+
         {/* Header with Progress */}
         <div className="flex-shrink-0 bg-background border-b">
           <div className="container mx-auto px-6 py-4">
@@ -436,8 +474,33 @@ export const GuidedLearningPanel = () => {
               {/* Onboarding Section */}
               {showOnboarding && <OnboardingSection onDismiss={handleDismissOnboarding} />}
 
-              {/* Continue Learning Card */}
-              {nextIncomplete && (
+              {/* Continue Learning or Completion Card */}
+              {isFullyCompleted ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="mb-8"
+                >
+                  <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 via-primary/5 to-background shadow-lg">
+                    <CardContent className="p-8 text-center">
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", delay: 0.2 }}
+                        className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/20 mb-4"
+                      >
+                        <Trophy className="w-10 h-10 text-primary" />
+                      </motion.div>
+                      <h3 className="text-2xl font-bold text-foreground mb-2">
+                        🎉 Congratulations!
+                      </h3>
+                      <p className="text-muted-foreground text-lg">
+                        You've completed the entire learning path!
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ) : nextIncomplete ? (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -449,7 +512,7 @@ export const GuidedLearningPanel = () => {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                              המשך מהמקום שבו הפסקת
+                              Continue Where You Left Off
                             </Badge>
                           </div>
                           <h3 className="text-xl font-bold text-foreground mb-1">
@@ -457,7 +520,7 @@ export const GuidedLearningPanel = () => {
                           </h3>
                           {nextIncomplete.parent && (
                             <p className="text-sm text-muted-foreground mb-3">
-                              חלק מ: {nextIncomplete.parent.title}
+                              Part of: {nextIncomplete.parent.title}
                             </p>
                           )}
                           {nextIncomplete.node.subtitle && (
@@ -478,14 +541,14 @@ export const GuidedLearningPanel = () => {
                           }}
                           className="gap-2"
                         >
-                          התחל
+                          Start
                           <ArrowRight className="w-4 h-4" />
                         </Button>
                       </div>
                     </CardContent>
                   </Card>
                 </motion.div>
-              )}
+              ) : null}
 
               {/* Learning Path */}
               <div className="relative">
