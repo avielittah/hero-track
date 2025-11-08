@@ -370,49 +370,48 @@ export const GuidedLearningPanel = () => {
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-full w-screen h-screen max-h-screen p-0 gap-0">
-        <div className="flex flex-col h-full">
-          {/* Header with Progress */}
-          <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-            <div className="container mx-auto px-6 py-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-full bg-gradient-to-br from-primary to-primary/60">
-                    <Compass className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold">Guided Learning Map</h2>
-                    <p className="text-sm text-muted-foreground">
-                      Complete syllabus with external knowledge sources
-                    </p>
-                  </div>
+      <DialogContent className="max-w-full w-screen h-screen max-h-screen p-0 gap-0 overflow-hidden flex flex-col">
+        {/* Header with Progress */}
+        <div className="flex-shrink-0 bg-background border-b">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-full bg-gradient-to-br from-primary to-primary/60">
+                  <Compass className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setOpen(false)}
-                  className="rounded-full"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-              
-              {/* Progress Bar */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-foreground">Overall Progress</span>
-                  <span className="text-muted-foreground">
-                    {completedCount} / {totalNodes} topics completed
-                  </span>
+                <div>
+                  <h2 className="text-2xl font-bold">Guided Learning Map</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Complete syllabus with external knowledge sources
+                  </p>
                 </div>
-                <Progress value={progressPercentage} className="h-2" />
               </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setOpen(false)}
+                className="rounded-full"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-semibold text-foreground">Overall Progress</span>
+                <span className="text-muted-foreground">
+                  {completedCount} / {totalNodes} topics completed
+                </span>
+              </div>
+              <Progress value={progressPercentage} className="h-2" />
             </div>
           </div>
+        </div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="container mx-auto px-6 py-8">
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-6 py-8">
               {/* Onboarding Section */}
               {showOnboarding && <OnboardingSection onDismiss={handleDismissOnboarding} />}
 
@@ -446,7 +445,6 @@ export const GuidedLearningPanel = () => {
               </motion.div>
             </div>
           </div>
-        </div>
       </DialogContent>
     </Dialog>
   );
