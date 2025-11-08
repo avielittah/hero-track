@@ -398,11 +398,11 @@ export const GuidedLearningPanel = () => {
         <Button
           variant="default"
           size="lg"
-          className="fixed right-0 top-1/2 -translate-y-1/2 rounded-r-none rounded-l-lg shadow-lg z-40 px-3 py-6 writing-mode-vertical bg-gradient-to-b from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+          className="fixed right-0 top-1/2 -translate-y-1/2 rounded-r-none rounded-l-lg shadow-lg z-40 px-3 py-8 writing-mode-vertical bg-gradient-to-b from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
           style={{ writingMode: 'vertical-rl' }}
         >
           <Compass className="w-5 h-5 mb-2 rotate-90" />
-          <span className="font-bold text-sm tracking-wider">GUIDED LEARNING</span>
+          <span className="font-bold text-xs tracking-wide whitespace-nowrap">GUIDED LEARNING</span>
         </Button>
       </DialogTrigger>
       
