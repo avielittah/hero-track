@@ -401,10 +401,10 @@ export const GuidedLearningPanel = () => {
         >
           <Compass className="w-6 h-6 text-primary-foreground group-hover:rotate-180 transition-transform duration-500 flex-shrink-0" />
           <div className="flex flex-col items-center justify-center gap-2 flex-1 overflow-hidden">
-            <span className="font-black text-[10px] tracking-widest text-primary-foreground uppercase whitespace-nowrap transform -rotate-0" style={{ writingMode: 'vertical-rl' }}>
+            <span className="font-extrabold text-[11px] tracking-[0.15em] text-primary-foreground uppercase whitespace-nowrap" style={{ writingMode: 'vertical-rl' }}>
               GUIDED
             </span>
-            <span className="font-black text-[10px] tracking-widest text-primary-foreground/90 uppercase whitespace-nowrap transform -rotate-0" style={{ writingMode: 'vertical-rl' }}>
+            <span className="font-extrabold text-[11px] tracking-[0.15em] text-primary-foreground/95 uppercase whitespace-nowrap" style={{ writingMode: 'vertical-rl' }}>
               LEARNING
             </span>
           </div>
