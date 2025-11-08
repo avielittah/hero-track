@@ -586,11 +586,11 @@ export function ChatMLUModal({
                 <Button
                   onClick={handleSkipAnimation}
                   size="sm"
-                  variant="secondary"
-                  className="pointer-events-auto shadow-lg bg-background/95 backdrop-blur border-2 hover:border-primary"
+                  variant="ghost"
+                  className="pointer-events-auto text-xs text-muted-foreground hover:text-foreground opacity-60 hover:opacity-100 transition-opacity"
                 >
-                  <ChevronsDown className="h-4 w-4 mr-2 animate-bounce" />
-                  Skip to end
+                  <ChevronsDown className="h-3 w-3 mr-1.5" />
+                  Skip
                 </Button>
               </motion.div>
             )}
