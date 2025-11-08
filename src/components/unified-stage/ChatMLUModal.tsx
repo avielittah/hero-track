@@ -240,7 +240,13 @@ export function ChatMLUModal({
   // Auto scroll
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      const scrollElement = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollTo({
+          top: scrollElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
     }
   }, [visibleCount]);
 
@@ -296,6 +302,19 @@ export function ChatMLUModal({
       // Feedback
       addFeedbackMessages();
     }
+
+    // Scroll to bottom smoothly after adding new messages
+    setTimeout(() => {
+      if (scrollRef.current) {
+        const scrollElement = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollElement) {
+          scrollElement.scrollTo({
+            top: scrollElement.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }, 100);
   };
 
   const addTasksMessages = () => {
