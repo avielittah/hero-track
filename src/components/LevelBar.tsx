@@ -56,13 +56,13 @@ export const LevelBar = () => {
   return (
     <TooltipProvider>
       <motion.div 
-        className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-background/95 via-primary/5 to-secondary/5 backdrop-blur-md border-t border-primary/20 shadow-2xl z-40"
+        className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-background via-background/98 to-background backdrop-blur-lg border-t border-primary/20 shadow-2xl z-40"
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100 }}
       >
         {/* Ambient lighting effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/3 via-secondary/3 to-primary/3 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/8 to-primary/10 pointer-events-none" />
         
         <div className="relative px-4 py-3">
           <div className="max-w-7xl mx-auto">
