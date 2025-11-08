@@ -7,7 +7,6 @@ import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import { RoadmapFlow } from './learning-roadmap/RoadmapFlow';
 
 interface LearningNode {
   id: string;
@@ -411,19 +410,41 @@ export const GuidedLearningPanel = () => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden">
-          {showOnboarding && (
-            <div className="container mx-auto px-6 py-8">
-              <OnboardingSection onDismiss={handleDismissOnboarding} />
+        <div className="flex-1 overflow-y-auto">
+          <div className="container mx-auto px-6 py-8">
+              {/* Onboarding Section */}
+              {showOnboarding && <OnboardingSection onDismiss={handleDismissOnboarding} />}
+
+              {/* Learning Path */}
+              <div className="relative">
+                <div className="absolute right-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20" />
+                
+                <div className="space-y-4">
+                  {learningMap.map((node, index) => (
+                    <NodeCard 
+                      key={node.id} 
+                      node={node} 
+                      index={index}
+                      completedNodes={completedNodes}
+                      onToggleComplete={handleToggleComplete}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mt-12 p-6 rounded-xl bg-muted/50 border border-border text-center"
+              >
+                <p className="text-muted-foreground">
+                  💡 Click on any topic to explore external resources and expand your knowledge
+                </p>
+              </motion.div>
             </div>
-          )}
-          
-          <RoadmapFlow 
-            learningMap={learningMap}
-            completedNodes={completedNodes}
-            onToggleComplete={handleToggleComplete}
-          />
-        </div>
+          </div>
       </DialogContent>
     </Dialog>
   );
