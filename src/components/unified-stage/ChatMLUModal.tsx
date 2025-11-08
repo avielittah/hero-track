@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Confetti from 'react-confetti';
-import { X, Clock, Target, CheckCircle2, Trophy, MessageCircle, Bot, ChevronRight, Sparkles } from 'lucide-react';
+import { X, Clock, Target, CheckCircle2, Trophy, MessageCircle, Bot, ChevronRight, Sparkles, ChevronsDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -507,6 +507,11 @@ export function ChatMLUModal({
     return false;
   };
 
+  const handleSkipAnimation = () => {
+    // Show all remaining messages immediately
+    setVisibleCount(messages.length);
+  };
+
   const getProgress = () => {
     const total = 5; // intro, tasks, quiz, didyouknow, feedback
     return Math.round((currentSection / total) * 100);
@@ -549,7 +554,7 @@ export function ChatMLUModal({
           </div>
 
           {/* Chat Messages */}
-          <ScrollArea ref={scrollRef} className="flex-1 px-6 py-4">
+          <ScrollArea ref={scrollRef} className="flex-1 px-6 py-4 relative">
             <div className="space-y-1 pb-4">
               {messages.slice(0, visibleCount).map((msg) => (
                 <MentorChatMessage key={msg.id} type={msg.type}>
@@ -570,6 +575,25 @@ export function ChatMLUModal({
               
               {visibleCount < messages.length && <TypingIndicator />}
             </div>
+
+            {/* Skip Animation Button */}
+            {visibleCount < messages.length && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="sticky bottom-4 left-0 right-0 flex justify-center pointer-events-none"
+              >
+                <Button
+                  onClick={handleSkipAnimation}
+                  size="sm"
+                  variant="secondary"
+                  className="pointer-events-auto shadow-lg bg-background/95 backdrop-blur border-2 hover:border-primary"
+                >
+                  <ChevronsDown className="h-4 w-4 mr-2 animate-bounce" />
+                  Skip to end
+                </Button>
+              </motion.div>
+            )}
           </ScrollArea>
 
           {/* Action Bar */}
