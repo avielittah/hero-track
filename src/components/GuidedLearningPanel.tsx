@@ -397,22 +397,16 @@ export const GuidedLearningPanel = () => {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="fixed right-0 top-1/2 -translate-y-1/2 rounded-r-none rounded-l-2xl shadow-2xl z-40 px-5 py-12 bg-gradient-to-br from-primary via-primary/90 to-purple-600 hover:from-primary/95 hover:via-primary/85 hover:to-purple-500 transition-all duration-300 hover:px-6 group border-l-4 border-l-primary-foreground/20"
-          style={{ 
-            writingMode: 'vertical-rl',
-            textOrientation: 'mixed'
-          }}
+          className="fixed right-0 top-1/2 -translate-y-1/2 rounded-r-none rounded-l-2xl shadow-2xl z-40 h-48 w-16 bg-gradient-to-b from-primary via-primary/90 to-purple-600 hover:from-primary/95 hover:via-primary/85 hover:to-purple-500 transition-all duration-300 hover:w-[4.5rem] group border-l-4 border-l-primary-foreground/20 flex flex-col items-center justify-center gap-3 p-3"
         >
-          <div className="flex flex-col items-center gap-4">
-            <Compass className="w-7 h-7 rotate-90 text-primary-foreground group-hover:rotate-180 transition-transform duration-500" />
-            <div className="flex flex-col items-center gap-1">
-              <span className="font-black text-sm tracking-[0.3em] text-primary-foreground uppercase">
-                GUIDED
-              </span>
-              <span className="font-black text-sm tracking-[0.3em] text-primary-foreground/90 uppercase">
-                LEARNING
-              </span>
-            </div>
+          <Compass className="w-6 h-6 text-primary-foreground group-hover:rotate-180 transition-transform duration-500 flex-shrink-0" />
+          <div className="flex flex-col items-center justify-center gap-2 flex-1 overflow-hidden">
+            <span className="font-black text-[10px] tracking-widest text-primary-foreground uppercase whitespace-nowrap transform -rotate-0" style={{ writingMode: 'vertical-rl' }}>
+              GUIDED
+            </span>
+            <span className="font-black text-[10px] tracking-widest text-primary-foreground/90 uppercase whitespace-nowrap transform -rotate-0" style={{ writingMode: 'vertical-rl' }}>
+              LEARNING
+            </span>
           </div>
         </Button>
       </DialogTrigger>
