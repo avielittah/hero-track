@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass, CheckCircle2, Circle } from 'lucide-react';
+import { BookOpen, ExternalLink, Youtube, FileText, Link2, Compass } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -22,9 +21,9 @@ const learningMap: LearningNode[] = [
   {
     id: '1',
     title: 'Introduction to Systems',
-    subtitle: 'Getting Started - Foundations',
+    subtitle: 'Getting Started',
     type: 'youtube',
-    url: 'https://youtube.com/watch?v=example1',
+    url: 'https://youtube.com',
     children: [
       {
         id: '1.1',
@@ -38,32 +37,20 @@ const learningMap: LearningNode[] = [
         type: 'resource',
         url: 'https://example.com/protocols',
       },
-      {
-        id: '1.3',
-        title: 'Network Fundamentals',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=network',
-      },
-      {
-        id: '1.4',
-        title: 'OSI Model Explained',
-        type: 'article',
-        url: 'https://example.com/osi-model',
-      },
     ],
   },
   {
     id: '2',
-    title: 'Technical Tools & Software',
-    subtitle: 'Essential Skills & Workflows',
+    title: 'Technical Tools',
+    subtitle: 'Essential Skills',
     type: 'youtube',
-    url: 'https://youtube.com/watch?v=tools',
+    url: 'https://youtube.com',
     children: [
       {
         id: '2.1',
-        title: 'Draw.io Complete Guide',
+        title: 'Draw.io Mastery',
         type: 'youtube',
-        url: 'https://youtube.com/watch?v=drawio',
+        url: 'https://youtube.com',
       },
       {
         id: '2.2',
@@ -71,185 +58,33 @@ const learningMap: LearningNode[] = [
         type: 'article',
         url: 'https://example.com/vlc',
       },
-      {
-        id: '2.3',
-        title: 'Git & Version Control',
-        type: 'resource',
-        url: 'https://example.com/git',
-      },
-      {
-        id: '2.4',
-        title: 'Documentation Best Practices',
-        type: 'article',
-        url: 'https://example.com/docs',
-      },
-      {
-        id: '2.5',
-        title: 'Command Line Mastery',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=cli',
-      },
     ],
   },
   {
     id: '3',
-    title: 'Communication Systems',
-    subtitle: 'Core Engineering Concepts',
+    title: 'Advanced Concepts',
+    subtitle: 'Level Up',
     type: 'article',
-    url: 'https://example.com/comm-systems',
+    url: 'https://example.com',
     children: [
       {
         id: '3.1',
-        title: 'Signal Processing Intro',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=signals',
+        title: 'System Integration',
+        type: 'resource',
+        url: 'https://example.com/integration',
       },
       {
         id: '3.2',
-        title: 'Digital vs Analog Systems',
+        title: 'Best Practices',
         type: 'article',
-        url: 'https://example.com/digital-analog',
-      },
-      {
-        id: '3.3',
-        title: 'Modulation Techniques',
-        type: 'resource',
-        url: 'https://example.com/modulation',
-      },
-      {
-        id: '3.4',
-        title: 'Wireless Communication',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=wireless',
-      },
-    ],
-  },
-  {
-    id: '4',
-    title: 'System Integration',
-    subtitle: 'Connecting Components',
-    type: 'resource',
-    url: 'https://example.com/integration',
-    children: [
-      {
-        id: '4.1',
-        title: 'API Design Principles',
-        type: 'article',
-        url: 'https://example.com/api-design',
-      },
-      {
-        id: '4.2',
-        title: 'Microservices Architecture',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=microservices',
-      },
-      {
-        id: '4.3',
-        title: 'Integration Patterns',
-        type: 'resource',
-        url: 'https://example.com/patterns',
-      },
-    ],
-  },
-  {
-    id: '5',
-    title: 'Testing & Quality Assurance',
-    subtitle: 'Ensuring Reliability',
-    type: 'youtube',
-    url: 'https://youtube.com/watch?v=testing',
-    children: [
-      {
-        id: '5.1',
-        title: 'Unit Testing Fundamentals',
-        type: 'article',
-        url: 'https://example.com/unit-testing',
-      },
-      {
-        id: '5.2',
-        title: 'Integration Testing',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=integration-test',
-      },
-      {
-        id: '5.3',
-        title: 'Performance Testing',
-        type: 'resource',
-        url: 'https://example.com/performance',
-      },
-      {
-        id: '5.4',
-        title: 'Debugging Techniques',
-        type: 'article',
-        url: 'https://example.com/debugging',
-      },
-    ],
-  },
-  {
-    id: '6',
-    title: 'Advanced Topics',
-    subtitle: 'Mastery Level',
-    type: 'article',
-    url: 'https://example.com/advanced',
-    children: [
-      {
-        id: '6.1',
-        title: 'System Optimization',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=optimization',
-      },
-      {
-        id: '6.2',
-        title: 'Security Best Practices',
-        type: 'article',
-        url: 'https://example.com/security',
-      },
-      {
-        id: '6.3',
-        title: 'Scalability Patterns',
-        type: 'resource',
-        url: 'https://example.com/scalability',
-      },
-      {
-        id: '6.4',
-        title: 'Cloud Architecture',
-        type: 'youtube',
-        url: 'https://youtube.com/watch?v=cloud',
-      },
-      {
-        id: '6.5',
-        title: 'DevOps Practices',
-        type: 'article',
-        url: 'https://example.com/devops',
+        url: 'https://example.com/best-practices',
       },
     ],
   },
 ];
 
-const NodeCard = ({ 
-  node, 
-  index, 
-  depth = 0,
-  visitedNodes,
-  onVisit
-}: { 
-  node: LearningNode; 
-  index: number; 
-  depth?: number;
-  visitedNodes: Set<string>;
-  onVisit: (nodeId: string) => void;
-}) => {
+const NodeCard = ({ node, index, depth = 0 }: { node: LearningNode; index: number; depth?: number }) => {
   const [expanded, setExpanded] = useState(false);
-  const isVisited = visitedNodes.has(node.id);
-  
-  // Auto-expand if any child is visited
-  useEffect(() => {
-    if (node.children) {
-      const hasVisitedChild = node.children.some(child => visitedNodes.has(child.id));
-      if (hasVisitedChild) {
-        setExpanded(true);
-      }
-    }
-  }, [visitedNodes, node.children]);
   
   const getIcon = () => {
     switch (node.type) {
@@ -296,14 +131,12 @@ const NodeCard = ({
         className={cn(
           'p-4 rounded-lg border-2 transition-all cursor-pointer',
           'bg-card hover:shadow-lg hover:border-primary/50',
-          isVisited && 'border-green-500/50 bg-green-500/5',
-          node.completed && 'border-green-500/70 bg-green-500/10'
+          node.completed && 'border-green-500/50 bg-green-500/5'
         )}
         onClick={() => {
           if (node.children && node.children.length > 0) {
             setExpanded(!expanded);
           } else {
-            onVisit(node.id);
             window.open(node.url, '_blank');
           }
         }}
@@ -324,13 +157,10 @@ const NodeCard = ({
           </div>
           
           <div className="flex items-center gap-2">
-            {isVisited ? (
-              <div className="flex items-center gap-1 text-green-600">
-                <CheckCircle2 className="w-5 h-5" />
-                <span className="text-xs font-medium">Visited</span>
-              </div>
-            ) : (
-              <Circle className="w-5 h-5 text-muted-foreground/30" />
+            {node.completed && (
+              <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-200">
+                ✓ Complete
+              </Badge>
             )}
             {(!node.children || node.children.length === 0) && (
               <ExternalLink className="w-4 h-4 text-muted-foreground" />
@@ -349,14 +179,7 @@ const NodeCard = ({
           className="mt-2"
         >
           {node.children.map((child, idx) => (
-            <NodeCard 
-              key={child.id} 
-              node={child} 
-              index={idx} 
-              depth={depth + 1}
-              visitedNodes={visitedNodes}
-              onVisit={onVisit}
-            />
+            <NodeCard key={child.id} node={child} index={idx} depth={depth + 1} />
           ))}
         </motion.div>
       )}
@@ -364,44 +187,7 @@ const NodeCard = ({
   );
 };
 
-// Helper function to get all node IDs (including children)
-const getAllNodeIds = (nodes: LearningNode[]): string[] => {
-  const ids: string[] = [];
-  const traverse = (node: LearningNode) => {
-    ids.push(node.id);
-    if (node.children) {
-      node.children.forEach(traverse);
-    }
-  };
-  nodes.forEach(traverse);
-  return ids;
-};
-
-// Helper function to count visited nodes
-const countVisitedNodes = (visitedNodes: Set<string>, totalNodes: string[]): number => {
-  return totalNodes.filter(id => visitedNodes.has(id)).length;
-};
-
 export const GuidedLearningPanel = () => {
-  // Load visited nodes from localStorage
-  const [visitedNodes, setVisitedNodes] = useState<Set<string>>(() => {
-    const saved = localStorage.getItem('guidedLearning_visited');
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-  });
-
-  // Save to localStorage whenever visitedNodes changes
-  useEffect(() => {
-    localStorage.setItem('guidedLearning_visited', JSON.stringify([...visitedNodes]));
-  }, [visitedNodes]);
-
-  const handleVisit = (nodeId: string) => {
-    setVisitedNodes(prev => new Set([...prev, nodeId]));
-  };
-
-  const allNodeIds = getAllNodeIds(learningMap);
-  const visitedCount = countVisitedNodes(visitedNodes, allNodeIds);
-  const progressPercentage = (visitedCount / allNodeIds.length) * 100;
-
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -422,7 +208,7 @@ export const GuidedLearningPanel = () => {
             <div className="p-3 rounded-full bg-gradient-to-br from-primary to-primary/60">
               <Compass className="w-6 h-6 text-primary-foreground" />
             </div>
-            <div className="flex-1">
+            <div>
               <h2 className="font-bold">Guided Learning Map</h2>
               <p className="text-sm text-muted-foreground font-normal">
                 Explore the syllabus and external resources
@@ -431,37 +217,13 @@ export const GuidedLearningPanel = () => {
           </SheetTitle>
         </SheetHeader>
 
-        {/* Progress Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-foreground">Your Progress</span>
-            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-              {visitedCount}/{allNodeIds.length} Topics
-            </Badge>
-          </div>
-          <Progress value={progressPercentage} className="h-2 mb-2" />
-          <p className="text-xs text-muted-foreground">
-            {progressPercentage.toFixed(0)}% Complete • Keep exploring!
-          </p>
-        </motion.div>
-
         {/* Journey Path Visualization */}
         <div className="relative mb-8">
           <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent" />
           
           <div className="space-y-6">
             {learningMap.map((node, index) => (
-              <NodeCard 
-                key={node.id} 
-                node={node} 
-                index={index}
-                visitedNodes={visitedNodes}
-                onVisit={handleVisit}
-              />
+              <NodeCard key={node.id} node={node} index={index} />
             ))}
           </div>
         </div>
