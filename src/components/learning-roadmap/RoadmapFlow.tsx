@@ -77,9 +77,9 @@ export const RoadmapFlow = ({
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         fitView
-        minZoom={0.5}
-        maxZoom={1.5}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
+        minZoom={0.3}
+        maxZoom={1.2}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
         proOptions={{ hideAttribution: true }}
       >
         {/* Background */}

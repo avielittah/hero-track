@@ -23,7 +23,7 @@ export const convertToFlowData = (
     nodes.push({
       id: topic.id,
       type: 'roadmapNode',
-      position: { x: 400, y: yPosition },
+      position: { x: 600, y: yPosition },
       data: {
         ...topic,
         isCompleted: completedNodes.has(topic.id),
@@ -31,15 +31,15 @@ export const convertToFlowData = (
       },
     });
     
-    yPosition += 120;
+    yPosition += 180;
     
     // Children nodes (3 columns below parent)
     if (topic.children) {
       const childrenPerRow = 3;
-      const childWidth = 220;
-      const childSpacing = 30;
+      const childWidth = 300;
+      const childSpacing = 50;
       const totalWidth = childrenPerRow * childWidth + (childrenPerRow - 1) * childSpacing;
-      const startX = 400 + childWidth/2 - totalWidth/2;
+      const startX = 600 + childWidth/2 - totalWidth/2;
       
       topic.children.forEach((child, childIndex) => {
         const col = childIndex % childrenPerRow;
@@ -50,7 +50,7 @@ export const convertToFlowData = (
           type: 'roadmapNode',
           position: { 
             x: startX + col * (childWidth + childSpacing), 
-            y: yPosition + row * 100 
+            y: yPosition + row * 140 
           },
           data: {
             ...child,
@@ -73,7 +73,7 @@ export const convertToFlowData = (
       });
       
       const rows = Math.ceil((topic.children.length) / childrenPerRow);
-      yPosition += rows * 100 + 60;
+      yPosition += rows * 140 + 100;
     }
     
     // Connect to next main topic

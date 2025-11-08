@@ -42,36 +42,36 @@ export const RoadmapNode = memo(({ data }: NodeProps<RoadmapNodeData>) => {
       {/* Card - שימוש בעיצוב הקיים */}
       <div
         className={cn(
-          'p-4 rounded-lg border-2 transition-all cursor-pointer bg-card',
+          'p-5 rounded-xl border-2 transition-all cursor-pointer bg-card shadow-md',
           isCompleted && 'border-primary/50 bg-primary/5',
-          !isCompleted && 'hover:shadow-lg hover:border-primary/50',
-          isMain ? 'min-w-[250px]' : 'min-w-[200px]'
+          !isCompleted && 'hover:shadow-xl hover:border-primary/50 hover:scale-105',
+          isMain ? 'min-w-[320px]' : 'min-w-[280px]'
         )}
         onClick={() => onNodeClick(url)}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 flex-1">
             {/* Icon */}
-            <div className={cn('p-2 rounded-full flex-shrink-0', getTypeColor())}>
+            <div className={cn('p-3 rounded-full flex-shrink-0', getTypeColor())}>
               {getIcon()}
             </div>
             
             {/* Text */}
             <div className="flex-1 min-w-0">
               <h3 className={cn(
-                'font-semibold text-sm text-foreground',
+                'font-semibold text-base text-foreground',
                 isCompleted && 'line-through opacity-70'
               )}>
                 {title}
               </h3>
               {subtitle && (
-                <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
+                <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
               )}
             </div>
           </div>
           
           {/* Actions */}
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -80,12 +80,12 @@ export const RoadmapNode = memo(({ data }: NodeProps<RoadmapNodeData>) => {
               className="hover:scale-110 transition-transform"
             >
               {isCompleted ? (
-                <CheckCircle2 className="w-5 h-5 text-primary" />
+                <CheckCircle2 className="w-6 h-6 text-primary" />
               ) : (
-                <Circle className="w-5 h-5 text-muted-foreground" />
+                <Circle className="w-6 h-6 text-muted-foreground" />
               )}
             </button>
-            <ExternalLink className="w-4 h-4 text-muted-foreground" />
+            <ExternalLink className="w-5 h-5 text-muted-foreground" />
           </div>
         </div>
       </div>
